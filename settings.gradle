@@ -1,0 +1,3 @@
+include ':kds_diordna'
+include ':app'
+rootProject.name = "Swirepay_SDK_playground"
