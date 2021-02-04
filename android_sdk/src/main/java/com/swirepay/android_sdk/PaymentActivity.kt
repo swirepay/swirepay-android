@@ -8,7 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.swirepay.android_sdk.databinding.ActivityMainBinding
 
-private class PaymentActivity : AppCompatActivity() {
+class PaymentActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ private class PaymentActivity : AppCompatActivity() {
                     request: WebResourceRequest?
                 ): Boolean {
                     request?.let {
-                        val redirectionUrl = request!!.url.toString()
+                        val redirectionUrl = request.url.toString()
                         // TODO Check the status here (api)
 //                      val param = Uri.parse(url.toString()).getQueryParameter("zx")
                     }
