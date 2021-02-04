@@ -3,7 +3,7 @@
     package="com.swirepay.android_sdk">
 
     <application>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".PaymentActivity"></activity>
     </application>
 
 </manifest>
