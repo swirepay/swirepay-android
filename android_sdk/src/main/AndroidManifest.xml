@@ -3,7 +3,7 @@
     package="com.swirepay.android_sdk">
     <uses-permission android:name="android.permission.INTERNET" />
     <application>
-        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".ui.payment_activity.PaymentActivity"></activity>
     </application>
 
 </manifest>
