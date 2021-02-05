@@ -26,7 +26,7 @@ class PaymentActivity : AppCompatActivity() {
         webSettings.domStorageEnabled = true
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         webSettings.useWideViewPort = true
-        binding.webView.loadUrl("https://staging-secure.swirepay.com/payment-link/paymentlink-634a61b176d64509b24eb25563f611f3")
+        binding.webView.loadUrl("https://staging-secure.swirepay.com/payment-link/paymentlink-02fc322dbb6d4cb0996fb4a72c9cdc56")
         binding.webView.webViewClient  = object : WebViewClient(){
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -40,7 +40,7 @@ class PaymentActivity : AppCompatActivity() {
                     }
                     //TODO return the result here
                     setResult(RESULT_OK , Intent().apply {
-                        putExtra("payment_status" , "1")
+                        putExtra("payment_status" , 1)
                     })
                     finish()
                     return true
