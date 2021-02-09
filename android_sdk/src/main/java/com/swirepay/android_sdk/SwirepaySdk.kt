@@ -40,11 +40,14 @@ object SwirepaySdk {
         if(data!= null){
             val reason = data.getStringExtra(PaymentActivity.PAYMENT_FAILURE_REASON)
             val paymentLink = data.getParcelableExtra<PaymentLink?>(PaymentActivity.PAYMENT_RESULT)
+            val message = data.getStringExtra(PaymentActivity.PAYMENT_MESSAGE)
             if(paymentLink!= null){
                 paymentResult.entity = paymentLink
             }
             if(reason != null)
             paymentResult.reason = reason
+            if(message != null)
+                paymentResult.message = message
         }
         return paymentResult
     }

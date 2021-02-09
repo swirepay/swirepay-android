@@ -17,16 +17,17 @@ import com.swirepay.android_sdk.model.PaymentLink
 class PaymentActivity : AppCompatActivity() {
     lateinit var binding: ActivityPaymentBinding
     val viewModel : ViewModelPayment by lazy {
-        val amount = intent.getIntExtra("" , 0)
-        ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(100 ,
-            SwirepaySdk.CurrencyType.INR
+        val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
+        val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
+        ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(amount ,
+            currency!!
         )).get(ViewModelPayment::class.java)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel.livePaymentLink.observe(this , Observer {
+        viewModel.livePaymentLink.observe(this , {
             setWebView(it)
             binding.progress.visibility = View.GONE
         })
@@ -36,6 +37,7 @@ class PaymentActivity : AppCompatActivity() {
                     putExtra(PAYMENT_RESULT , it)
                 }
                 putExtra(PAYMENT_FAILURE_REASON , PAYMENT_FAILURE_REASON_API_FAILURE)
+                putExtra(PAYMENT_MESSAGE , message)
             })
             finish()
         })
@@ -113,6 +115,7 @@ class PaymentActivity : AppCompatActivity() {
         const val TAG = "sdk_test"
         const val PAYMENT_RESULT = "payment_result"
         const val PAYMENT_STATUS = "payment_status"
+        const val PAYMENT_MESSAGE = "payment_message"
         const val PAYMENT_FAILURE_REASON = "payment_failure_reason"
         const val PAYMENT_FAILURE_REASON_USER_CANCELLED = "user_cancelled"
         const val PAYMENT_FAILURE_REASON_API_FAILURE = "api_failure"
