@@ -30,9 +30,19 @@ class PaymentActivity : AppCompatActivity() {
             setWebView(it)
             binding.progress.visibility = View.GONE
         })
-        viewModel.liveErrorMessages.observe(this , Observer {
+        viewModel.liveErrorMessages.observe(this , Observer { message ->
             setResult(RESULT_CANCELED , Intent().apply {
-                putExtra("payment_error" , "api_fails")
+                viewModel.livePaymentLink.value?.let {
+                    putExtra(PAYMENT_RESULT , it)
+                }
+                putExtra(PAYMENT_FAILURE_REASON , PAYMENT_FAILURE_REASON_API_FAILURE)
+            })
+            finish()
+        })
+        viewModel.livePaymentResults.observe(this , Observer {
+            setResult(RESULT_OK , Intent().apply {
+                putExtra(PAYMENT_STATUS , 1)
+                putExtra(PAYMENT_RESULT , it)
             })
             finish()
         })
@@ -41,17 +51,16 @@ class PaymentActivity : AppCompatActivity() {
     private fun setWebView(paymentLink: PaymentLink){
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.requestFocusFromTouch()
-        binding.webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
-        binding.webView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-        binding.webView.settings.setAppCacheEnabled(true)
+//        binding.webView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         binding.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         val webSettings: WebSettings = binding.webView.settings
         webSettings.domStorageEnabled = true
-        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
+        webSettings.databaseEnabled = true
         webSettings.useWideViewPort = true
         val url : String = "${BuildConfig.PAYMENT_URL}/payment-link/${paymentLink.gid}"
         Log.d(TAG, "setWebView: url => $url")
         binding.webView.loadUrl(url)
+        binding.webView.webChromeClient = WebChromeClient()
         binding.webView.webViewClient  = object : WebViewClient(){
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
@@ -63,11 +72,8 @@ class PaymentActivity : AppCompatActivity() {
                     // TODO Check the status here (api)
                     // val param = Uri.parse(url.toString()).getQueryParameter("zx")
                 }
-                //TODO return the result here
-                setResult(RESULT_OK , Intent().apply {
-                    putExtra("payment_status" , 1)
-                })
-                finish()
+                viewModel.checkPaymentStatus(paymentLink.gid)
+                binding.progress.visibility = View.VISIBLE
                 return true
             }
 
@@ -96,8 +102,20 @@ class PaymentActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        setResult(RESULT_CANCELED , Intent().apply {
+            putExtra(PAYMENT_FAILURE_REASON , PAYMENT_FAILURE_REASON_USER_CANCELLED)
+        })
+        finish()
+    }
+
     companion object{
         const val TAG = "sdk_test"
+        const val PAYMENT_RESULT = "payment_result"
+        const val PAYMENT_STATUS = "payment_status"
+        const val PAYMENT_FAILURE_REASON = "payment_failure_reason"
+        const val PAYMENT_FAILURE_REASON_USER_CANCELLED = "user_cancelled"
+        const val PAYMENT_FAILURE_REASON_API_FAILURE = "api_failure"
     }
 
 }

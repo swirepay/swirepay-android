@@ -1,4 +1,4 @@
-package com.swirepay.android_sdk.ui.payment_activity
+package com.swirepay.android_sdk.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
