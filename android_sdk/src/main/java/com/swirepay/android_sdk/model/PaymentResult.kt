@@ -1,5 +1,0 @@
-package com.swirepay.android_sdk.model
-
-import com.swirepay.android_sdk.SwirepaySdk
-
-class PaymentResult(val response : SwirepaySdk.PaymentStatus, var entity : PaymentLink?  = null, var reason : String = "", var message : String = "")

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swirepay.android_sdk.BuildConfig
+import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.PaymentLink
 import com.swirepay.android_sdk.model.PaymentRequest
 import com.swirepay.android_sdk.retrofit.ApiClient
@@ -16,6 +17,7 @@ class ViewModelPayment(private val amount : Int, private val currencyCode : Stri
     val livePaymentLink : MutableLiveData<PaymentLink> = MutableLiveData()
     val livePaymentResults : MutableLiveData<PaymentLink> = MutableLiveData()
     val liveErrorMessages : MutableLiveData<String> = MutableLiveData()
+
     init {
         fetchPaymentLink()
     }
@@ -23,19 +25,19 @@ class ViewModelPayment(private val amount : Int, private val currencyCode : Stri
     private fun fetchPaymentLink() = viewModelScope.launch(Dispatchers.IO){
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
         val paymentRequest = PaymentRequest("$amount" , currencyCode , listOf("CARD"))
-        val response = apiClient.fetchPaymentLink(paymentRequest , BuildConfig.X_API_KEY).execute()
+        val response = apiClient.fetchPaymentLink(paymentRequest , SwirepaySdk.apiKey!!).execute()
         if(response.isSuccessful && response.body() != null){
             val paymentLink = response.body()!!.entity
-            Log.d("sdk_test", "fetchPaymentLink: ${response.body()!!}")
+            Log.d("sdk_test", "fetchPaymentLink: ${response.body()!!.entity.gid}")
             livePaymentLink.postValue(paymentLink)
         }else{
-            val error = if (response.errorBody() == null) "Unknown" else response.errorBody().toString()
-            liveErrorMessages.postValue(error)
-            Log.d("sdk_test", "fetchPaymentLink: $error")
+            liveErrorMessages.postValue("error code : ${response.code()}")
+            Log.d("sdk_test", "fetchPaymentLink: ${response.code()}")
         }
     }
 
-    fun checkPaymentStatus(paymentLinkId : String) = viewModelScope.launch(Dispatchers.IO){
+    fun checkPaymentStatus() = viewModelScope.launch(Dispatchers.IO){
+        val paymentLinkId = livePaymentLink.value!!.gid
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
         val response = apiClient.checkStatus(paymentLinkId).execute()
         if(response.isSuccessful && response.body() != null){
@@ -43,9 +45,8 @@ class ViewModelPayment(private val amount : Int, private val currencyCode : Stri
             Log.d("sdk_test", "checking status: ${response.body()!!}")
             livePaymentResults.postValue(paymentLink)
         }else{
-            val error = if (response.errorBody() == null) "Unknown" else response.errorBody().toString()
-            liveErrorMessages.postValue(error)
-            Log.d("sdk_test", "fetchPaymentLink: $error")
+            liveErrorMessages.postValue("error code : ${response.code()}")
+            Log.d("sdk_test", "fetchPaymentLink: ${response.code()}")
         }
     }
 }

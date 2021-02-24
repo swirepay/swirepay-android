@@ -1,6 +1,6 @@
 package com.swirepay.android_sdk.model
 
-class SuccessResponse<T>(val entity: T) : BaseResponse()
+data class SuccessResponse<T>(val entity: T) : BaseResponse()
 
 class SuccessPageResponse<T>(val entity: ContentResponse<T>) : BaseResponse()
 

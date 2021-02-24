@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'maven-publish'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -15,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -28,15 +29,13 @@ android {
 
     buildTypes {
         release {
-            buildConfigField 'String', 'X_API_KEY', '"pk_test_li2QPfjrieB50vljPsuD1icPSu85eeyn"'
             buildConfigField 'String', 'BASE_URL', '"https://api.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://secure.swirepay.com"'
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
-            buildConfigField 'String', 'BASE_URL', '"https://api.swirepay.com"'
-            buildConfigField 'String', 'X_API_KEY', '"pk_test_li2QPfjrieB50vljPsuD1icPSu85eeyn"'
+            buildConfigField 'String', 'BASE_URL', '"https://staging-backend.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://secure.swirepay.com"'
         }
     }
@@ -62,6 +61,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    implementation 'com.google.dagger:dagger:2.29'
+    kapt 'com.google.dagger:dagger-compiler:2.29'
 }
 
 project.afterEvaluate {
@@ -78,11 +80,17 @@ project.afterEvaluate {
             }
         }
         publications {
-            debug(MavenPublication) {
-                from components.debug
+//            debug(MavenPublication) {
+//                from components.debug
+//                groupId = 'com.swirepay'
+//                artifactId = 'android_sdk'
+//                version = "1.0.2"
+//            }
+            release(MavenPublication) {
+                from components.release
                 groupId = 'com.swirepay'
                 artifactId = 'android_sdk'
-                version = "1.0.2"
+                version = "1.0.7"
             }
         }
     }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.swirepay.android_sdk">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <application>
-        <activity android:name=".ui.payment_activity.PaymentActivity"></activity>
+
+    <application
+        android:name=".MyApp"
+        >
+        <activity android:name=".ui.base.BaseActivity"></activity>
+        <activity android:name=".ui.subscription_button.SubscriptionButtonActivity" />
+        <activity android:name=".ui.payment_activity.PaymentActivity" />
     </application>
 
 </manifest>
