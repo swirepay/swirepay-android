@@ -3,6 +3,7 @@ package com.swirepay.android_sdk.retrofit
 import com.swirepay.android_sdk.model.PaymentLink
 import com.swirepay.android_sdk.model.PaymentRequest
 import com.swirepay.android_sdk.model.SuccessResponse
+import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.model.Plan
 import com.swirepay.android_sdk.ui.subscription_button.model.PlanRequest
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
@@ -26,4 +27,9 @@ interface ApiInterface {
 
     @GET("v1/subscription-button/{subscriptionButtonId}")
     fun getSubscriptionButton(@Path("subscriptionButtonId") subscriptionButtonId: String,  @Header("x-api-key") api_key: String) : Call<SuccessResponse<SubscriptionButton>>
+
+    @GET("v1/setup-session/{setupSessionId}")
+    fun getSetupSession(@Path("setupSessionId") setupSessionId: String,  @Header("x-api-key") api_key: String) : Call<SuccessResponse<SetupSession>>
+
+
 }

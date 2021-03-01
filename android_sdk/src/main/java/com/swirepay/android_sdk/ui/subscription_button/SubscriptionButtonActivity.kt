@@ -18,7 +18,8 @@ class SubscriptionButtonActivity : BaseActivity() {
         val billPeriod = intent.getIntExtra(SwirepaySdk.PLAN_BILLING_PERIOD , 0)
         val billFreq = intent.getStringExtra(SwirepaySdk.PLAN_BILLING_FREQ)!!
         val currencyCode = intent.getStringExtra(SwirepaySdk.PLAN_CURRENCY_CODE)!!
-        ViewModelProvider(this ,         CustomSubscriptionButtonViewModelProvider(name , amount, description, currencyCode , billFreq , billPeriod)).get(ViewModelSubscriptionButton::class.java)
+        val planStartTime = intent.getStringExtra(SwirepaySdk.PLAN_START_DATE)!!
+        ViewModelProvider(this , CustomSubscriptionButtonViewModelProvider(name , amount, description, currencyCode , billFreq , billPeriod , planStartTime)).get(ViewModelSubscriptionButton::class.java)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

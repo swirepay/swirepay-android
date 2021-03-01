@@ -11,6 +11,7 @@ import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.CurrencyType
 import com.swirepay.android_sdk.model.PaymentLink
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,17 @@ class MainActivity : AppCompatActivity() {
         val btnSubscriptionButton : Button = findViewById(R.id.btnSubscriptionButton)
         btnSubscriptionButton.setOnClickListener {
             SwirepaySdk.initSdk("sk_test_xkNDG8VLfNYEqOMVvrMho98K60NGkuyQ")
-            SwirepaySdk.createSubscriptionButton(this , "test1" , 10000 , "test description" , CurrencyType.INR , "MONTH" , 1 , REQUEST_CODE_SUBSCRIPTION_BUTTON )
+            SwirepaySdk.createSubscriptionButton(this , "test1" , 10000 , "test description" , CurrencyType.INR , "MONTH" , 1 , REQUEST_CODE_SUBSCRIPTION_BUTTON  , Calendar.getInstance().time)
+        }
+        val btnPaymentMethod : Button = findViewById(R.id.btnPaymentMethod)
+        btnPaymentMethod.setOnClickListener {
+            SwirepaySdk.initSdk("sk_test_xkNDG8VLfNYEqOMVvrMho98K60NGkuyQ")
+            SwirepaySdk.createPaymentMethod(this , REQUEST_CODE_PAYMENT_METHOD)
+        }
+        val btnCreateAccount : Button = findViewById(R.id.btnAccount)
+        btnCreateAccount.setOnClickListener {
+            SwirepaySdk.initSdk("sk_test_xkNDG8VLfNYEqOMVvrMho98K60NGkuyQ")
+            SwirepaySdk.createAccount(this , REQUEST_CODE_PAYMENT_METHOD)
         }
     }
 
@@ -37,13 +48,18 @@ class MainActivity : AppCompatActivity() {
         }else if(requestCode == REQUEST_CODE_SUBSCRIPTION_BUTTON){
             val result = SwirepaySdk.getSubscriptionButton(resultCode , data)
             Log.d("sdk_test", "onActivityResult: $result")
-            Toast.makeText(this , result.toString() , Toast.LENGTH_LONG).show()
+            Toast.makeText(this , result.entity.toString() , Toast.LENGTH_LONG).show()
+        }else if(requestCode == REQUEST_CODE_PAYMENT_METHOD){
+            val result = SwirepaySdk.getSetupSession(resultCode , data)
+            Log.d("sdk_test", "onActivityResult: $result")
+            Toast.makeText(this , result.entity.toString() , Toast.LENGTH_LONG).show()
         }
     }
 
     companion object{
         const val REQUEST_CODE = 1001
         const val REQUEST_CODE_SUBSCRIPTION_BUTTON = 1002
+        const val REQUEST_CODE_PAYMENT_METHOD = 1003
     }
 
 }
