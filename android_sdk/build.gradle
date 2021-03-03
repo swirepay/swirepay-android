@@ -70,10 +70,6 @@ project.afterEvaluate {
     publishing {
         repositories{
             maven {
-                credentials(AwsCredentials) {
-                    accessKey = "AKIA3UVB3FJZDVIABY6U"
-                    secretKey = "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"
-                }
                 name = 'myRepo'
 //                url = "s3://swirepay-maven-repo/releases"
                 url = "s3://swirepay-maven-local/releases"
