@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.webkit.*
+import android.widget.Toast
 import com.swirepay.android_sdk.databinding.ActivityPaymentBinding
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 
@@ -67,15 +68,22 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+    var backPressedTime : Long = 0
     override fun onBackPressed() {
         super.onBackPressed()
-        setResult(RESULT_CANCELED , Intent().apply {
-            putExtra(
-                PaymentActivity.FAILURE_REASON,
-                PaymentActivity.FAILURE_REASON_USER_CANCELLED
-            )
-        })
-        finish()
+        if(System.currentTimeMillis() - backPressedTime < 2000){
+            setResult(RESULT_CANCELED , Intent().apply {
+                putExtra(
+                    PaymentActivity.FAILURE_REASON,
+                    PaymentActivity.FAILURE_REASON_USER_CANCELLED
+                )
+            })
+            finish()
+        }else{
+            backPressedTime = System.currentTimeMillis()
+            Toast.makeText(this , "Click back again to exit!" , Toast.LENGTH_LONG).show()
+        }
+
     }
 
 }

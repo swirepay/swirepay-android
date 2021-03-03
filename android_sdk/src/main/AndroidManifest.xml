@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:name=".MyApp">
-        <activity android:name=".ui.create_account.CreateAccountActivity"></activity>
+    <application>
+        <activity android:name=".ui.create_account.CreateAccountActivity"/>
         <activity android:name=".ui.payment_method.PaymentMethodActivity" />
         <activity android:name=".ui.base.BaseActivity" />
         <activity android:name=".ui.subscription_button.SubscriptionButtonActivity" />

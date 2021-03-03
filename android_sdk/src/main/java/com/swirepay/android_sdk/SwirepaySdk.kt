@@ -15,12 +15,14 @@ import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivit
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 object SwirepaySdk {
     const val PLAN_START_DATE: String = "plan_start_date"
     var apiKey : String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
     const val PAYMENT_CURRENCY = "payment_currency"
+    const val PAYMENT_METHOD_TYPES = "payment_method_types"
     const val PLAN_NAME = "plan_name"
     const val PLAN_AMOUNT = "plan_amount"
     const val PLAN_DESCRIPTION = "plan_description"
@@ -34,12 +36,13 @@ object SwirepaySdk {
     //https://staging-secure.swirepay.com/connect/create?key=key
 
     @Throws(KeyNotInitializedException::class)
-    fun doPayment(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int) {
+    fun doPayment(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int , list : List<String>) {
         if(apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context , PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT , amount)
             putExtra(PAYMENT_CURRENCY , currencyCode.toString())
-        } , requestCode)
+            putStringArrayListExtra(PAYMENT_METHOD_TYPES , list  as ArrayList<String>)
+        } , 1001)
     }
 
     private fun <T : Parcelable?> getResult(resultCode : Int, data : Intent?) : Result<T> {

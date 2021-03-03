@@ -14,8 +14,9 @@ class PaymentActivity : BaseActivity() {
     val viewModel : ViewModelPayment by lazy {
         val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
         val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
+        val list = intent.getStringArrayListExtra(SwirepaySdk.PAYMENT_METHOD_TYPES)
         ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(amount ,
-            currency!!
+            currency!! , list!!
         )).get(ViewModelPayment::class.java)
     }
 
