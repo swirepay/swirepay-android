@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.swirepay.android_sdk.BuildConfig
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.ui.base.BaseActivity
@@ -18,14 +19,14 @@ class CreateAccountActivity : BaseActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadUrl("https://staging-secure.swirepay.com/connect?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
+        loadUrl("${BuildConfig.PAYMENT_URL}/connect?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
     }
 
     //SpAccountId=account-3b91b29324064f319657da8f6738bb04
     override fun onRedirect(url: String?) {
         Log.d("sdk_test", "onRedirect: $url")
         val uri = Uri.parse(url)
-        val id = uri.getQueryParameter("SpAccountId")
+        val id = uri.getQueryParameter("sp-account-id")
         if(id != null)
         {
             val intent = Intent().apply {

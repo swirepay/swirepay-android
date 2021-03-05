@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.swirepay.android_sdk.BuildConfig
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.SwirepaySdk.RESULT
 import com.swirepay.android_sdk.Utility
@@ -18,7 +19,7 @@ class PaymentMethodActivity : BaseActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadUrl("https://staging-secure.swirepay.com/setup-session?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
+        loadUrl("${BuildConfig.PAYMENT_URL}/setup-session?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
 
         viewModel.liveErrorMessages.observe(this , Observer {
             setResult(RESULT_CANCELED , Intent().apply {

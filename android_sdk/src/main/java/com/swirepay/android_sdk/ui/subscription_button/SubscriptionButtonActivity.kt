@@ -52,7 +52,7 @@ class SubscriptionButtonActivity : BaseActivity() {
     override fun onRedirect(url: String?) {
         Log.d("sdk_test", "onRedirect: $url")
         val uri = Uri.parse(url)
-        val id = uri.getQueryParameter("SpSubscriptionnbutton")
+        val id = uri.getQueryParameter("sp-subscription-button")
         if(id != null)
         viewModel.fetchSubscriptionButton(id)
         else {
