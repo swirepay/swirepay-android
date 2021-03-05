@@ -36,12 +36,12 @@ object SwirepaySdk {
     //https://staging-secure.swirepay.com/connect/create?key=key
 
     @Throws(KeyNotInitializedException::class)
-    fun doPayment(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int , list : List<String>) {
+    fun doPayment(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int , list : ArrayList<String>) {
         if(apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context , PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT , amount)
             putExtra(PAYMENT_CURRENCY , currencyCode.toString())
-            putStringArrayListExtra(PAYMENT_METHOD_TYPES , list  as ArrayList<String>)
+            putStringArrayListExtra(PAYMENT_METHOD_TYPES , list)
         } , 1001)
     }
 
