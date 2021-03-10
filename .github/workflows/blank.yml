@@ -37,11 +37,14 @@ jobs:
 #      - name: Run a multi-line script
 #        run: |
 #          echo Add other actions to build,
-#          echo test, and deploy your project.
+#          echo test, and deploy your project.'
       - name: Create Key File
         run: echo "$GPG_PRIVATE_KEY" > private.key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        
+      - name: Import GPG Key
+        run: gpg --import --batch private.key
 
       - name: Signing
         run: gradle signArchives
