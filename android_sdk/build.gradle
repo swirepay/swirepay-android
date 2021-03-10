@@ -49,21 +49,20 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.20"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
 
-    implementation 'com.google.dagger:dagger:2.29'
-    kapt 'com.google.dagger:dagger-compiler:2.29'
+    implementation 'com.google.dagger:dagger:2.33'
+    kapt 'com.google.dagger:dagger-compiler:2.33'
 }
 
 project.afterEvaluate {
@@ -91,3 +90,6 @@ project.afterEvaluate {
         }
     }
 }
+
+apply from: 'maven-push.gradle'
+//apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
