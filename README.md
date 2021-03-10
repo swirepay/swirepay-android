@@ -21,6 +21,8 @@ Table of contents
 <!--te-->
 
 ## Installation
+Our SDK is now out of open beta and available in maven central in 1-2 business days. To get the latest SDK please use the link below:
+https://drive.google.com/drive/folders/1KohA6xuzMhWkmsL0u4VN7WlBQB85hTW-?usp=sharing
 
 ### Requirements
 
