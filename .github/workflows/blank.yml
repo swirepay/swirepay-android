@@ -43,8 +43,5 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
-      - name: Import GPG Key
-         run: gpg --import --batch private.key
-
       - name: Signing
         run: gradle signArchives
