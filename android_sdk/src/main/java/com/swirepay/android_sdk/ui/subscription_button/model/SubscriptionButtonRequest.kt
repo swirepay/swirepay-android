@@ -1,7 +1,7 @@
 package com.swirepay.android_sdk.ui.subscription_button.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize

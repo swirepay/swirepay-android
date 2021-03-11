@@ -1,9 +1,7 @@
 package com.swirepay.android_sdk.ui.payment_method
 
 import android.os.Parcelable
-import com.swirepay.android_sdk.R
-import kotlinx.android.parcel.Parcelize
-import org.json.JSONArray
+import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
 
