@@ -32,14 +32,6 @@ def getSnapshotRepositoryUrl() {
             : "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
-def getRepositoryUsername() {
-    return hasProperty('MAVEN_CENTRAL_USERNAME') ? NEXUS_USERNAME : ""
-}
-
-def getRepositoryPassword() {
-    return hasProperty('MAVEN_CENTRAL_PASSWORD') ? NEXUS_PASSWORD : ''
-}
-
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -52,10 +44,10 @@ afterEvaluate { project ->
 
                 repository(
                         url: getReleaseRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                    authentication(userName: MAVEN_USER_NAME, password: MAVEN_PASSWORD)
                 }
                 snapshotRepository(url: getSnapshotRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                    authentication(userName: MAVEN_USER_NAME, password: MAVEN_PASSWORD)
                 }
 
                 pom.project {
