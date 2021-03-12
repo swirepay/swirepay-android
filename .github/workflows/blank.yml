@@ -47,7 +47,7 @@ jobs:
         run: gpg --import --batch private.key
         
       - name: export secret key ring file
-        run: gpg --export-secret-keys >~/.gnupg/secring.gpg
+        run: gpg --batch --export-secret-keys >~/.gnupg/secring.gpg
         
       - name: Signing
         run: gradle signArchives
