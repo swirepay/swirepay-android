@@ -17,37 +17,35 @@ env:
   MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
   GPG_KEYNAME: ${{ secrets.GPG_KEYNAME }}
   GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+  GNUPGHOME: /tmp/.gnupg
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-#      # Runs a single command using the runners shell
-#      - name: Run a one-line script
-#        run: echo Hello, world!
-#
-#      # Runs a set of commands using the runners shell
-#      - name: Run a multi-line script
-#        run: |
-#          echo Add other actions to build,
-#          echo test, and deploy your project.'
       - name: Create Key File
-        run: echo "$GPG_PRIVATE_KEY" > private.key
+        run: |
+          mkdir -p ${GNUPGHOME}
+          echo "$GPG_PRIVATE_KEY" > private.key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-        
+       
       - name: Import GPG Key
         run: gpg --import --batch private.key
-        
+
       - name: export secret key ring file
-        run: gpg --export-secret-keys >~/.gnupg/secring.gpg
+        run: |
+          echo -e "use-agent\npinentry-mode loopback" > ${GNUPGHOME}/gpg.conf
+          echo -e "allow-loopback-pinentry" > ${GNUPGHOME}/gpg-agent.conf
+          echo RELOADAGENT | gpg-connect-agent
+          gpg --passphrase ${GPG_PASSPHRASE} --batch --export-secret-keys > ${GNUPGHOME}/secring.gpg
         
       - name: Signing
         run: gradle signArchives
