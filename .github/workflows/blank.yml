@@ -42,15 +42,16 @@ jobs:
         run: echo "$GPG_PRIVATE_KEY" > private.key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-
+       
       - name: Import GPG Key
         run: gpg --import --batch private.key
-        
+
       - name: export secret key ring file
         run: |
-            echo $GPG_PASSPHRASE
-            gpg --passphrase '$GPG_PASSPHRASE'--pinentry-mode loopback --export-secret-keys  > ~/.gnupg/secring_test_1.gpg
-
+          echo -e "use-agent\npinentry-mode loopback" > ~/.gnupg/gpg.conf
+          echo -e "allow-loopback-pinentry" > ~/.gnupg/gpg-agent.conf
+          echo RELOADAGENT | gpg-connect-agent
+          gpg --passphrase ${GPG_PASSPHRASE} --batch --export-secret-keys > ~/.gnupg/secring.gpg
         
       - name: Signing
         run: gradle signArchives
