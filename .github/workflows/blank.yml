@@ -42,6 +42,9 @@ jobs:
         run: echo "$GPG_PRIVATE_KEY" > private.key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Import GPG Key
+        run: gpg --import --batch private.key
         
       - name: export secret key ring file
         run: gpg --passphrase '$GPG_PASSPHRASE' --pinentry-mode loopback --export-secret-keys  > ~/.gnupg/secring_test_1.gpg
