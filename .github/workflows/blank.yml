@@ -49,7 +49,7 @@ jobs:
       - name: export secret key ring file
         run: |
             echo $GPG_PASSPHRASE
-            gpg --passphrase 'GPG_PASSPHRASE'--pinentry-mode loopback --export-secret-keys  > ~/.gnupg/secring_test_1.gpg
+            gpg --passphrase '$GPG_PASSPHRASE'--pinentry-mode loopback --export-secret-keys  > ~/.gnupg/secring_test_1.gpg
 
         
       - name: Signing
