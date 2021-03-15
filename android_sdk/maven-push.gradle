@@ -27,6 +27,15 @@ def getReleaseRepositoryUrl() {
             : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
 
+def getMavenUserName() {
+    return hasProperty('MAVEN_USER_NAME') ? MAVEN_USER_NAME
+            : ""
+}
+def getMavenPassword() {
+    return hasProperty('MAVEN_PASSWORD') ? MAVEN_PASSWORD
+            : ""
+}
+
 def getSnapshotRepositoryUrl() {
     return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
             : "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -44,10 +53,10 @@ afterEvaluate { project ->
 
                 repository(
                         url: getReleaseRepositoryUrl()) {
-                    authentication(userName: MAVEN_USER_NAME, password: MAVEN_PASSWORD)
+                    authentication(userName: getMavenUserName(), password: getMavenPassword())
                 }
                 snapshotRepository(url: getSnapshotRepositoryUrl()) {
-                    authentication(userName: MAVEN_USER_NAME, password: MAVEN_PASSWORD)
+                    authentication(userName: getMavenUserName(), password: getMavenPassword())
                 }
 
                 pom.project {
