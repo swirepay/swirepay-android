@@ -6,12 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import com.swirepay.android_sdk.KeyNotInitializedException
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.CurrencyType
-import com.swirepay.android_sdk.model.PaymentLink
-import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -26,7 +22,7 @@ class MainActivity : AppCompatActivity() {
                 add("CARD")
                 add("UPI")
             }
-            SwirepaySdk.doPayment(this, 10000, CurrencyType.INR, REQUEST_CODE ,
+            SwirepaySdk.createPaymentLink(this, 10000, CurrencyType.INR, REQUEST_CODE ,
                 listOfPaymentMethods
             )
         }
@@ -40,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
         val btnCreateAccount : Button = findViewById(R.id.btnAccount)
         btnCreateAccount.setOnClickListener {
-            SwirepaySdk.createAccount(this , REQUEST_CODE_PAYMENT_METHOD)
+            SwirepaySdk.createAccount(this , REQUEST_CODE_CONNECT_ACCOUNT)
         }
     }
 
@@ -48,26 +44,31 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val resultText = findViewById<TextView>(R.id.tvResult)
         val responseText = findViewById<TextView>(R.id.tvResponse)
-        if(requestCode == REQUEST_CODE){
-            val paymentResult = SwirepaySdk.getPaymentLink(resultCode , data)
-            Log.d("sdk_test", "onActivityResult: $paymentResult")
-            resultText.text = paymentResult.entity.toString()
-            responseText.text = paymentResult.toString()
-        }else if(requestCode == REQUEST_CODE_SUBSCRIPTION_BUTTON){
-            val result = SwirepaySdk.getSubscriptionButton(resultCode , data)
-            Log.d("sdk_test", "onActivityResult: $result")
-            resultText.text = result.toString()
-            responseText.text = result.entity.toString()
-        }else if(requestCode == REQUEST_CODE_PAYMENT_METHOD){
-            val result = SwirepaySdk.getSetupSession(resultCode , data)
-            Log.d("sdk_test", "onActivityResult: $result")
-           resultText.text = result.toString()
-            responseText.text = result.entity.toString()
-        }else if (requestCode == REQUEST_CODE_CONNECT_ACCOUNT){
-            val result = SwirepaySdk.getSetupSession(resultCode , data)
-            Log.d("sdk_test", "onActivityResult: $result")
-            resultText.text = result.toString()
-            responseText.text = result.entity.toString()
+        when (requestCode) {
+            REQUEST_CODE -> {
+                val paymentResult = SwirepaySdk.getPaymentLink(resultCode , data)
+                Log.d("sdk_test", "onActivityResult: $paymentResult")
+                resultText.text = paymentResult.entity.toString()
+                responseText.text = paymentResult.toString()
+            }
+            REQUEST_CODE_SUBSCRIPTION_BUTTON -> {
+                val result = SwirepaySdk.getSubscriptionButton(resultCode , data)
+                Log.d("sdk_test", "onActivityResult: $result")
+                resultText.text = result.toString()
+                responseText.text = result.entity.toString()
+            }
+            REQUEST_CODE_PAYMENT_METHOD -> {
+                val result = SwirepaySdk.getPaymentMethod(resultCode , data)
+                Log.d("sdk_test", "onActivityResult: $result")
+                resultText.text = result.toString()
+                responseText.text = result.entity.toString()
+            }
+            REQUEST_CODE_CONNECT_ACCOUNT -> {
+                val result = SwirepaySdk.getAccount(resultCode , data)
+                Log.d("sdk_test", "onActivityResult: $result")
+                resultText.text = result.toString()
+                responseText.text = result.entity.toString()
+            }
         }
     }
 

@@ -9,9 +9,11 @@ import com.swirepay.android_sdk.model.Result
 import com.swirepay.android_sdk.model.Status
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import com.swirepay.android_sdk.ui.payment_method.PaymentMethod
 import com.swirepay.android_sdk.ui.payment_method.PaymentMethodActivity
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
+import com.swirepay.android_sdk.ui.subscription_button.model.Account
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +38,7 @@ object SwirepaySdk {
     //https://staging-secure.swirepay.com/connect/create?key=key
 
     @Throws(KeyNotInitializedException::class)
-    fun doPayment(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int , list : ArrayList<String>) {
+    fun createPaymentLink(context: Activity, amount : Int, currencyCode : CurrencyType, requestCode : Int, list : ArrayList<String>) {
         if(apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context , PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT , amount)
@@ -111,7 +113,10 @@ object SwirepaySdk {
     fun getSubscriptionButton(resultCode: Int, data: Intent?): Result<SubscriptionButton> {
         return getResult(resultCode , data)
     }
-    fun getSetupSession(resultCode: Int, data: Intent?): Result<SetupSession> {
+    fun getPaymentMethod(resultCode: Int, data: Intent?): Result<SetupSession> {
+        return getResult(resultCode , data)
+    }
+    fun getAccount(resultCode: Int, data: Intent?): Result<Account> {
         return getResult(resultCode , data)
     }
 
