@@ -10,7 +10,7 @@ data class SetupSession(val paymentMethod : PaymentMethod , val customer : Custo
 , val setupDate : Date  , val status : String , val ssClientSecret : String , val returnUrl : String , val deleted : Boolean , val confirmMethod : String) : Parcelable
 
 @Parcelize
-class PaymentMethod(
+data class PaymentMethod(
     val amountReceived: Int,
     val paymentType: PaymentType,
     val card: Card?,
@@ -18,7 +18,7 @@ class PaymentMethod(
 ) : Parcelable
 
 @Parcelize
-class Customer(
+data class Customer(
     private val createdAt: Date,
     val updatedAt: Date,
     var name: String,
@@ -34,16 +34,16 @@ class Customer(
 }
 
 @Parcelize
-class UPI(val gid: String, private val createdAt: Date, val vpa: String) : Parcelable
+data class UPI(val gid: String, private val createdAt: Date, val vpa: String) : Parcelable
 
 @Parcelize
-class PaymentType(val name: String, val category: CategoryType) : Parcelable
+data class PaymentType(val name: String, val category: String) : Parcelable
 
 @Parcelize
-class Currency(val prefix: String) : Parcelable
+data class Currency(val prefix: String) : Parcelable
 
 @Parcelize
-class Card(
+data class Card(
     val scheme: String,
     val lastFour: String,
     val expiryMonth: String,
