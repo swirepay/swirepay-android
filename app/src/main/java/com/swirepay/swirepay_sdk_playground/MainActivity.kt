@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SwirepaySdk.initSdk("sk_test_xkNDG8VLfNYEqOMVvrMho98K60NGkuyQ")
+//        SwirepaySdk.initSdk("sk_test_UbTRz1TicKMlkPjzbdH0kw7bqueHkIIv")
         setContentView(R.layout.activity_main)
         val button : Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
