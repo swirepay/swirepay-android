@@ -22,7 +22,7 @@ class PaymentMethodActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadUrl("${BuildConfig.PAYMENT_URL}/setup-session?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}&redirectUri=${Utility.baseUrl}")
+        loadUrl("${BuildConfig.PAYMENT_URL}/setup-session?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
 
         viewModel.liveErrorMessages.observe(this , Observer {
             setResult(RESULT_CANCELED , Intent().apply {
