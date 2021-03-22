@@ -32,8 +32,9 @@ class ViewModelSubscriptionButton(val name : String , val amount : Int ,
         if(response.isSuccessful && response.body() != null){
             val plan = response.body()!!.entity
             plan.let {
+                // redirectUri ="https://www.swirepay.com"
                 val subscriptionButtonRequest = SubscriptionButtonRequest(it.currency.name , it.description , plan.amount , planBillingFrequency = it.billingFrequency , planBillingPeriod = it.billingPeriod ,planGid = it.gid,
-                      planQuantity = 1 , planTotalPayments = "12" , redirectUri ="https://www.google.com" , planStartDate = planStartDate
+                      planQuantity = 1 , planTotalPayments = "12" , planStartDate = planStartDate
                     )
                 val subResponse = apiClient.createSubscriptionButton(subscriptionButtonRequest , SwirepaySdk.apiKey!!).execute()
                 if(subResponse.isSuccessful && subResponse.body() != null){

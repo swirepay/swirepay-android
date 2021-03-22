@@ -14,7 +14,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_test_your_key")
+        SwirepaySdk.initSdk("sk_test_xkNDG8VLfNYEqOMVvrMho98K60NGkuyQ")
         setContentView(R.layout.activity_main)
         val button : Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {

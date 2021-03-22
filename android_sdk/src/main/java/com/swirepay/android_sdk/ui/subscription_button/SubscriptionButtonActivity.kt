@@ -21,6 +21,9 @@ class SubscriptionButtonActivity : BaseActivity() {
         val planStartTime = intent.getStringExtra(SwirepaySdk.PLAN_START_DATE)!!
         ViewModelProvider(this , CustomSubscriptionButtonViewModelProvider(name , amount, description, currencyCode , billFreq , billPeriod , planStartTime)).get(ViewModelSubscriptionButton::class.java)
     }
+    override val param_id: String
+        get() = "sp-subscription-button"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,7 +31,7 @@ class SubscriptionButtonActivity : BaseActivity() {
             loadUrl(it.link)
         })
 
-        viewModel.liveResult.observe(this , Observer {
+        viewModel.liveResult.observe(this , {
             val intent = Intent().apply {
                 putExtra(RESULT , it)
                 putExtra(SwirepaySdk.STATUS, 1)
@@ -51,10 +54,8 @@ class SubscriptionButtonActivity : BaseActivity() {
 
     override fun onRedirect(url: String?) {
         Log.d("sdk_test", "onRedirect: $url")
-        val uri = Uri.parse(url)
-        val id = uri.getQueryParameter("sp-subscription-button")
-        if(id != null)
-        viewModel.fetchSubscriptionButton(id)
+        if(result_id.isNotEmpty())
+        viewModel.fetchSubscriptionButton(result_id)
         else {
             setResult(RESULT_CANCELED)
             finish()

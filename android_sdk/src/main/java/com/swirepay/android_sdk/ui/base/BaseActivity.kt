@@ -1,6 +1,7 @@
 package com.swirepay.android_sdk.ui.base
 
 import android.content.Intent
+import android.net.Uri
 import android.net.http.SslError
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,11 +9,14 @@ import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
+import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.databinding.ActivityPaymentBinding
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 
 abstract class BaseActivity : AppCompatActivity() {
     val binding: ActivityPaymentBinding by lazy { ActivityPaymentBinding.inflate(layoutInflater) }
+    abstract val param_id : String
+    var result_id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
         webSettings.domStorageEnabled = true
         webSettings.databaseEnabled = true
         webSettings.useWideViewPort = true
+        Log.d("sdk_test", "loadUrl: $url")
         binding.webView.loadUrl(url)
         binding.webView.webChromeClient = WebChromeClient()
         binding.webView.webViewClient = object : WebViewClient() {
@@ -38,18 +43,29 @@ abstract class BaseActivity : AppCompatActivity() {
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
-                onRedirect(request?.url.toString())
-                return true
+                val localUrl = request?.url.toString()
+                Log.d("sdk_test", "shouldOverrideUrlLoading: $localUrl")
+                val uri = request?.url
+                val id = uri?.getQueryParameter(param_id)
+                if(id != null){
+                    result_id = id
+                }
+                if(isThisFinalUrl(localUrl)){
+                    onRedirect(localUrl)
+                    return true
+                }
+
+                return super.shouldOverrideUrlLoading(view, request)
             }
 
-            override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
-            ) {
-                Log.d(PaymentActivity.TAG, "onReceivedError: ${error.toString()}")
-                super.onReceivedError(view, request, error)
-            }
+//            override fun onReceivedError(
+//                view: WebView?,
+//                request: WebResourceRequest?,
+//                error: WebResourceError?
+//            ) {
+//                Log.d(PaymentActivity.TAG, "onReceivedError: ${error.toString()}")
+//                super.onReceivedError(view, request, error)
+//            }
 
             override fun onReceivedSslError(
                 view: WebView?,
@@ -67,7 +83,15 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
     }
+    companion object{
+        fun isThisFinalUrl(url: String?) : Boolean{
+            if(url != null && url.contains(Utility.baseUrl)){
+                return true
+            }
+            return false
+        }
 
+    }
     var backPressedTime : Long = 0
     override fun onBackPressed() {
         super.onBackPressed()
