@@ -7,6 +7,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.ui.base.BaseActivity
 
 class PaymentActivity : BaseActivity() {
@@ -19,6 +20,8 @@ class PaymentActivity : BaseActivity() {
             currency!! , list!!
         )).get(ViewModelPayment::class.java)
     }
+    override val param_id: String
+        get() = "sp-payment-link"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +50,7 @@ class PaymentActivity : BaseActivity() {
     }
 
     override fun onRedirect(url: String?) {
-        Log.d(TAG, "onRedirect: ")
+        Log.d(TAG, "onRedirect: $url")
         viewModel.checkPaymentStatus()
         binding.progress.visibility = View.VISIBLE
     }
