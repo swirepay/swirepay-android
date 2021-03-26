@@ -44,7 +44,7 @@ object SwirepaySdk {
             putExtra(PAYMENT_AMOUNT , amount)
             putExtra(PAYMENT_CURRENCY , currencyCode.toString())
             putStringArrayListExtra(PAYMENT_METHOD_TYPES , list)
-        } , 1001)
+        } , requestCode)
     }
 
     private fun <T : Parcelable?> getResult(resultCode : Int, data : Intent?) : Result<T> {
