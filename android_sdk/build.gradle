@@ -82,7 +82,7 @@ project.afterEvaluate {
                 from components.release
                 groupId = 'com.swirepay'
                 artifactId = 'android_sdk'
-                version = "1.0.7"
+                version = "1.0.18"
             }
         }
     }

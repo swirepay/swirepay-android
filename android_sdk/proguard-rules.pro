@@ -21,4 +21,10 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.swirepay.android_sdk.model.** { *; }
 
+-keep class com.swirepay.android_sdk.ui.** { *; }
+
 -keep class com.swirepay.android_sdk.SwirepaySdk{ *; }
+
+-keep class com.swirepay.android_sdk.KeyNotInitializedException{ *; }
+
+

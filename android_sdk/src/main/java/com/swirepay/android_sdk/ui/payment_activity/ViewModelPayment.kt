@@ -38,6 +38,7 @@ class ViewModelPayment(private val amount : Int, private val currencyCode : Stri
 
     fun checkPaymentStatus() = viewModelScope.launch(Dispatchers.IO){
         val paymentLinkId = livePaymentLink.value!!.gid
+
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
         val response = apiClient.checkStatus(paymentLinkId).execute()
         if(response.isSuccessful && response.body() != null){
