@@ -17,7 +17,7 @@ import java.util.*
 
 class ViewModelSubscriptionButton(val name : String , val amount : Int ,
                                   val description : String , val currencyCode : String , val billingFrequency : String,
-                                  val billingPeriod : Int , val planStartDate : String) : ViewModel() {
+                                  val billingPeriod : Int , val planStartDate : String , val taxRates : List<String>? , val couponId : String? , val planQuantity : Int , val planTotalPayments : Int , ) : ViewModel() {
     val liveErrorMessages : MutableLiveData<String> = MutableLiveData()
     val liveSubscriptionButton : MutableLiveData<SubscriptionButton> = MutableLiveData()
     val liveResult : MutableLiveData<SubscriptionButton> = MutableLiveData()
@@ -34,7 +34,7 @@ class ViewModelSubscriptionButton(val name : String , val amount : Int ,
             plan.let {
                 // redirectUri ="https://www.swirepay.com"
                 val subscriptionButtonRequest = SubscriptionButtonRequest(it.currency.name , it.description , plan.amount , planBillingFrequency = it.billingFrequency , planBillingPeriod = it.billingPeriod ,planGid = it.gid,
-                      planQuantity = 1 , planTotalPayments = "12" , planStartDate = planStartDate
+                      planQuantity = planQuantity , planTotalPayments = "$planTotalPayments" , planStartDate = planStartDate , couponGid = couponId , taxRates = taxRates
                     )
                 val subResponse = apiClient.createSubscriptionButton(subscriptionButtonRequest , SwirepaySdk.apiKey!!).execute()
                 if(subResponse.isSuccessful && subResponse.body() != null){

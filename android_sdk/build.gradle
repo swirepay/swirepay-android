@@ -56,10 +56,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-
-    implementation 'com.google.dagger:dagger:2.33'
-    kapt 'com.google.dagger:dagger-compiler:2.33'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
 
 project.afterEvaluate {
@@ -82,7 +80,7 @@ project.afterEvaluate {
                 from components.release
                 groupId = 'com.swirepay'
                 artifactId = 'android_sdk'
-                version = "1.0.18"
+                version = "1.0.8"
             }
         }
     }

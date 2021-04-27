@@ -19,7 +19,11 @@ class SubscriptionButtonActivity : BaseActivity() {
         val billFreq = intent.getStringExtra(SwirepaySdk.PLAN_BILLING_FREQ)!!
         val currencyCode = intent.getStringExtra(SwirepaySdk.PLAN_CURRENCY_CODE)!!
         val planStartTime = intent.getStringExtra(SwirepaySdk.PLAN_START_DATE)!!
-        ViewModelProvider(this , CustomSubscriptionButtonViewModelProvider(name , amount, description, currencyCode , billFreq , billPeriod , planStartTime)).get(ViewModelSubscriptionButton::class.java)
+        val couponId = intent.getStringExtra(SwirepaySdk.PLAN_COUPON_ID)
+        val taxRates = intent.getStringArrayListExtra(SwirepaySdk.PLAN_TAX_IDS)
+        val totalCount = intent.getIntExtra(SwirepaySdk.PLAN_TOTAL_COUNT , 0 )
+        val planQuantity = intent.getIntExtra(SwirepaySdk.PLAN_QUANTITY , 0 )
+        ViewModelProvider(this , CustomSubscriptionButtonViewModelProvider(name , amount, description, currencyCode , billFreq , billPeriod , planStartTime  , taxRates , couponId , totalCount , planQuantity)).get(ViewModelSubscriptionButton::class.java)
     }
     override val param_id: String
         get() = "sp-subscription-button"
