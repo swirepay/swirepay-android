@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_secret_key")
+        SwirepaySdk.initSdk("sk_test_usHJH0zw6UAjcuSTX9yjmM0RZbdgavqN")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             }
             SwirepaySdk.createPaymentLink(
                 this, 10000, CurrencyType.INR, REQUEST_CODE,
-                listOfPaymentMethods
+                listOfPaymentMethods , email = "testaccountowner-stag+457@swirepay.com" , phoneNo = "+919159620464" , notificationType = NotificationType.SMS , name = "test name"
             )
         }
         val btnSubscriptionButton: Button = findViewById(R.id.btnSubscriptionButton)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 "MONTH",
                 1,
                 REQUEST_CODE_SUBSCRIPTION_BUTTON,
-                time.time, couponId, listTaxRates, 1, 12
+                time.time, couponId, listTaxRates, 2, 12
             )
         }
         val btnPaymentMethod: Button = findViewById(R.id.btnPaymentMethod)

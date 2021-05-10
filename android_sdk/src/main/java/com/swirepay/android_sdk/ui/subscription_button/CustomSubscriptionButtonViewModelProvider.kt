@@ -20,7 +20,7 @@ class CustomSubscriptionButtonViewModelProvider(
             currencyCode,
             billingFrequency,
             billingPeriod,
-            planStartDate, listOfTaxIds , couponId , totalCount , planQuantity
+            planStartDate, listOfTaxIds , couponId  , planQuantity  ,totalCount
         ) as T
     }
 

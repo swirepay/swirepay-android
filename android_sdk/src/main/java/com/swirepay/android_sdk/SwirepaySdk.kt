@@ -18,6 +18,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 object SwirepaySdk {
+    const val PAYMENT_NAME: String = "payment_name"
+    const val PAYMENT_EMAIL: String = "payment_email"
+    const val PAYMENT_PHONE_NO: String = "payment_phone_number"
     const val PLAN_START_DATE: String = "plan_start_date"
     var apiKey: String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
@@ -46,13 +49,17 @@ object SwirepaySdk {
         amount: Int,
         currencyCode: CurrencyType,
         requestCode: Int,
-        list: ArrayList<PaymentMethodType>
+        list: ArrayList<PaymentMethodType> , email : String , phoneNo : String , notificationType: NotificationType , name: String
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT, amount)
             putExtra(PAYMENT_CURRENCY, currencyCode.toString())
             putExtra(PAYMENT_METHOD_TYPES, list)
+            putExtra(PAYMENT_EMAIL, email)
+            putExtra(PAYMENT_PHONE_NO, phoneNo)
+            putExtra(PAYMENT_NAME, name)
+            putExtra(NOTIFICATION_TYPE, notificationType.toString())
         }, requestCode)
     }
 
