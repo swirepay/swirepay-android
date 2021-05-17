@@ -48,4 +48,4 @@ jobs:
           gpg --passphrase ${GPG_PASSPHRASE} --batch --export-secret-keys > ${GNUPGHOME}/secring.gpg
         
       - name: Upload
-        run: gradle uploadArchives -Psigning.keyId=${GPG_KEYNAME} -Psigning.password=${GPG_PASSPHRASE} -PMAVEN_USER_NAME=${MAVEN_CENTRAL_USERNAME} -PMAVEN_PASSWORD=${MAVEN_CENTRAL_PASSWORD}
+        run: gradlew uploadArchives -Psigning.keyId=${GPG_KEYNAME} -Psigning.password=${GPG_PASSPHRASE} -PMAVEN_USER_NAME=${MAVEN_CENTRAL_USERNAME} -PMAVEN_PASSWORD=${MAVEN_CENTRAL_PASSWORD}
