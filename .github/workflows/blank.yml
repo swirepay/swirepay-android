@@ -49,5 +49,5 @@ jobs:
           
       - uses: eskatos/gradle-command-action@v1
         with:
-          gradle-version: wrapper
+          gradle-version: 6.8.1
           arguments: uploadArchives -Psigning.keyId=${GPG_KEYNAME} -Psigning.password=${GPG_PASSPHRASE} -PMAVEN_USER_NAME=${MAVEN_CENTRAL_USERNAME} -PMAVEN_PASSWORD=${MAVEN_CENTRAL_PASSWORD} 
