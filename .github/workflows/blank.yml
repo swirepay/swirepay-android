@@ -29,8 +29,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          gradle-version: 6.8.1
 
       - name: Create Key File
         run: |
@@ -48,6 +46,9 @@ jobs:
           echo -e "allow-loopback-pinentry" > ${GNUPGHOME}/gpg-agent.conf
           echo RELOADAGENT | gpg-connect-agent
           gpg --passphrase ${GPG_PASSPHRASE} --batch --export-secret-keys > ${GNUPGHOME}/secring.gpg
-        
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: 6.8.1
       - name: Upload
         run: gradle uploadArchives -Psigning.keyId=${GPG_KEYNAME} -Psigning.password=${GPG_PASSPHRASE} -PMAVEN_USER_NAME=${MAVEN_CENTRAL_USERNAME} -PMAVEN_PASSWORD=${MAVEN_CENTRAL_PASSWORD}
+ 
