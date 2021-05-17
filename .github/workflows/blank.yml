@@ -46,6 +46,7 @@ jobs:
           echo -e "allow-loopback-pinentry" > ${GNUPGHOME}/gpg-agent.conf
           echo RELOADAGENT | gpg-connect-agent
           gpg --passphrase ${GPG_PASSPHRASE} --batch --export-secret-keys > ${GNUPGHOME}/secring.gpg
-          
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
       - name: upload
         run: ./gradlew uploadArchives -Psigning.keyId=${GPG_KEYNAME} -Psigning.password=${GPG_PASSPHRASE} -PMAVEN_USER_NAME=${MAVEN_CENTRAL_USERNAME} -PMAVEN_PASSWORD=${MAVEN_CENTRAL_PASSWORD} 
