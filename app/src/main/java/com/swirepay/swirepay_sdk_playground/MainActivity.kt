@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_test_usHJH0zw6UAjcuSTX9yjmM0RZbdgavqN")
+        SwirepaySdk.initSdk("sk_key")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
@@ -33,16 +33,16 @@ class MainActivity : AppCompatActivity() {
             val couponId = null
 //            val couponId = "coupon-4c4c5e149c884a0daff87f4c4407b95d"
             val listTaxRates = ArrayList<String>().apply {
-                add("taxrates-05bd9db4868d4bd590505d89d1433a07")
+//                add("taxrates-05bd9db4868d4bd590505d89d1433a07")
             }
             val time = Calendar.getInstance()
             time.add(Calendar.DATE, 1)
             SwirepaySdk.createSubscriptionButton(
                 this,
-                "test1",
-                100000,
-                "test description",
-                CurrencyType.INR,
+                "test3",
+                2000,
+                "test desc 1",
+                CurrencyType.USD,
                 "MONTH",
                 1,
                 REQUEST_CODE_SUBSCRIPTION_BUTTON,
