@@ -26,15 +26,17 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun onRedirect(url : String?)
 
     fun loadUrl(url : String) {
+        binding.webView.clearCache(true)
+        binding.webView.clearHistory()
         binding.progress.visibility = View.GONE
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.requestFocusFromTouch()
-//        binding.webView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         binding.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         val webSettings: WebSettings = binding.webView.settings
         webSettings.domStorageEnabled = true
         webSettings.databaseEnabled = true
         webSettings.useWideViewPort = true
+        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
         Log.d("sdk_test", "loadUrl: $url")
         binding.webView.loadUrl(url)
         binding.webView.webChromeClient = WebChromeClient()
@@ -56,6 +58,15 @@ abstract class BaseActivity : AppCompatActivity() {
                 }
 
                 return super.shouldOverrideUrlLoading(view, request)
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                Log.d(PaymentActivity.TAG, "onReceivedError: $error")
             }
 
 //            override fun onReceivedError(

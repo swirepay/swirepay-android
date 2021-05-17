@@ -13,7 +13,8 @@ import com.swirepay.android_sdk.retrofit.ApiInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ViewModelPayment(private val amount : Int, private val currencyCode : String , val paymentMethods : List<String> ) : ViewModel(){
+class ViewModelPayment(private val amount : Int, private val currencyCode : String , val paymentMethods : List<String> , val email : String , val phoneNumber : String ,
+                       val notificationType : String  , val paymentName : String) : ViewModel(){
     val livePaymentLink : MutableLiveData<PaymentLink> = MutableLiveData()
     val livePaymentResults : MutableLiveData<PaymentLink> = MutableLiveData()
     val liveErrorMessages : MutableLiveData<String> = MutableLiveData()
@@ -24,7 +25,7 @@ class ViewModelPayment(private val amount : Int, private val currencyCode : Stri
 
     private fun fetchPaymentLink() = viewModelScope.launch(Dispatchers.IO){
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
-        val paymentRequest = PaymentRequest("$amount" , currencyCode , paymentMethods)
+        val paymentRequest = PaymentRequest("$amount" , currencyCode , paymentMethods , phoneNumber = phoneNumber , email =  email , notificationType = notificationType , name = paymentName)
         val response = apiClient.fetchPaymentLink(paymentRequest , SwirepaySdk.apiKey!!).execute()
         if(response.isSuccessful && response.body() != null){
             val paymentLink = response.body()!!.entity

@@ -15,9 +15,13 @@ class PaymentActivity : BaseActivity() {
     val viewModel : ViewModelPayment by lazy {
         val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
         val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
+        val email = intent.getStringExtra(SwirepaySdk.PAYMENT_EMAIL)
+        val name = intent.getStringExtra(SwirepaySdk.PAYMENT_NAME)
+        val phoneNo = intent.getStringExtra(SwirepaySdk.PAYMENT_PHONE_NO)
+        val notificationType = intent.getStringExtra(SwirepaySdk.NOTIFICATION_TYPE)
         val list = intent.getStringArrayListExtra(SwirepaySdk.PAYMENT_METHOD_TYPES)
         ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(amount ,
-            currency!! , list!!
+            currency!! , list!! , email = email!!, phoneNumber = phoneNo!! , notificationType = notificationType!! , name = name!!
         )).get(ViewModelPayment::class.java)
     }
     override val param_id: String
@@ -29,6 +33,7 @@ class PaymentActivity : BaseActivity() {
             loadUrl(it.link)
             Log.d(TAG, "onCreate: ${it.link}")
             binding.progress.visibility = View.GONE
+
         })
         viewModel.liveErrorMessages.observe(this , Observer { message ->
             setResult(RESULT_CANCELED , Intent().apply {
