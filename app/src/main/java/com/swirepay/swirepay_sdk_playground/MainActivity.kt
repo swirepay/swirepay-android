@@ -10,24 +10,45 @@ import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.CurrencyType
 import com.swirepay.android_sdk.model.NotificationType
 import com.swirepay.android_sdk.model.PaymentMethodType
+import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_key")
+        SwirepaySdk.initSdk("sk_live_dk52KE0juj272uX28s8mPvC3e9U6MnxK")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
             val listOfPaymentMethods = ArrayList<PaymentMethodType>().apply {
                 add(PaymentMethodType.CARD)
             }
+
+            val customer = CustomerModel(
+                "testaccountowner-stag+395@swirepay.com",
+                "testaccountowner",
+                "+1312284912840",
+                "NONE",
+                "exempt",
+                null
+            )
+
+            val customerGid = ""
+//            val customerGid = "customer-69765996f1ed43c584c86b6f2223c4f5"
+
             SwirepaySdk.createPaymentLink(
-                this, 10000, CurrencyType.INR, REQUEST_CODE,
-                listOfPaymentMethods , email = "testaccountowner-stag+457@swirepay.com" , phoneNo = "+919159620464" , notificationType = NotificationType.SMS , name = "test name"
+                this,
+                100,
+                CurrencyType.USD,
+                REQUEST_CODE,
+                customer,
+                listOfPaymentMethods,
+                notificationType = NotificationType.SMS,
+                customerGid,
             )
         }
+
         val btnSubscriptionButton: Button = findViewById(R.id.btnSubscriptionButton)
         btnSubscriptionButton.setOnClickListener {
             val couponId = null

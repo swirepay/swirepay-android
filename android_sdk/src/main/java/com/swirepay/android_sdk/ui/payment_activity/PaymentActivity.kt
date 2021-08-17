@@ -7,21 +7,24 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.SwirepaySdk
-import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.ui.base.BaseActivity
+import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 
 class PaymentActivity : BaseActivity() {
 
     val viewModel : ViewModelPayment by lazy {
         val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
         val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
-        val email = intent.getStringExtra(SwirepaySdk.PAYMENT_EMAIL)
-        val name = intent.getStringExtra(SwirepaySdk.PAYMENT_NAME)
-        val phoneNo = intent.getStringExtra(SwirepaySdk.PAYMENT_PHONE_NO)
+//        val email = intent.getStringExtra(SwirepaySdk.PAYMENT_EMAIL)
+//        val name = intent.getStringExtra(SwirepaySdk.PAYMENT_NAME)
+//        val phoneNo = intent.getStringExtra(SwirepaySdk.PAYMENT_PHONE_NO)
+        val customer = intent.getParcelableExtra<CustomerModel>(SwirepaySdk.PAYMENT_CUSTOMER)
         val notificationType = intent.getStringExtra(SwirepaySdk.NOTIFICATION_TYPE)
+        val customerGid = intent.getStringExtra(SwirepaySdk.PAYMENT_CUSTOMER_GID)
         val list = intent.getStringArrayListExtra(SwirepaySdk.PAYMENT_METHOD_TYPES)
         ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(amount ,
-            currency!! , list!! , email = email!!, phoneNumber = phoneNo!! , notificationType = notificationType!! , name = name!!
+            currency!! , list!! , customer as CustomerModel, notificationType = notificationType!!,
+            customerGid
         )).get(ViewModelPayment::class.java)
     }
     override val param_id: String

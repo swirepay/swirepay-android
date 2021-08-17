@@ -6,6 +6,7 @@ import android.os.Parcelable
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 import com.swirepay.android_sdk.ui.payment_button.PaymentButtonActivity
 import com.swirepay.android_sdk.ui.payment_method.PaymentMethod
 import com.swirepay.android_sdk.ui.payment_method.PaymentMethodActivity
@@ -25,6 +26,8 @@ object SwirepaySdk {
     var apiKey: String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
     const val PAYMENT_CURRENCY = "payment_currency"
+    const val PAYMENT_CUSTOMER = "payment_customer"
+    const val PAYMENT_CUSTOMER_GID = "payment_customer_gid"
     const val PAYMENT_METHOD_TYPES = "payment_method_types"
     const val PLAN_NAME = "plan_name"
     const val PLAN_AMOUNT = "plan_amount"
@@ -49,16 +52,20 @@ object SwirepaySdk {
         amount: Int,
         currencyCode: CurrencyType,
         requestCode: Int,
-        list: ArrayList<PaymentMethodType> , email : String , phoneNo : String , notificationType: NotificationType , name: String
+        customer: CustomerModel,
+        list: ArrayList<PaymentMethodType>, notificationType: NotificationType,
+        customerGid: String
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT, amount)
             putExtra(PAYMENT_CURRENCY, currencyCode.toString())
             putExtra(PAYMENT_METHOD_TYPES, list)
-            putExtra(PAYMENT_EMAIL, email)
-            putExtra(PAYMENT_PHONE_NO, phoneNo)
-            putExtra(PAYMENT_NAME, name)
+//            putExtra(PAYMENT_EMAIL, email)
+//            putExtra(PAYMENT_PHONE_NO, phoneNo)
+//            putExtra(PAYMENT_NAME, name)
+            putExtra(PAYMENT_CUSTOMER, customer)
+            putExtra(PAYMENT_CUSTOMER_GID, customerGid)
             putExtra(NOTIFICATION_TYPE, notificationType.toString())
         }, requestCode)
     }
