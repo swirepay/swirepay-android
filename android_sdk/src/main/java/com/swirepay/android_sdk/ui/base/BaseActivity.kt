@@ -15,7 +15,7 @@ import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 
 abstract class BaseActivity : AppCompatActivity() {
     val binding: ActivityPaymentBinding by lazy { ActivityPaymentBinding.inflate(layoutInflater) }
-    abstract val param_id : String
+    abstract val param_id: String
     var result_id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,12 +23,12 @@ abstract class BaseActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    abstract fun onRedirect(url : String?)
+    abstract fun onRedirect(url: String?)
 
-    fun loadUrl(url : String) {
+    fun loadUrl(url: String) {
         binding.webView.clearCache(true)
         binding.webView.clearHistory()
-        binding.progress.visibility = View.GONE
+        binding.progress.visibility = View.VISIBLE
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.requestFocusFromTouch()
         binding.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
@@ -49,10 +49,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 Log.d("sdk_test", "shouldOverrideUrlLoading: $localUrl")
                 val uri = request?.url
                 val id = uri?.getQueryParameter(param_id)
-                if(id != null){
+                if (id != null) {
                     result_id = id
                 }
-                if(isThisFinalUrl(localUrl)){
+                if (isThisFinalUrl(localUrl)) {
                     onRedirect(localUrl)
                     return true
                 }
@@ -89,34 +89,37 @@ abstract class BaseActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                binding.progress.visibility = View.GONE
                 Log.d(PaymentActivity.TAG, "onPageFinished: ")
             }
         }
 
     }
-    companion object{
-        fun isThisFinalUrl(url: String?) : Boolean{
-            if(url != null && url.contains(Utility.baseUrl)){
+
+    companion object {
+        fun isThisFinalUrl(url: String?): Boolean {
+            if (url != null && url.contains(Utility.baseUrl)) {
                 return true
             }
             return false
         }
 
     }
-    var backPressedTime : Long = 0
+
+    var backPressedTime: Long = 0
     override fun onBackPressed() {
         super.onBackPressed()
-        if(System.currentTimeMillis() - backPressedTime < 2000){
-            setResult(RESULT_CANCELED , Intent().apply {
+        if (System.currentTimeMillis() - backPressedTime < 2000) {
+            setResult(RESULT_CANCELED, Intent().apply {
                 putExtra(
                     PaymentActivity.FAILURE_REASON,
                     PaymentActivity.FAILURE_REASON_USER_CANCELLED
                 )
             })
             finish()
-        }else{
+        } else {
             backPressedTime = System.currentTimeMillis()
-            Toast.makeText(this , "Click back again to exit!" , Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Click back again to exit!", Toast.LENGTH_LONG).show()
         }
 
     }

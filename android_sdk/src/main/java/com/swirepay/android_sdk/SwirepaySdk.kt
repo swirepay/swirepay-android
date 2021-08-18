@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Parcelable
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
+import com.swirepay.android_sdk.ui.invoice.InvoiceActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 import com.swirepay.android_sdk.ui.payment_button.PaymentButtonActivity
-import com.swirepay.android_sdk.ui.payment_method.PaymentMethod
 import com.swirepay.android_sdk.ui.payment_method.PaymentMethodActivity
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
@@ -49,7 +49,11 @@ object SwirepaySdk {
         amount: Int,
         currencyCode: CurrencyType,
         requestCode: Int,
-        list: ArrayList<PaymentMethodType> , email : String , phoneNo : String , notificationType: NotificationType , name: String
+        list: ArrayList<PaymentMethodType>,
+        email: String,
+        phoneNo: String,
+        notificationType: NotificationType,
+        name: String
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
@@ -104,8 +108,8 @@ object SwirepaySdk {
         billingPeriod: Int,
         requestCode: Int,
         planStartTime: Date,
-        couponId : String? = null,
-        listOfTaxIds : ArrayList<String>? = null , planQuantiity : Int ,  totalCount : Int
+        couponId: String? = null,
+        listOfTaxIds: ArrayList<String>? = null, planQuantiity: Int, totalCount: Int
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         //"2021-02-24T18:30:00"
@@ -121,9 +125,9 @@ object SwirepaySdk {
                 putExtra(PLAN_BILLING_FREQ, billingFrequency)
                 putExtra(PLAN_BILLING_PERIOD, billingPeriod)
                 putExtra(PLAN_CURRENCY_CODE, currencyCode.toString())
-                if(couponId != null)
-                    putExtra(PLAN_COUPON_ID , couponId )
-                if(listOfTaxIds != null) {
+                if (couponId != null)
+                    putExtra(PLAN_COUPON_ID, couponId)
+                if (listOfTaxIds != null) {
                     putStringArrayListExtra(
                         PLAN_TAX_IDS,
                         listOfTaxIds
@@ -150,6 +154,55 @@ object SwirepaySdk {
         }, requestCode)
     }
 
+    @Throws(KeyNotInitializedException::class)
+    fun createInvoice(
+        context: Activity, requestCode: Int,
+        currencyCode: CurrencyType,
+        customerGid: String,
+        couponGid: String,
+        daysUntilDue: String,
+        paymentDueDate: String,
+        issueDate: String,
+        amount: Int,
+        status: String,
+        description: String,
+        taxRates: ArrayList<String>,
+        customerNote: String,
+        billingAddress: String?,
+        shippingAddress: String?,
+        subscriptionGid: String?,
+        invoiceNumber: String?,
+        invoiceLineItems: ArrayList<InvoiceLineItems>,
+        invoiceLineItemDtos: ArrayList<InvoiceLineItemDtos>
+    ) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        val invoiceRequest = InvoiceRequest(
+            currencyCode.toString(),
+            customerGid,
+            couponGid,
+            daysUntilDue,
+            paymentDueDate,
+            issueDate,
+            amount,
+            status,
+            description,
+            taxRates,
+            customerNote,
+            billingAddress,
+            shippingAddress,
+            subscriptionGid,
+            invoiceNumber,
+            invoiceLineItems,
+            invoiceLineItemDtos
+        )
+
+        context.startActivityForResult(Intent(context, InvoiceActivity::class.java).apply {
+            putExtra(InvoiceActivity.INVOICE_REQUEST, invoiceRequest)
+        }, requestCode)
+    }
+
     fun getPaymentLink(resultCode: Int, data: Intent?): Result<PaymentLink> {
         return getResult(resultCode, data)
     }
@@ -167,6 +220,10 @@ object SwirepaySdk {
     }
 
     fun getPaymentButton(resultCode: Int, data: Intent?): Result<PaymentButton> {
+        return getResult(resultCode, data)
+    }
+
+    fun getInvoice(resultCode: Int, data: Intent?): Result<PaymentButton> {
         return getResult(resultCode, data)
     }
 
@@ -196,5 +253,4 @@ object SwirepaySdk {
             putExtra(PaymentButtonActivity.PAYMENT_BUTTON_REQUEST, paymentButtonRequest)
         }, requestCode)
     }
-
 }

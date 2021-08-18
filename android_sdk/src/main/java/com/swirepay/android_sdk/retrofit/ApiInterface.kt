@@ -1,6 +1,5 @@
 package com.swirepay.android_sdk.retrofit
 
-import com.google.gson.JsonElement
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.model.Plan
@@ -9,7 +8,6 @@ import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButtonRequest
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.HashMap
 
 interface ApiInterface {
 
@@ -57,4 +55,12 @@ interface ApiInterface {
     @GET("v1/payment-button/{paymentButtonId}")
     fun getPaymentButton(@Path("paymentButtonId") paymentButtonId: String ,@Header("x-api-key") apiKey : String): Call<SuccessResponse<PaymentButton>>
 
+    @POST("v1/invoice")
+    fun fetchInvoiceLink(
+        @Body invoiceRequest:InvoiceRequest,
+        @Header("x-api-key") api_key: String
+    ): Call<SuccessResponse<InvoiceResponse>>
+
+    @GET("v1/invoice-link/{invoiceLinkGid}")
+    fun checkInvoiceStatus(@Path("invoiceLinkGid") invoiceLinkGid: String): Call<SuccessResponse<InvoiceResponse>>
 }

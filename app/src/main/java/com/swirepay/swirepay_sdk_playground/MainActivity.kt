@@ -7,16 +7,14 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.swirepay.android_sdk.SwirepaySdk
-import com.swirepay.android_sdk.model.CurrencyType
-import com.swirepay.android_sdk.model.NotificationType
-import com.swirepay.android_sdk.model.PaymentMethodType
+import com.swirepay.android_sdk.model.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_key")
+        SwirepaySdk.initSdk("sk_live_dk52KE0juj272uX28s8mPvC3e9U6MnxK")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
@@ -24,8 +22,15 @@ class MainActivity : AppCompatActivity() {
                 add(PaymentMethodType.CARD)
             }
             SwirepaySdk.createPaymentLink(
-                this, 10000, CurrencyType.INR, REQUEST_CODE,
-                listOfPaymentMethods , email = "testaccountowner-stag+457@swirepay.com" , phoneNo = "+919159620464" , notificationType = NotificationType.SMS , name = "test name"
+                this,
+                10000,
+                CurrencyType.INR,
+                REQUEST_CODE,
+                listOfPaymentMethods,
+                email = "testaccountowner-stag+457@swirepay.com",
+                phoneNo = "+919159620464",
+                notificationType = NotificationType.SMS,
+                name = "test name"
             )
         }
         val btnSubscriptionButton: Button = findViewById(R.id.btnSubscriptionButton)
@@ -72,6 +77,62 @@ class MainActivity : AppCompatActivity() {
                 currencyType = CurrencyType.USD
             )
         }
+
+        val btnInvoice: Button = findViewById(R.id.btnInvoice)
+        btnInvoice.setOnClickListener {
+
+            val taxRatesList = ArrayList<String>().apply {
+            }
+
+            val invoiceLineItems = InvoiceLineItems(
+                "100000",
+                "Product 2",
+                "Product 2",
+                "1",
+                "",
+                "1000.00",
+                CurrencyType.USD
+            )
+
+            val invoiceLineItemDtos = InvoiceLineItemDtos(
+                "100000",
+                "Product 2",
+                "Product 2",
+                "1",
+                "",
+                "1000.00",
+                CurrencyType.USD
+            )
+
+            val invoiceLineItemsList = ArrayList<InvoiceLineItems>().apply {
+                add(invoiceLineItems)
+            }
+
+            val invoiceLineItemDtosList = ArrayList<InvoiceLineItemDtos>().apply {
+                add(invoiceLineItemDtos)
+            }
+
+            SwirepaySdk.createInvoice(
+                this, REQUEST_CODE_INVOICE,
+                CurrencyType.USD,
+                "customer-eaa0b7bdfa28469e8ce07115899a9f0f",
+                "coupon-95eaecf56e514b3d98e59397f81d7645",
+                "3",
+                "2021-08-19T07:00:00",
+                "2021-08-18T07:00:00",
+                100000,
+                "ACTIVE",
+                "Invoice 1708",
+                taxRatesList,
+                "",
+                null,
+                null,
+                null,
+                null,
+                invoiceLineItemsList,
+                invoiceLineItemDtosList
+            )
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,6 +170,12 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = result.toString()
                 responseText.text = result.entity.toString()
             }
+            REQUEST_CODE_INVOICE -> {
+                val result = SwirepaySdk.getInvoice(resultCode, data)
+                Log.d("sdk_test", "onActivityResult: $result")
+                resultText.text = result.toString()
+                responseText.text = result.entity.toString()
+            }
         }
     }
 
@@ -118,6 +185,7 @@ class MainActivity : AppCompatActivity() {
         const val REQUEST_CODE_PAYMENT_METHOD = 1003
         const val REQUEST_CODE_CONNECT_ACCOUNT = 1004
         const val REQUEST_CODE_PAYMENT_BUTTON = 1005
+        const val REQUEST_CODE_INVOICE = 1006
     }
 
 }

@@ -11,6 +11,7 @@
         <activity android:name=".ui.base.BaseActivity" />
         <activity android:name=".ui.subscription_button.SubscriptionButtonActivity" />
         <activity android:name=".ui.payment_activity.PaymentActivity" />
+        <activity android:name=".ui.invoice.InvoiceActivity" />
     </application>
 
 </manifest>
