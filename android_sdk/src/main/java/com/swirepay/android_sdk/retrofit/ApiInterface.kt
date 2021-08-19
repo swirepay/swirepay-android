@@ -55,11 +55,6 @@ interface ApiInterface {
     @GET("v1/payment-button/{paymentButtonId}")
     fun getPaymentButton(@Path("paymentButtonId") paymentButtonId: String ,@Header("x-api-key") apiKey : String): Call<SuccessResponse<PaymentButton>>
 
-    @POST("v1/invoice")
-    fun fetchInvoiceLink(
-        @Body invoiceRequest:InvoiceRequest,
-        @Header("x-api-key") api_key: String
-    ): Call<SuccessResponse<InvoiceResponse>>
 
     @GET("v1/invoice-link/{invoiceLinkGid}")
     fun checkInvoiceStatus(@Path("invoiceLinkGid") invoiceLinkGid: String): Call<SuccessResponse<InvoiceResponse>>

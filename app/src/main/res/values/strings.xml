@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Swirepay_SDK_playground</string>
+    <string name="invoicelink_error">Input a vaild Invoice Gid</string>
 </resources>

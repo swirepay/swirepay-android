@@ -1,20 +1,25 @@
 package com.swirepay.swirepay_sdk_playground
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatEditText
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_live_dk52KE0juj272uX28s8mPvC3e9U6MnxK")
+        SwirepaySdk.initSdk("sk_key")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
@@ -78,60 +83,20 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        val etInvoiceGid: AppCompatEditText = findViewById(R.id.etInvoiceGid)
+        etInvoiceGid.setText("invoicelink-73d6383b0ea64b428f9047f43d8ad920")
+
         val btnInvoice: Button = findViewById(R.id.btnInvoice)
         btnInvoice.setOnClickListener {
 
-            val taxRatesList = ArrayList<String>().apply {
-            }
+            val invoiceGid = etInvoiceGid.text.toString()
 
-            val invoiceLineItems = InvoiceLineItems(
-                "100000",
-                "Product 2",
-                "Product 2",
-                "1",
-                "",
-                "1000.00",
-                CurrencyType.USD
-            )
-
-            val invoiceLineItemDtos = InvoiceLineItemDtos(
-                "100000",
-                "Product 2",
-                "Product 2",
-                "1",
-                "",
-                "1000.00",
-                CurrencyType.USD
-            )
-
-            val invoiceLineItemsList = ArrayList<InvoiceLineItems>().apply {
-                add(invoiceLineItems)
-            }
-
-            val invoiceLineItemDtosList = ArrayList<InvoiceLineItemDtos>().apply {
-                add(invoiceLineItemDtos)
-            }
-
-            SwirepaySdk.createInvoice(
-                this, REQUEST_CODE_INVOICE,
-                CurrencyType.USD,
-                "customer-eaa0b7bdfa28469e8ce07115899a9f0f",
-                "coupon-95eaecf56e514b3d98e59397f81d7645",
-                "3",
-                "2021-08-19T07:00:00",
-                "2021-08-18T07:00:00",
-                100000,
-                "ACTIVE",
-                "Invoice 1708",
-                taxRatesList,
-                "",
-                null,
-                null,
-                null,
-                null,
-                invoiceLineItemsList,
-                invoiceLineItemDtosList
-            )
+            if (!TextUtils.isEmpty(invoiceGid))
+                SwirepaySdk.showInvoicePayment(
+                    this, REQUEST_CODE_INVOICE, invoiceGid
+                )
+            else
+                Toast.makeText(this, R.string.invoicelink_error, Toast.LENGTH_SHORT)
         }
     }
 

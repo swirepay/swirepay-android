@@ -38,6 +38,7 @@ object SwirepaySdk {
     const val PLAN_BILLING_PERIOD = "plan_period"
     const val PAYMENT_METHOD_URL = "payment_method_url"
     const val NOTIFICATION_TYPE = "notificationType"
+    const val INVOICE_GID = "invoiceGid"
     const val RESULT = "result"
     const val STATUS = "status"
 
@@ -154,55 +155,6 @@ object SwirepaySdk {
         }, requestCode)
     }
 
-    @Throws(KeyNotInitializedException::class)
-    fun createInvoice(
-        context: Activity, requestCode: Int,
-        currencyCode: CurrencyType,
-        customerGid: String,
-        couponGid: String,
-        daysUntilDue: String,
-        paymentDueDate: String,
-        issueDate: String,
-        amount: Int,
-        status: String,
-        description: String,
-        taxRates: ArrayList<String>,
-        customerNote: String,
-        billingAddress: String?,
-        shippingAddress: String?,
-        subscriptionGid: String?,
-        invoiceNumber: String?,
-        invoiceLineItems: ArrayList<InvoiceLineItems>,
-        invoiceLineItemDtos: ArrayList<InvoiceLineItemDtos>
-    ) {
-
-        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
-
-        val invoiceRequest = InvoiceRequest(
-            currencyCode.toString(),
-            customerGid,
-            couponGid,
-            daysUntilDue,
-            paymentDueDate,
-            issueDate,
-            amount,
-            status,
-            description,
-            taxRates,
-            customerNote,
-            billingAddress,
-            shippingAddress,
-            subscriptionGid,
-            invoiceNumber,
-            invoiceLineItems,
-            invoiceLineItemDtos
-        )
-
-        context.startActivityForResult(Intent(context, InvoiceActivity::class.java).apply {
-            putExtra(InvoiceActivity.INVOICE_REQUEST, invoiceRequest)
-        }, requestCode)
-    }
-
     fun getPaymentLink(resultCode: Int, data: Intent?): Result<PaymentLink> {
         return getResult(resultCode, data)
     }
@@ -251,6 +203,16 @@ object SwirepaySdk {
         )
         context.startActivityForResult(Intent(context, PaymentButtonActivity::class.java).apply {
             putExtra(PaymentButtonActivity.PAYMENT_BUTTON_REQUEST, paymentButtonRequest)
+        }, requestCode)
+    }
+
+    @Throws(KeyNotInitializedException::class)
+    fun showInvoicePayment(context: Activity, requestCode: Int, invoiceGid: String) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        context.startActivityForResult(Intent(context, InvoiceActivity::class.java).apply {
+            putExtra(INVOICE_GID, invoiceGid)
         }, requestCode)
     }
 }
