@@ -17,7 +17,9 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SwirepaySdk.initSdk("sk_live_dk52KE0juj272uX28s8mPvC3e9U6MnxK")
+
+        //TODO: To initiate input obtained Private/Publishable key
+        SwirepaySdk.initSdk("sk_key")
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.btnPayment)
         button.setOnClickListener {
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 null
             )
 
-            val customerGid = ""
+            val customerGid = null
 //            val customerGid = "customer-69765996f1ed43c584c86b6f2223c4f5"
 
             SwirepaySdk.createPaymentLink(
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_CODE,
                 customer,
                 listOfPaymentMethods,
-                notificationType = NotificationType.SMS,
+                NotificationType.SMS,
                 customerGid,
             )
         }

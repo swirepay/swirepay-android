@@ -19,9 +19,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 object SwirepaySdk {
-    const val PAYMENT_NAME: String = "payment_name"
-    const val PAYMENT_EMAIL: String = "payment_email"
-    const val PAYMENT_PHONE_NO: String = "payment_phone_number"
+
     const val PLAN_START_DATE: String = "plan_start_date"
     var apiKey: String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
@@ -54,18 +52,16 @@ object SwirepaySdk {
         requestCode: Int,
         customer: CustomerModel,
         list: ArrayList<PaymentMethodType>, notificationType: NotificationType,
-        customerGid: String
+        customerGid: String?
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT, amount)
             putExtra(PAYMENT_CURRENCY, currencyCode.toString())
             putExtra(PAYMENT_METHOD_TYPES, list)
-//            putExtra(PAYMENT_EMAIL, email)
-//            putExtra(PAYMENT_PHONE_NO, phoneNo)
-//            putExtra(PAYMENT_NAME, name)
             putExtra(PAYMENT_CUSTOMER, customer)
-            putExtra(PAYMENT_CUSTOMER_GID, customerGid)
+            if (customerGid != null)
+                putExtra(PAYMENT_CUSTOMER_GID, customerGid)
             putExtra(NOTIFICATION_TYPE, notificationType.toString())
         }, requestCode)
     }
@@ -111,8 +107,8 @@ object SwirepaySdk {
         billingPeriod: Int,
         requestCode: Int,
         planStartTime: Date,
-        couponId : String? = null,
-        listOfTaxIds : ArrayList<String>? = null , planQuantiity : Int ,  totalCount : Int
+        couponId: String? = null,
+        listOfTaxIds: ArrayList<String>? = null, planQuantiity: Int, totalCount: Int
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         //"2021-02-24T18:30:00"
@@ -128,9 +124,9 @@ object SwirepaySdk {
                 putExtra(PLAN_BILLING_FREQ, billingFrequency)
                 putExtra(PLAN_BILLING_PERIOD, billingPeriod)
                 putExtra(PLAN_CURRENCY_CODE, currencyCode.toString())
-                if(couponId != null)
-                    putExtra(PLAN_COUPON_ID , couponId )
-                if(listOfTaxIds != null) {
+                if (couponId != null)
+                    putExtra(PLAN_COUPON_ID, couponId)
+                if (listOfTaxIds != null) {
                     putStringArrayListExtra(
                         PLAN_TAX_IDS,
                         listOfTaxIds

@@ -15,9 +15,6 @@ class PaymentActivity : BaseActivity() {
     val viewModel : ViewModelPayment by lazy {
         val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
         val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
-//        val email = intent.getStringExtra(SwirepaySdk.PAYMENT_EMAIL)
-//        val name = intent.getStringExtra(SwirepaySdk.PAYMENT_NAME)
-//        val phoneNo = intent.getStringExtra(SwirepaySdk.PAYMENT_PHONE_NO)
         val customer = intent.getParcelableExtra<CustomerModel>(SwirepaySdk.PAYMENT_CUSTOMER)
         val notificationType = intent.getStringExtra(SwirepaySdk.NOTIFICATION_TYPE)
         val customerGid = intent.getStringExtra(SwirepaySdk.PAYMENT_CUSTOMER_GID)
