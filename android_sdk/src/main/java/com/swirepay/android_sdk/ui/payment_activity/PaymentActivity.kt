@@ -7,22 +7,28 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.SwirepaySdk
-import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.ui.base.BaseActivity
+import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 
 class PaymentActivity : BaseActivity() {
 
-    val viewModel : ViewModelPayment by lazy {
-        val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT , 0)
+    val viewModel: ViewModelPayment by lazy {
+        val amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT, 0)
         val currency = intent.getStringExtra(SwirepaySdk.PAYMENT_CURRENCY)
-        val email = intent.getStringExtra(SwirepaySdk.PAYMENT_EMAIL)
-        val name = intent.getStringExtra(SwirepaySdk.PAYMENT_NAME)
-        val phoneNo = intent.getStringExtra(SwirepaySdk.PAYMENT_PHONE_NO)
+        val customer = intent.getParcelableExtra<CustomerModel>(SwirepaySdk.PAYMENT_CUSTOMER)
         val notificationType = intent.getStringExtra(SwirepaySdk.NOTIFICATION_TYPE)
+        val customerGid = intent.getStringExtra(SwirepaySdk.PAYMENT_CUSTOMER_GID)
         val list = intent.getStringArrayListExtra(SwirepaySdk.PAYMENT_METHOD_TYPES)
-        ViewModelProvider(this , CustomCustomerDetailsViewModelProvider(amount ,
-            currency!! , list!! , email = email!!, phoneNumber = phoneNo!! , notificationType = notificationType!! , name = name!!
-        )).get(ViewModelPayment::class.java)
+        ViewModelProvider(
+            this, CustomCustomerDetailsViewModelProvider(
+                amount,
+                currency!!,
+                list!!,
+                customer!!,
+                customerGid!!,
+                notificationType = notificationType!!
+            )
+        ).get(ViewModelPayment::class.java)
     }
     override val param_id: String
         get() = "sp-payment-link"
@@ -35,20 +41,20 @@ class PaymentActivity : BaseActivity() {
             binding.progress.visibility = View.GONE
 
         })
-        viewModel.liveErrorMessages.observe(this , Observer { message ->
-            setResult(RESULT_CANCELED , Intent().apply {
+        viewModel.liveErrorMessages.observe(this, Observer { message ->
+            setResult(RESULT_CANCELED, Intent().apply {
                 viewModel.livePaymentLink.value?.let {
-                    putExtra(SwirepaySdk.RESULT , it)
+                    putExtra(SwirepaySdk.RESULT, it)
                 }
-                putExtra(FAILURE_REASON , PAYMENT_FAILURE_REASON_API_FAILURE)
-                putExtra(PAYMENT_MESSAGE , message)
+                putExtra(FAILURE_REASON, PAYMENT_FAILURE_REASON_API_FAILURE)
+                putExtra(PAYMENT_MESSAGE, message)
             })
             finish()
         })
-        viewModel.livePaymentResults.observe(this , Observer {
-            setResult(RESULT_OK , Intent().apply {
+        viewModel.livePaymentResults.observe(this, Observer {
+            setResult(RESULT_OK, Intent().apply {
                 putExtra(SwirepaySdk.STATUS, 1)
-                putExtra(SwirepaySdk.RESULT , it)
+                putExtra(SwirepaySdk.RESULT, it)
             })
             finish()
         })
@@ -61,13 +67,13 @@ class PaymentActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        setResult(RESULT_CANCELED , Intent().apply {
-            putExtra(FAILURE_REASON , FAILURE_REASON_USER_CANCELLED)
+        setResult(RESULT_CANCELED, Intent().apply {
+            putExtra(FAILURE_REASON, FAILURE_REASON_USER_CANCELLED)
         })
         finish()
     }
 
-    companion object{
+    companion object {
         const val TAG = "sdk_test"
         const val PAYMENT_MESSAGE = "payment_message"
         const val FAILURE_REASON = "payment_failure_reason"
