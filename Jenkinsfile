@@ -28,7 +28,7 @@ pipeline {
           )
       ])  {
         sh("""
-          git remote add aws https://${CODECOMMIT_URL}
+          git remote add https://${GITHUB_URL}
           git checkout ${env.GIT_BRANCH}
           git remote -v
           git branch -a
