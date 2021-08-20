@@ -4,7 +4,7 @@ pipeline {
 		GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
 		SONAR_LOGIN = credentials('SONAR_LOGIN')
 		SONAR_HOST = "https://sonarqube.swirepay.com"
-		GITHUB_URL = "github.com/Abhinay-tech/abhi"
+		GITHUB_URL = "github.com/swirepay/swirepay-android"
 	}
 	options { timestamps() }
 	stages {
@@ -28,7 +28,7 @@ pipeline {
           )
       ])  {
         sh("""
-          git remote add https://${GITHUB_URL}
+          git remote add origin https://${GITHUB_URL}
           git checkout ${env.GIT_BRANCH}
           git remote -v
           git branch -a
