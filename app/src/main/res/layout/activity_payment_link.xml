@@ -41,6 +41,14 @@
         android:hint="Enter phone code (+91) "
         app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
+    <EditText
+        android:id="@+id/etDueDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select due date (optional) "
+        app:layout_constraintTop_toBottomOf="@id/etPhoneNo"
+        android:focusable="false"/>
+
     <Spinner
         android:id="@+id/spinnerNotificationType"
         android:layout_width="match_parent"
@@ -48,7 +56,7 @@
         android:layout_marginTop="5dp"
         android:entries="@array/notification_types"
         android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/etPhoneNo" />
+        app:layout_constraintTop_toBottomOf="@id/etDueDate" />
 
     <CheckBox
         android:id="@+id/cbUpi"
@@ -67,6 +75,15 @@
         android:text="CARD"
         app:layout_constraintLeft_toRightOf="@id/cbUpi"
         app:layout_constraintTop_toTopOf="@id/cbUpi" />
+
+    <CheckBox
+        android:id="@+id/cbBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="BANK"
+        app:layout_constraintLeft_toRightOf="@id/cbCard"
+        app:layout_constraintTop_toTopOf="@id/cbCard" />
 
     <Spinner
         android:id="@+id/spinnerCurrencyType"

@@ -10,7 +10,8 @@ class PaymentRequest(
     val amount: String,
     val currencyCode: String,
     val paymentMethodType: List<String>,
-    val customer: CustomerModel,
-    val customerGid: String,
+    val customer: CustomerModel?,
+    val customerGid: String?,
     val notificationType: String,
+    val dueDate: String?,
 ) : Parcelable

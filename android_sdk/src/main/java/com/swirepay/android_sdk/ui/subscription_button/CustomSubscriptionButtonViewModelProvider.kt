@@ -6,21 +6,35 @@ import com.swirepay.android_sdk.model.PaymentButtonRequest
 import com.swirepay.android_sdk.ui.payment_button.ViewModelPaymentButton
 
 class CustomSubscriptionButtonViewModelProvider(
-    val name: String, val amount: Int,
-    val description: String, val currencyCode: String, val billingFrequency: String,
-    val billingPeriod: Int, val planStartDate: String , val listOfTaxIds : List<String>? , val couponId : String? , val totalCount : Int , val planQuantity : Int
+    val name: String,
+    val planAmount: Int,
+    val description: String,
+    val currencyCode: String,
+    val planBillingFrequency: String,
+    val planBillingPeriod: Int,
+    val planStartDate: String,
+    val taxRates: List<String>?,
+    val couponId: String?,
+    val planQuantity: Int,
+    val planTotalPayments: Int,
+    val status: String?
 ) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ViewModelSubscriptionButton(
             name,
-            amount,
+            planAmount,
             description,
             currencyCode,
-            billingFrequency,
-            billingPeriod,
-            planStartDate, listOfTaxIds , couponId  , planQuantity  ,totalCount
+            planBillingFrequency,
+            planBillingPeriod,
+            planStartDate,
+            taxRates,
+            couponId,
+            planQuantity,
+            planTotalPayments,
+            status,
         ) as T
     }
 

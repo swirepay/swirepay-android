@@ -18,9 +18,10 @@ class ViewModelPayment(
     private val amount: Int,
     private val currencyCode: String,
     val paymentMethods: List<String>,
-    val customer: CustomerModel,
-    val customerGid: String,
+    val customer: CustomerModel?,
+    val customerGid: String?,
     val notificationType: String,
+    val dueDate: String?,
 ) : ViewModel() {
     val livePaymentLink: MutableLiveData<PaymentLink> = MutableLiveData()
     val livePaymentResults: MutableLiveData<PaymentLink> = MutableLiveData()
@@ -39,6 +40,7 @@ class ViewModelPayment(
             customer,
             customerGid,
             notificationType = notificationType,
+            dueDate,
         )
         val response = apiClient.fetchPaymentLink(paymentRequest, SwirepaySdk.apiKey!!).execute()
         if (response.isSuccessful && response.body() != null) {

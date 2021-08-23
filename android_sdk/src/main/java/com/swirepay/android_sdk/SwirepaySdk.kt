@@ -3,6 +3,7 @@ package com.swirepay.android_sdk
 import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
+import android.text.TextUtils
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
 import com.swirepay.android_sdk.ui.invoice.InvoiceActivity
@@ -27,6 +28,7 @@ object SwirepaySdk {
     const val PAYMENT_CUSTOMER_GID = "payment_customer_gid"
     const val PAYMENT_CURRENCY = "payment_currency"
     const val PAYMENT_METHOD_TYPES = "payment_method_types"
+    const val DUE_DATE = "due_date"
     const val PLAN_NAME = "plan_name"
     const val PLAN_AMOUNT = "plan_amount"
     const val PLAN_DESCRIPTION = "plan_description"
@@ -53,18 +55,23 @@ object SwirepaySdk {
         currencyCode: CurrencyType,
         list: ArrayList<PaymentMethodType>,
         customer: CustomerModel,
-        customerGid: String,
+        customerGid: String?,
         notificationType: NotificationType,
+        dueDate: String?,
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT, amount)
             putExtra(PAYMENT_CURRENCY, currencyCode.toString())
             putExtra(PAYMENT_METHOD_TYPES, list)
-            putExtra(PAYMENT_CUSTOMER, customer)
+            if (TextUtils.isEmpty(customerGid) || customerGid == null)
+                putExtra(PAYMENT_CUSTOMER, customer)
             if (customerGid != null)
                 putExtra(PAYMENT_CUSTOMER_GID, customerGid)
             putExtra(NOTIFICATION_TYPE, notificationType.toString())
+            if (!TextUtils.isEmpty(dueDate) || dueDate != "")
+                putExtra(DUE_DATE, dueDate)
         }, requestCode)
     }
 
@@ -101,16 +108,19 @@ object SwirepaySdk {
     @Throws(KeyNotInitializedException::class)
     fun createSubscriptionButton(
         context: Activity,
+        requestCode: Int,
         name: String,
-        amount: Int,
+        planAmount: Int,
         description: String,
         currencyCode: CurrencyType,
-        billingFrequency: String,
-        billingPeriod: Int,
-        requestCode: Int,
-        planStartTime: Date,
-        couponId: String? = null,
-        listOfTaxIds: ArrayList<String>? = null, planQuantiity: Int, totalCount: Int
+        planBillingFrequency: String,
+        planBillingPeriod: Int,
+        planStartDate: Date,
+        taxRates: List<String>?,
+        couponId: String?,
+        planQuantity: Int,
+        planTotalPayments: Int,
+        status: String,
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         //"2021-02-24T18:30:00"
@@ -121,22 +131,23 @@ object SwirepaySdk {
                 SubscriptionButtonActivity::class.java
             ).apply {
                 putExtra(PLAN_NAME, name)
-                putExtra(PLAN_AMOUNT, amount)
+                putExtra(PLAN_AMOUNT, planAmount)
                 putExtra(PLAN_DESCRIPTION, description)
-                putExtra(PLAN_BILLING_FREQ, billingFrequency)
-                putExtra(PLAN_BILLING_PERIOD, billingPeriod)
+                putExtra(PLAN_BILLING_FREQ, planBillingFrequency)
+                putExtra(PLAN_BILLING_PERIOD, planBillingPeriod)
                 putExtra(PLAN_CURRENCY_CODE, currencyCode.toString())
                 if (couponId != null)
                     putExtra(PLAN_COUPON_ID, couponId)
-                if (listOfTaxIds != null) {
+                if (taxRates != null) {
                     putStringArrayListExtra(
                         PLAN_TAX_IDS,
-                        listOfTaxIds
+                        taxRates as java.util.ArrayList<String>?
                     )
                 }
-                putExtra(PLAN_START_DATE, simpleDateFormat.format(planStartTime))
-                putExtra(PLAN_QUANTITY, planQuantiity)
-                putExtra(PLAN_TOTAL_COUNT, totalCount)
+                putExtra(PLAN_START_DATE, simpleDateFormat.format(planStartDate))
+                putExtra(PLAN_QUANTITY, planQuantity)
+                putExtra(PLAN_TOTAL_COUNT, planTotalPayments)
+                putExtra(STATUS, status)
             }, requestCode
         )
     }

@@ -19,14 +19,16 @@ class PaymentActivity : BaseActivity() {
         val notificationType = intent.getStringExtra(SwirepaySdk.NOTIFICATION_TYPE)
         val customerGid = intent.getStringExtra(SwirepaySdk.PAYMENT_CUSTOMER_GID)
         val list = intent.getStringArrayListExtra(SwirepaySdk.PAYMENT_METHOD_TYPES)
+        val dueDate = intent.getStringExtra(SwirepaySdk.DUE_DATE)
         ViewModelProvider(
             this, CustomCustomerDetailsViewModelProvider(
                 amount,
                 currency!!,
                 list!!,
-                customer!!,
-                customerGid!!,
-                notificationType = notificationType!!
+                customer,
+                customerGid,
+                notificationType = notificationType!!,
+                dueDate
             )
         ).get(ViewModelPayment::class.java)
     }
