@@ -22,7 +22,7 @@ pipeline {
 		steps {
       withCredentials([
           usernamePassword(
-              credentialsId: 'bitbucket-https',
+              credentialsId: 'github_credential',
               usernameVariable: 'GIT_USERNAME',
               passwordVariable: 'GIT_PASSWORD'
           )
