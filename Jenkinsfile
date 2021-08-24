@@ -28,7 +28,6 @@ pipeline {
           )
       ])  {
         sh("""
-          git remote add origin https://${GITHUB_URL}
           git checkout ${env.GIT_BRANCH}
           git remote -v
           git branch -a
