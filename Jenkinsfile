@@ -8,7 +8,7 @@ pipeline {
 	}
 	options { timestamps() }
 	stages {
-		stage('Bit Bucket push') {
+		stage('Github push') {
 		    when {
 			    anyOf {
 				    branch 'develop'
