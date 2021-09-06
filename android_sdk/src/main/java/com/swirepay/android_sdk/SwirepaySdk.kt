@@ -3,11 +3,13 @@ package com.swirepay.android_sdk
 import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
+import android.text.TextUtils
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
+import com.swirepay.android_sdk.ui.invoice.InvoiceActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 import com.swirepay.android_sdk.ui.payment_button.PaymentButtonActivity
-import com.swirepay.android_sdk.ui.payment_method.PaymentMethod
 import com.swirepay.android_sdk.ui.payment_method.PaymentMethodActivity
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
@@ -18,14 +20,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 object SwirepaySdk {
-    const val PAYMENT_NAME: String = "payment_name"
-    const val PAYMENT_EMAIL: String = "payment_email"
-    const val PAYMENT_PHONE_NO: String = "payment_phone_number"
+
     const val PLAN_START_DATE: String = "plan_start_date"
     var apiKey: String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
+    const val PAYMENT_CUSTOMER = "payment_customer"
+    const val PAYMENT_CUSTOMER_GID = "payment_customer_gid"
     const val PAYMENT_CURRENCY = "payment_currency"
     const val PAYMENT_METHOD_TYPES = "payment_method_types"
+    const val DUE_DATE = "due_date"
     const val PLAN_NAME = "plan_name"
     const val PLAN_AMOUNT = "plan_amount"
     const val PLAN_DESCRIPTION = "plan_description"
@@ -38,6 +41,7 @@ object SwirepaySdk {
     const val PLAN_BILLING_PERIOD = "plan_period"
     const val PAYMENT_METHOD_URL = "payment_method_url"
     const val NOTIFICATION_TYPE = "notificationType"
+    const val INVOICE_GID = "invoiceGid"
     const val RESULT = "result"
     const val STATUS = "status"
 
@@ -46,20 +50,28 @@ object SwirepaySdk {
     @Throws(KeyNotInitializedException::class)
     fun createPaymentLink(
         context: Activity,
+        requestCode: Int,
         amount: Int,
         currencyCode: CurrencyType,
-        requestCode: Int,
-        list: ArrayList<PaymentMethodType> , email : String , phoneNo : String , notificationType: NotificationType , name: String
+        list: ArrayList<PaymentMethodType>,
+        customer: CustomerModel,
+        customerGid: String?,
+        notificationType: NotificationType,
+        dueDate: String?,
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
         context.startActivityForResult(Intent(context, PaymentActivity::class.java).apply {
             putExtra(PAYMENT_AMOUNT, amount)
             putExtra(PAYMENT_CURRENCY, currencyCode.toString())
             putExtra(PAYMENT_METHOD_TYPES, list)
-            putExtra(PAYMENT_EMAIL, email)
-            putExtra(PAYMENT_PHONE_NO, phoneNo)
-            putExtra(PAYMENT_NAME, name)
+            if (TextUtils.isEmpty(customerGid) || customerGid == null)
+                putExtra(PAYMENT_CUSTOMER, customer)
+            if (customerGid != null)
+                putExtra(PAYMENT_CUSTOMER_GID, customerGid)
             putExtra(NOTIFICATION_TYPE, notificationType.toString())
+            if (!TextUtils.isEmpty(dueDate) || dueDate != "")
+                putExtra(DUE_DATE, dueDate)
         }, requestCode)
     }
 
@@ -96,16 +108,19 @@ object SwirepaySdk {
     @Throws(KeyNotInitializedException::class)
     fun createSubscriptionButton(
         context: Activity,
+        requestCode: Int,
         name: String,
-        amount: Int,
+        planAmount: Int,
         description: String,
         currencyCode: CurrencyType,
-        billingFrequency: String,
-        billingPeriod: Int,
-        requestCode: Int,
-        planStartTime: Date,
-        couponId : String? = null,
-        listOfTaxIds : ArrayList<String>? = null , planQuantiity : Int ,  totalCount : Int
+        planBillingFrequency: String,
+        planBillingPeriod: Int,
+        planStartDate: Date,
+        taxRates: List<String>?,
+        couponId: String?,
+        planQuantity: Int,
+        planTotalPayments: Int,
+        status: String,
     ) {
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
         //"2021-02-24T18:30:00"
@@ -116,22 +131,23 @@ object SwirepaySdk {
                 SubscriptionButtonActivity::class.java
             ).apply {
                 putExtra(PLAN_NAME, name)
-                putExtra(PLAN_AMOUNT, amount)
+                putExtra(PLAN_AMOUNT, planAmount)
                 putExtra(PLAN_DESCRIPTION, description)
-                putExtra(PLAN_BILLING_FREQ, billingFrequency)
-                putExtra(PLAN_BILLING_PERIOD, billingPeriod)
+                putExtra(PLAN_BILLING_FREQ, planBillingFrequency)
+                putExtra(PLAN_BILLING_PERIOD, planBillingPeriod)
                 putExtra(PLAN_CURRENCY_CODE, currencyCode.toString())
-                if(couponId != null)
-                    putExtra(PLAN_COUPON_ID , couponId )
-                if(listOfTaxIds != null) {
+                if (couponId != null)
+                    putExtra(PLAN_COUPON_ID, couponId)
+                if (taxRates != null) {
                     putStringArrayListExtra(
                         PLAN_TAX_IDS,
-                        listOfTaxIds
+                        taxRates as java.util.ArrayList<String>?
                     )
                 }
-                putExtra(PLAN_START_DATE, simpleDateFormat.format(planStartTime))
-                putExtra(PLAN_QUANTITY, planQuantiity)
-                putExtra(PLAN_TOTAL_COUNT, totalCount)
+                putExtra(PLAN_START_DATE, simpleDateFormat.format(planStartDate))
+                putExtra(PLAN_QUANTITY, planQuantity)
+                putExtra(PLAN_TOTAL_COUNT, planTotalPayments)
+                putExtra(STATUS, status)
             }, requestCode
         )
     }
@@ -170,6 +186,10 @@ object SwirepaySdk {
         return getResult(resultCode, data)
     }
 
+    fun getInvoice(resultCode: Int, data: Intent?): Result<PaymentButton> {
+        return getResult(resultCode, data)
+    }
+
     @Throws(KeyNotInitializedException::class)
     fun createPaymentButton(
         context: Activity,
@@ -197,4 +217,13 @@ object SwirepaySdk {
         }, requestCode)
     }
 
+    @Throws(KeyNotInitializedException::class)
+    fun showInvoicePayment(context: Activity, requestCode: Int, invoiceGid: String) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        context.startActivityForResult(Intent(context, InvoiceActivity::class.java).apply {
+            putExtra(INVOICE_GID, invoiceGid)
+        }, requestCode)
+    }
 }
