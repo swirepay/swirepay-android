@@ -58,33 +58,46 @@
             android:padding="10dp"
             app:layout_constraintTop_toBottomOf="@id/etPlanQuantity" />
 
-        <EditText
-            android:id="@+id/etBillingFrequency"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Billing frequency (MONTH)"
-            app:layout_constraintTop_toBottomOf="@id/spinnerCurrencyType" />
+            android:orientation="horizontal"
+            android:id="@+id/billing_frequency_lay"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencyType">
 
-        <EditText
-            android:id="@+id/etBillingPeriod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Billing period (1)"
-            app:layout_constraintTop_toBottomOf="@id/etBillingFrequency" />
+            <EditText
+                android:id="@+id/etBillingPeriod"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Enter Billing period (1)"
+                android:inputType="number" />
+
+            <Spinner
+                android:id="@+id/spinnerBillingFrequency"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:padding="10dp"
+                android:entries="@array/billing_frequency"
+                android:layout_height="wrap_content"
+                android:hint="Enter Billing frequency (MONTH)" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/etTotalCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="No of billing cycles to charge"
+            android:hint="No of billing cycles to charged"
             android:inputType="number"
-            app:layout_constraintTop_toBottomOf="@id/etBillingPeriod" />
+            app:layout_constraintTop_toBottomOf="@id/billing_frequency_lay" />
 
         <EditText
             android:id="@+id/etTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter time"
+            android:focusable="false"
+            android:hint="Enter start date"
             app:layout_constraintTop_toBottomOf="@id/etTotalCount" />
 
         <TextView

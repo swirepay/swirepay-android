@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.etInitSdk.setText("sk_live_ULODZkXBbBS9xKPGjI19fVWzenjNNq22")
+
         binding.btnInitSdk.setOnClickListener {
 
             val key = binding.etInitSdk.text.toString()
