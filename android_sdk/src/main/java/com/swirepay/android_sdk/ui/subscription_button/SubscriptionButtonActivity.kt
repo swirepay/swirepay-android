@@ -59,6 +59,12 @@ class SubscriptionButtonActivity : BaseActivity() {
             }
             setResult(RESULT_OK, intent)
             finish()
+
+            setResult(RESULT_OK, Intent().apply {
+                putExtra(SwirepaySdk.STATUS, 1)
+                putExtra(SwirepaySdk.RESULT, it)
+            })
+            finish()
         })
 
         viewModel.liveErrorMessages.observe(this, {
