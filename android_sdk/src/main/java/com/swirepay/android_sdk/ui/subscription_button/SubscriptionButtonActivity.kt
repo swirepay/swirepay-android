@@ -36,8 +36,8 @@ class SubscriptionButtonActivity : BaseActivity() {
                 planStartTime,
                 taxRates,
                 couponId,
-                totalCount,
                 planQuantity,
+                totalCount,
                 status
             )
         ).get(ViewModelSubscriptionButton::class.java)

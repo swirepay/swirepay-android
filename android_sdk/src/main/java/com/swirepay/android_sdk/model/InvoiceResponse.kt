@@ -1,6 +1,7 @@
 package com.swirepay.android_sdk.model
 
 import android.os.Parcelable
+import kotlinx.coroutines.internal.PrepareOp
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -41,7 +42,7 @@ data class Invoice(
     val billingAddress: String?,
     val shippingAddress: String?,
     val invoiceLineItems: List<InvoiceLineItems>,
-    val taxAmount: String?,
+    val taxAmount: List<TaxAmount>?,
     val total: Int,
     val discountAmount: Int,
     val shippingAmount: String?,
@@ -59,6 +60,25 @@ data class Invoice(
     val invoicePdfKey: String?,
     val currency: Currency,
     val coupon: Coupon?,
+) : Parcelable
+
+@Parcelize
+data class TaxAmount(
+    val taxRates: TaxRate,
+    val tax: Int
+) : Parcelable
+
+@Parcelize
+data class TaxRate(
+    val gid: String?,
+    val createdAt: String?,
+    val updatedAt: String?,
+    val displayName: String?,
+    val description: String?,
+    val jurisdiction: String?,
+    val percentage: Double,
+    val inclusive: Boolean,
+    val deleted: Boolean
 ) : Parcelable
 
 @Parcelize

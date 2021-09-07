@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -89,6 +90,12 @@ class SubscriptionButtonActivity : AppCompatActivity() {
             val list = ArrayList<String>()
             val couponText = binding.etCouponGid.text.toString()
             val couponId = if (couponText.isEmpty()) null else couponText
+            val totalCount = binding.etTotalCount.text.toString()
+            val description = binding.etPlanDescription.text.toString()
+            val planName = binding.etName.text.toString()
+            val planAmount = binding.etPlanAmount.text.toString()
+            val billingPeriod = binding.etBillingPeriod.text.toString()
+            val quantity = binding.etPlanQuantity.text.toString()
 
             val tax1 = binding.etTaxRate1.text.toString()
             val tax1Id = if (tax1.isEmpty()) null else tax1
@@ -112,21 +119,41 @@ class SubscriptionButtonActivity : AppCompatActivity() {
             val time = Calendar.getInstance()
             time.add(Calendar.DATE, 1)
 
+            if (TextUtils.isEmpty(planName)) {
+                Toast.makeText(this, "Plan name is mandatory", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener;
+            }
+
+            if (TextUtils.isEmpty(planAmount)) {
+                Toast.makeText(this, "Plan amount is mandatory", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener;
+            }
+
+            if (TextUtils.isEmpty(quantity)) {
+                Toast.makeText(this, "Plan quantity is mandatory", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener;
+            }
+
+            if (TextUtils.isEmpty(billingPeriod)) {
+                Toast.makeText(this, "Billing period is mandatory", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener;
+            }
+
             try {
                 SwirepaySdk.createSubscriptionButton(
                     this,
                     REQUEST_CODE_SUBSCRIPTION_BUTTON,
-                    binding.etName.text.toString(),
-                    binding.etPlanAmount.text.toString().toInt(),
-                    binding.etPlanDescription.text.toString(),
+                    planName,
+                    planAmount.toInt(),
+                    description,
                     currencyType,
                     billingFrequency,
-                    binding.etBillingPeriod.text.toString().toInt(),
+                    billingPeriod.toInt(),
                     timeFormat.parse(timeString),
                     listTaxRates,
                     couponId,
-                    binding.etPlanQuantity.text.toString().toInt(),
-                    binding.etTotalCount.text.toString().toInt(),
+                    quantity.toInt(),
+                    totalCount.toInt(),
                     "ACTIVE"
                 )
             } catch (e: KeyNotInitializedException) {
