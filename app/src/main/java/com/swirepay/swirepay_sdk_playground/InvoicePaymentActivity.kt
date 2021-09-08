@@ -12,22 +12,24 @@ import androidx.appcompat.widget.AppCompatEditText
 import com.google.android.material.snackbar.Snackbar
 import com.swirepay.android_sdk.KeyNotInitializedException
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityInvoicePaymentBinding
 
 class InvoicePaymentActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityInvoicePaymentBinding
+
     companion object {
         const val REQUEST_CODE_INVOICE = 1006
+        const val TAG = "invoice_sdk_test"
     }
-
-    private lateinit var binding: ActivityInvoicePaymentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInvoicePaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.etInvoiceGid.setText("invoicelink-73d6383b0ea64b428f9047f43d8ad920")
+        binding.etInvoiceGid.setText("invoicelink-02f9c3ade85746a28007d6fe44efdc3a")
 
         binding.btnInvoice.setOnClickListener {
 
@@ -53,7 +55,7 @@ class InvoicePaymentActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         val result = SwirepaySdk.getInvoice(resultCode, data)
-        Log.d("sdk_test", "onActivityResult: $result")
+        Log.d(TAG, "onActivityResult: $result")
         binding.tvResult.text = result.toString()
         binding.tvResponse.text = result.entity.toString()
     }

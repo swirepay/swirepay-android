@@ -36,8 +36,8 @@ class SubscriptionButtonActivity : BaseActivity() {
                 planStartTime,
                 taxRates,
                 couponId,
-                totalCount,
                 planQuantity,
+                totalCount,
                 status
             )
         ).get(ViewModelSubscriptionButton::class.java)
@@ -58,6 +58,12 @@ class SubscriptionButtonActivity : BaseActivity() {
                 putExtra(SwirepaySdk.STATUS, 1)
             }
             setResult(RESULT_OK, intent)
+            finish()
+
+            setResult(RESULT_OK, Intent().apply {
+                putExtra(SwirepaySdk.STATUS, 1)
+                putExtra(SwirepaySdk.RESULT, it)
+            })
             finish()
         })
 

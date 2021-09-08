@@ -4,12 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class InvoiceLineItems(
-    val amount: String,
-    val name: String,
-    val description: String,
-    val quantity: String,
-    val note: String,
-    val rate: String,
-    val currencyCode: CurrencyType
+data class InvoiceLineItems(
+    val amount: Int,
+    val name: String?,
+    val quantity: Int,
 ) : Parcelable

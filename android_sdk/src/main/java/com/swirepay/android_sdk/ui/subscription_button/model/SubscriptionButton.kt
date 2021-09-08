@@ -9,22 +9,28 @@ import java.util.*
 data class SubscriptionButton(
     val gid: String,
     val currency: Currency,
-    val plan: Plan, val status: String,
+    val plan: Plan,
+    val status: String,
     val link: String,
-    val account: Account ,
-    val coupon : Coupon? ,
-    val taxAmount : List<TaxInfo>
+    val account: Account,
+    val coupon: Coupon?,
+    val taxAmount: List<TaxInfo>?
 ) : Parcelable
 
 @Parcelize
-data class Account(val gid: String, val name: String, val timezone: String, val largeLogo: String) :
+data class Account(
+    val gid: String,
+    val name: String,
+    val timezone: String,
+    val largeLogo: String
+) :
     Parcelable
 
-abstract class BaseEntityResponse{
-    val gid : String = ""
-    val createdAt : String = ""
-    val updatedAt : String = ""
-    val deleted : Boolean = false
+abstract class BaseEntityResponse {
+    val gid: String = ""
+    val createdAt: String = ""
+    val updatedAt: String = ""
+    val deleted: Boolean = false
 }
 
 //"taxAmount": [
@@ -48,7 +54,7 @@ data class TaxRate(
     val displayName: String,
     val description: String, val jurisdiction: String,
     val percentage: Float, val inclusive: Boolean
-) : BaseEntityResponse() ,  Parcelable
+) : BaseEntityResponse(), Parcelable
 
 // "coupon": {
 //      "gid": "coupon-4c4c5e149c884a0daff87f4c4407b95d",
@@ -73,8 +79,16 @@ data class TaxRate(
 //    },
 
 @Parcelize
-data class TaxInfo(val taxRates : TaxRate , val tax: Int) : Parcelable
+data class TaxInfo(
+    val taxRates: TaxRate,
+    val tax: Int
+) : Parcelable
 
 @Parcelize
-data class Coupon(val validity : String , val amountOff : Int, val active : Boolean ,
-val name : String , val currency: Currency) : BaseEntityResponse() ,  Parcelable
+data class Coupon(
+    val validity: String,
+    val amountOff: Int,
+    val active: Boolean,
+    val name: String,
+    val currency: Currency
+) : BaseEntityResponse(), Parcelable

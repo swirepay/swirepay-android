@@ -11,4 +11,12 @@
         <item>SMS</item>
         <item>All</item>
     </string-array>
+
+    <string-array name="billing_frequency">
+        <item>Month</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Year</item>
+    </string-array>
+
 </resources>
