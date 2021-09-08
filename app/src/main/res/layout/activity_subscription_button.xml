@@ -112,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Coupon id"
-            android:text="coupon-7c5d5fca88a841e0806a40da70999ade"
+            android:text="coupon-95eaecf56e514b3d98e59397f81d7645"
             app:layout_constraintTop_toBottomOf="@id/tvCoupon" />
 
         <TextView
@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="tax rate id or leave empty"
-            android:text="taxrates-d5cdc35c758844518623e8a4076ad57c"
+            android:text="taxrates-8b65b57692cf4a9c94607f0c1d364c39"
             app:layout_constraintTop_toBottomOf="@id/tvTaxRate" />
 
         <EditText

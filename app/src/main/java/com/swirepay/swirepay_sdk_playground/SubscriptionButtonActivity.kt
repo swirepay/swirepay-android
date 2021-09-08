@@ -150,7 +150,7 @@ class SubscriptionButtonActivity : AppCompatActivity() {
                     billingFrequency,
                     billingPeriod.toInt(),
                     timeFormat.parse(timeString),
-                    listTaxRates,
+                    list,
                     couponId,
                     quantity.toInt(),
                     totalCount.toInt(),
