@@ -5,7 +5,7 @@ import com.swirepay.android_sdk.model.Currency
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Plan(
+data class Plan(
     val gid: String,
     val currency: Currency,
     val name: String,
