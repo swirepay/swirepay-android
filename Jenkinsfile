@@ -15,7 +15,6 @@ pipeline {
 					branch 'task/*'
           allOf {
             branch 'master'
-            triggeredBy 'user'
 				}
 			}
     }  
