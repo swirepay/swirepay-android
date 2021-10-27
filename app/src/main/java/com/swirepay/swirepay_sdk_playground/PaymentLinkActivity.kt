@@ -124,7 +124,7 @@ class PaymentLinkActivity : AppCompatActivity() {
                 customerGid = strCustomerGid;
 
             if (!TextUtils.isEmpty(strDueDate))
-                dueDate = simpleDateFormat.format(timeFormat.parse(strCustomerGid));
+                dueDate = simpleDateFormat.format(timeFormat.parse(strDueDate));
 
             val customer = CustomerModel(
                 email,

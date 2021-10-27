@@ -24,7 +24,7 @@ object ApiClient {
     }.build()
 
     val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("${BuildConfig.BASE_URL}/")
+        .baseUrl("${BuildConfig.LOCAL_URL}")
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
         .client(httpClient)
         .build()

@@ -4,7 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
 import android.text.TextUtils
+import com.google.gson.Gson
+import com.pusher.client.Pusher
+import com.pusher.client.PusherOptions
+import com.pusher.client.channel.PrivateChannelEventListener
+import com.pusher.client.channel.PusherEvent
+import com.pusher.client.util.HttpAuthorizer
+import com.swirepay.android_sdk.`interface`.IPusherCallback
 import com.swirepay.android_sdk.model.*
+import com.swirepay.android_sdk.model.pusher.AppConfig
+import com.swirepay.android_sdk.model.pusher.CipherConversion
+import com.swirepay.android_sdk.model.pusher.Request
+import com.swirepay.android_sdk.retrofit.ApiClient
+import com.swirepay.android_sdk.retrofit.ApiInterface
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
 import com.swirepay.android_sdk.ui.invoice.InvoiceActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
@@ -15,9 +27,11 @@ import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
 import com.swirepay.android_sdk.ui.subscription_button.model.Account
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 object SwirepaySdk {
 
@@ -44,6 +58,7 @@ object SwirepaySdk {
     const val INVOICE_GID = "invoiceGid"
     const val RESULT = "result"
     const val STATUS = "status"
+    const val PAYMENT_REQUEST = "payment_request"
 
     //https://staging-secure.swirepay.com/connect/create?key=key
 
@@ -225,5 +240,81 @@ object SwirepaySdk {
         context.startActivityForResult(Intent(context, InvoiceActivity::class.java).apply {
             putExtra(INVOICE_GID, invoiceGid)
         }, requestCode)
+    }
+
+    @Throws(KeyNotInitializedException::class)
+    fun sendPaymentRequest(paymentReq: PaymentRequest, callback: IPusherCallback) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+
+        apiClient.GetTerminalConfigData().enqueue(object : Callback<AppConfig> {
+            override fun onResponse(call: Call<AppConfig>, response: Response<AppConfig>) {
+
+                val appConfig = response.body()
+
+                sendRequest(paymentReq, appConfig!!, callback)
+
+            }
+
+            override fun onFailure(call: Call<AppConfig>, t: Throwable) {
+                callback.onFailure(call, t)
+            }
+        })
+    }
+
+
+    fun sendRequest(paymentReq: PaymentRequest, appConfig: AppConfig, callback: IPusherCallback) {
+
+        val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+
+        val requestStr = Gson().toJson(paymentReq)
+        val encrypted = CipherConversion.encrypt(requestStr, appConfig.posKey)
+
+        apiClient.sendPaymentRequest(Request(encrypted))
+            .enqueue(object : Callback<SuccessResponse<String>> {
+                override fun onResponse(
+                    call: Call<SuccessResponse<String>>,
+                    response: Response<SuccessResponse<String>>
+                ) {
+                    connectPusher(appConfig.appKey, response.body().toString(), callback)
+                }
+
+                override fun onFailure(call: Call<SuccessResponse<String>>, t: Throwable) {
+                    callback.onFailure(call, t)
+                }
+            })
+    }
+
+    fun connectPusher(appKey: String, channelId: String, callback: IPusherCallback) {
+
+        val authorizer = HttpAuthorizer(BuildConfig.AUTH_ENDPOINT)
+
+        val options = PusherOptions()
+            .setAuthorizer(authorizer)
+            .setHost(BuildConfig.PUSHER_URL)
+            .setWssPort(443)
+
+        var pusher = Pusher(appKey, options)
+        pusher.connect()
+
+        var channel = pusher.subscribePrivate(channelId)
+        channel.bind("client-payment_res_event", object : PrivateChannelEventListener {
+            override fun onEvent(event: PusherEvent?) {
+
+                callback.onEvent(event)
+
+            }
+
+            override fun onSubscriptionSucceeded(channelName: String?) {
+                println("subscription successful")
+                callback.onSubscriptionSucceeded(channelName)
+            }
+
+            override fun onAuthenticationFailure(message: String?, e: Exception?) {
+                callback.onAuthenticationFailure(message, e)
+            }
+        })
     }
 }

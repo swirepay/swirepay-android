@@ -39,33 +39,6 @@ class ViewModelSubscriptionButton(
 
     private fun fetchPlan() = viewModelScope.launch(Dispatchers.IO) {
 
-        /*val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
-
-        val subscriptionButtonRequest = SubscriptionButtonRequest(
-            currencyCode = currencyCode,
-            description = description,
-            planAmount = planAmount,
-            planBillingFrequency = planBillingFrequency,
-            planBillingPeriod = planBillingPeriod,
-            planGid = planGid,
-            planQuantity = planQuantity,
-            planTotalPayments = "$planTotalPayments",
-            planStartDate = planStartDate,
-            couponGid = couponId,
-            taxRates = taxRates,
-        )
-        val subResponse = apiClient.createSubscriptionButton(
-            subscriptionButtonRequest,
-            SwirepaySdk.apiKey!!
-        ).execute()
-        if (subResponse.isSuccessful && subResponse.body() != null) {
-            val subscriptionButton = subResponse.body()!!.entity
-            liveSubscriptionButton.postValue(subscriptionButton)
-        } else {
-            liveErrorMessages.postValue("error code : ${subResponse.code()}")
-            Log.d("sdk_test", "fetchPaymentLink: ${subResponse.code()}")
-        }*/
-
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
         val planRequest =
             PlanRequest(
@@ -104,13 +77,13 @@ class ViewModelSubscriptionButton(
                     liveSubscriptionButton.postValue(subscriptionButton)
                 } else {
                     liveErrorMessages.postValue("error code : ${response.code()}")
-                    Log.d("sdk_test", "fetchPaymentLink: ${response.code()}")
+                    Log.d("sdk_test", "create_plan: ${response.code()}")
                 }
             }
         } else {
             val error = if (response.errorBody() == null) "Unknown" else response.message()
             liveErrorMessages.postValue(error)
-            Log.d("sdk_test", "fetchPaymentLink: $error")
+            Log.d("sdk_test", "create_subscription: $error")
         }
     }
 
@@ -125,7 +98,7 @@ class ViewModelSubscriptionButton(
             } else {
                 val code = response.code()
                 liveErrorMessages.postValue("error code : $code")
-                Log.d("sdk_test", "fetchPaymentLink: ${response.code()}")
+                Log.d("sdk_test", "fetch_subscription: ${response.code()}")
             }
         }
 
