@@ -4,7 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application>
+    <application android:usesCleartextTraffic="true">
+        <activity
+            android:name=".pusher.PusherActivity"
+            android:exported="true" />
         <activity android:name=".ui.payment_button.PaymentButtonActivity" />
         <activity android:name=".ui.create_account.CreateAccountActivity" />
         <activity android:name=".ui.payment_method.PaymentMethodActivity" />

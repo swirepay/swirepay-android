@@ -1,5 +1,7 @@
 package com.swirepay.android_sdk.retrofit
 
+import com.swirepay.android_sdk.model.pusher.AppConfig
+import com.swirepay.android_sdk.model.pusher.Request
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.model.Plan
@@ -53,9 +55,17 @@ interface ApiInterface {
 
 
     @GET("v1/payment-button/{paymentButtonId}")
-    fun getPaymentButton(@Path("paymentButtonId") paymentButtonId: String ,@Header("x-api-key") apiKey : String): Call<SuccessResponse<PaymentButton>>
-
+    fun getPaymentButton(
+        @Path("paymentButtonId") paymentButtonId: String,
+        @Header("x-api-key") apiKey: String
+    ): Call<SuccessResponse<PaymentButton>>
 
     @GET("v1/invoice-link/{invoiceLinkGid}")
     fun checkInvoiceStatus(@Path("invoiceLinkGid") invoiceLinkGid: String): Call<SuccessResponse<InvoiceResponse>>
+
+    @GET("/v1/terminal/streams/config")
+    fun GetTerminalConfigData(): Call<AppConfig>
+
+    @POST("/v1/terminal/streams")
+    fun sendPaymentRequest(@Body request: Request): Call<SuccessResponse<String>>
 }

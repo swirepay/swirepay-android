@@ -34,6 +34,9 @@ android {
         debug{
             buildConfigField 'String', 'BASE_URL', '"https://staging-backend.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://staging-secure.swirepay.com"'
+            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.0.118:443"'
+            buildConfigField 'String', 'PUSHER_URL', '"streams.swirepay.com"'
+            buildConfigField 'String', 'AUTH_ENDPOINT' ,'"http://192.168.0.118:443/pusher/auth/private"'
         }
     }
     compileOptions {
@@ -60,6 +63,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
+    implementation 'com.pusher:pusher-java-client:2.2.6'
+
+    //FCZ2U-N3A96-E446Q-KST96-2QBDJ
 }
 
 project.afterEvaluate {
