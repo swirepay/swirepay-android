@@ -1,7 +1,6 @@
 package com.swirepay.android_sdk
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import android.text.TextUtils
@@ -11,12 +10,11 @@ import com.pusher.client.PusherOptions
 import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import com.pusher.client.util.HttpAuthorizer
-import com.swirepay.android_sdk.`interface`.IPusherCallback
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.model.pusher.AppConfig
 import com.swirepay.android_sdk.model.pusher.CipherConversion
+import com.swirepay.android_sdk.model.pusher.PaymentRequest
 import com.swirepay.android_sdk.model.pusher.Request
-import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
 import com.swirepay.android_sdk.retrofit.PusherClient
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
