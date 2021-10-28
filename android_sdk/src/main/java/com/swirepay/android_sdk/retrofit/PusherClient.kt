@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-object ApiClient {
+object PusherClient {
     private val gsonBuilder = GsonBuilder().apply {
         registerTypeAdapter(
             Date::class.java,
@@ -24,7 +24,7 @@ object ApiClient {
     }.build()
 
     val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("${BuildConfig.BASE_URL}")
+        .baseUrl("${BuildConfig.LOCAL_URL}")
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
         .client(httpClient)
         .build()

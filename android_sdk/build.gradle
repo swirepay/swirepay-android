@@ -28,6 +28,9 @@ android {
         release {
             buildConfigField 'String', 'BASE_URL', '"https://api.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://secure.swirepay.com"'
+            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.0.118:443"'
+            buildConfigField 'String', 'PUSHER_URL', '"streams.swirepay.com"'
+            buildConfigField 'String', 'AUTH_ENDPOINT' ,'"http://192.168.0.118:443/pusher/auth/private"'
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

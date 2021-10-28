@@ -1,6 +1,7 @@
 package com.swirepay.android_sdk
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import android.text.TextUtils
@@ -17,6 +18,7 @@ import com.swirepay.android_sdk.model.pusher.CipherConversion
 import com.swirepay.android_sdk.model.pusher.Request
 import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
+import com.swirepay.android_sdk.retrofit.PusherClient
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
 import com.swirepay.android_sdk.ui.invoice.InvoiceActivity
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
@@ -243,11 +245,13 @@ object SwirepaySdk {
     }
 
     @Throws(KeyNotInitializedException::class)
-    fun sendPaymentRequest(paymentReq: PaymentRequest, callback: IPusherCallback) {
+    fun sendPaymentRequest(
+        paymentReq: PaymentRequest, callback: IPusherCallback
+    ) {
 
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
 
-        val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+        val apiClient = PusherClient.retrofit.create(ApiInterface::class.java)
 
         apiClient.GetTerminalConfigData().enqueue(object : Callback<AppConfig> {
             override fun onResponse(call: Call<AppConfig>, response: Response<AppConfig>) {
@@ -265,9 +269,13 @@ object SwirepaySdk {
     }
 
 
-    fun sendRequest(paymentReq: PaymentRequest, appConfig: AppConfig, callback: IPusherCallback) {
+    fun sendRequest(
+        paymentReq: PaymentRequest,
+        appConfig: AppConfig,
+        callback: IPusherCallback
+    ) {
 
-        val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+        val apiClient = PusherClient.retrofit.create(ApiInterface::class.java)
 
         val requestStr = Gson().toJson(paymentReq)
         val encrypted = CipherConversion.encrypt(requestStr, appConfig.posKey)
@@ -287,13 +295,17 @@ object SwirepaySdk {
             })
     }
 
-    fun connectPusher(appKey: String, channelId: String, callback: IPusherCallback) {
+    fun connectPusher(
+        appKey: String,
+        channelId: String,
+        callback: IPusherCallback
+    ) {
 
-        val authorizer = HttpAuthorizer(BuildConfig.AUTH_ENDPOINT)
+        val authorizer = HttpAuthorizer("${BuildConfig.AUTH_ENDPOINT}")
 
         val options = PusherOptions()
             .setAuthorizer(authorizer)
-            .setHost(BuildConfig.PUSHER_URL)
+            .setHost("${BuildConfig.PUSHER_URL}")
             .setWssPort(443)
 
         var pusher = Pusher(appKey, options)
@@ -304,7 +316,6 @@ object SwirepaySdk {
             override fun onEvent(event: PusherEvent?) {
 
                 callback.onEvent(event)
-
             }
 
             override fun onSubscriptionSucceeded(channelName: String?) {
