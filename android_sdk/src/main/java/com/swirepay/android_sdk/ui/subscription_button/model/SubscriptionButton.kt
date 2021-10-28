@@ -3,7 +3,6 @@ package com.swirepay.android_sdk.ui.subscription_button.model
 import android.os.Parcelable
 import com.swirepay.android_sdk.model.Currency
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Parcelize
 data class SubscriptionButton(
