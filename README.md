@@ -13,7 +13,7 @@ The SDK supports payment flows including simple checkout, saving payment methods
 
 Add this in your app gradle dependency
 ``
-    implementation 'com.swirepay:swirepay_android:1.0.0'
+    implementation 'com.swirepay:swirepay-android:1.0.0'
 ``
 
 ## Example
