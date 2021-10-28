@@ -1,4 +1,4 @@
-package com.swirepay.android_sdk.`interface`
+package com.swirepay.android_sdk
 
 import com.pusher.client.channel.PusherEvent
 import retrofit2.Call
