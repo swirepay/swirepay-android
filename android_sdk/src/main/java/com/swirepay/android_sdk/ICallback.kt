@@ -4,7 +4,7 @@ import com.pusher.client.channel.PusherEvent
 import retrofit2.Call
 import java.lang.Exception
 
-interface IPusherCallback {
+interface ICallback {
 
     fun onEvent(event: PusherEvent?)
     fun onSubscriptionSucceeded(channelName: String?)

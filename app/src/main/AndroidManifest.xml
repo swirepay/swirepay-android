@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Swirepay_SDK_playground">
-        <activity android:name=".SubscriptionButtonActivity"></activity>
+        <activity
+            android:name=".PusherActivity"
+            android:exported="true" />
+        <activity android:name=".SubscriptionButtonActivity" />
         <activity android:name=".PaymentButtonActivity" />
         <activity android:name=".PaymentLinkActivity" />
         <activity android:name=".InvoicePaymentActivity" />
