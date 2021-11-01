@@ -2,21 +2,15 @@ package com.swirepay.swirepay_sdk_playground
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.swirepay.android_sdk.KeyNotInitializedException
 import com.swirepay.android_sdk.SwirepaySdk
-import com.swirepay.android_sdk.model.*
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityMainBinding
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
