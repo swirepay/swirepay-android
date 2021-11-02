@@ -244,7 +244,7 @@ object SwirepaySdk {
 
     @Throws(KeyNotInitializedException::class)
     fun sendPaymentRequest(
-        paymentReq: PaymentRequest, callback: IPusherCallback
+        paymentReq: PaymentRequest, callback: ICallback
     ) {
 
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
@@ -257,7 +257,6 @@ object SwirepaySdk {
                 val appConfig = response.body()
 
                 sendRequest(paymentReq, appConfig!!, callback)
-
             }
 
             override fun onFailure(call: Call<AppConfig>, t: Throwable) {
@@ -270,7 +269,7 @@ object SwirepaySdk {
     fun sendRequest(
         paymentReq: PaymentRequest,
         appConfig: AppConfig,
-        callback: IPusherCallback
+        callback: ICallback
     ) {
 
         val apiClient = PusherClient.retrofit.create(ApiInterface::class.java)
@@ -284,7 +283,7 @@ object SwirepaySdk {
                     call: Call<SuccessResponse<String>>,
                     response: Response<SuccessResponse<String>>
                 ) {
-                    connectPusher(appConfig.appKey, response.body().toString(), callback)
+                    connectPusher(appConfig.appKey, response.body()!!.entity, callback)
                 }
 
                 override fun onFailure(call: Call<SuccessResponse<String>>, t: Throwable) {
@@ -296,7 +295,7 @@ object SwirepaySdk {
     fun connectPusher(
         appKey: String,
         channelId: String,
-        callback: IPusherCallback
+        callback: ICallback
     ) {
 
         val authorizer = HttpAuthorizer("${BuildConfig.AUTH_ENDPOINT}")
