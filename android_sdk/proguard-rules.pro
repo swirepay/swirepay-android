@@ -23,6 +23,8 @@
 
 -keep class com.swirepay.android_sdk.ui.** { *; }
 
+-keep class com.swirepay.android_sdk.callback.** { *; }
+
 -keep class com.swirepay.android_sdk.SwirepaySdk{ *; }
 
 -keep class com.swirepay.android_sdk.KeyNotInitializedException{ *; }
