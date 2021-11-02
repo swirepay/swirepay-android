@@ -1,7 +1,7 @@
 package com.swirepay.android_sdk.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class InvoiceLineItemDtos (
