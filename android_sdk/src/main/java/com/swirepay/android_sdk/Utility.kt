@@ -8,5 +8,4 @@ object Utility {
     fun getBase24String(data : String) : String {
         return encodeToString(data.toByteArray(), Base64.DEFAULT)
     }
-
 }

@@ -10,6 +10,7 @@ import com.pusher.client.PusherOptions
 import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import com.pusher.client.util.HttpAuthorizer
+import com.swirepay.android_sdk.callback.ICallback
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.model.pusher.AppConfig
 import com.swirepay.android_sdk.model.pusher.CipherConversion
