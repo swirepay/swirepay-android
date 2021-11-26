@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/debit_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Debit card, Credit card and Corporate credit card are supported." />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_cardNumber"
+            style="@style/SwirepayCheckout.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.swirepay.android_sdk.checkout.views.CardNumberInput
+                android:id="@+id/editText_cardNumber"
+                style="@style/SwirepayCheckout.Card.CardNumberInput"
+                android:nextFocusDown="@+id/editText_expiryDate"
+                android:nextFocusForward="@+id/editText_expiryDate"
+                tools:ignore="RequiredSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/cardBrandLogo_container"
+            style="@style/SwirepayCheckout.Card.BrandRecognitionLogoContainerGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/cardBrandLogo_container_primary"
+                style="@style/SwirepayCheckout.Card.BrandRecognitionLogoContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.swirepay.android_sdk.checkout.views.RoundCornerImageView
+                    android:id="@+id/cardBrandLogo_imageView_primary"
+                    style="@style/SwirepayCheckout.Card.BrandRecognitionLogo"
+                    app:strokeColor="@color/stroke_color"
+                    app:strokeWidth="0dp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardBrandLogo_container_secondary"
+                style="@style/SwirepayCheckout.Card.BrandRecognitionLogoContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.swirepay.android_sdk.checkout.views.RoundCornerImageView
+                    android:id="@+id/cardBrandLogo_imageView_secondary"
+                    style="@style/SwirepayCheckout.Card.BrandRecognitionLogo"
+                    android:layout_height="6dp"
+                    app:strokeColor="@color/stroke_color"
+                    app:strokeWidth="0dp" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_expiryDate"
+            style="@style/SwirepayCheckout.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/standard_half_margin"
+            android:layout_weight="1">
+
+            <com.swirepay.android_sdk.checkout.views.ExpiryDateInput
+                android:id="@+id/editText_expiryDate"
+                style="@style/SwirepayCheckout.Card.ExpiryDateInput"
+                android:nextFocusRight="@+id/editText_securityCode"
+                android:nextFocusDown="@id/editText_securityCode"
+                android:nextFocusForward="@+id/editText_securityCode"
+                tools:ignore="RequiredSize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_securityCode"
+            style="@style/SwirepayCheckout.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_half_margin"
+            android:layout_weight="1">
+
+            <com.swirepay.android_sdk.checkout.views.SecurityCodeInput
+                android:id="@+id/editText_securityCode"
+                style="@style/SwirepayCheckout.Card.SecurityCodeInput"
+                android:inputType="number"
+                android:nextFocusRight="@+id/editText_cardHolder"
+                android:nextFocusForward="@+id/editText_cardHolder" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_cardHolder"
+        style="@style/SwirepayCheckout.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.swirepay.android_sdk.checkout.views.SwirepayTextInputEditText
+            android:id="@+id/editText_cardHolder"
+            style="@style/SwirepayCheckout.Card.HolderNameInput"
+            android:nextFocusDown="@+id/editText_postalCode"
+            android:nextFocusForward="@+id/editText_postalCode"
+            tools:ignore="RequiredSize" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/switch_storePaymentMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save this card"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="We dont store CVV. You can remove all the saved card later."
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_visa" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_master" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_maestro" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_amex" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_rupay" />
+
+    </LinearLayout>
+
+    <com.swirepay.android_sdk.checkout.views.FadedDisableButton
+        android:id="@+id/payNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/primaryColor"
+        android:text="Pay Now"
+        android:textColor="@color/white"
+        app:cornerRadius="5dp" />
+
+</LinearLayout>

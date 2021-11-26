@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#495BBC"
+        android:minHeight="?attr/actionBarSize" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/logo"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/savedCardsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Saved Cards" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/savedCardsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/savedUpiLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Saved Upi's" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/savedUpiView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="Select Payment Method" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp">
+
+                <com.skydoves.expandablelayout.ExpandableLayout
+                    android:id="@+id/cardExpandable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expandable_duration="400"
+                    app:expandable_isExpanded="false"
+                    app:expandable_parentLayout="@layout/card_parent"
+                    app:expandable_secondLayout="@layout/card_view"
+                    app:expandable_showSpinner="true"
+                    app:expandable_spinner="@drawable/ic_arrow_down"
+                    app:expandable_spinner_animate="true"
+                    app:expandable_spinner_color="@color/black"
+                    app:expandable_spinner_gravity="end"
+                    app:expandable_spinner_margin="14dp"
+                    app:expandable_spinner_size="32dp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp">
+
+                <com.skydoves.expandablelayout.ExpandableLayout
+                    android:id="@+id/upiExpandable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expandable_duration="400"
+                    app:expandable_isExpanded="false"
+                    app:expandable_parentLayout="@layout/upi_parent"
+                    app:expandable_secondLayout="@layout/upi_view"
+                    app:expandable_showSpinner="true"
+                    app:expandable_spinner="@drawable/ic_arrow_down"
+                    app:expandable_spinner_animate="true"
+                    app:expandable_spinner_color="@color/black"
+                    app:expandable_spinner_gravity="end"
+                    app:expandable_spinner_margin="14dp"
+                    app:expandable_spinner_size="32dp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp">
+
+                <com.skydoves.expandablelayout.ExpandableLayout
+                    android:id="@+id/netBankExpandable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expandable_duration="400"
+                    app:expandable_isExpanded="false"
+                    app:expandable_parentLayout="@layout/netbank_parent"
+                    app:expandable_secondLayout="@layout/netbank_view"
+                    app:expandable_showSpinner="true"
+                    app:expandable_spinner="@drawable/ic_arrow_down"
+                    app:expandable_spinner_animate="true"
+                    app:expandable_spinner_color="@color/black"
+                    app:expandable_spinner_gravity="end"
+                    app:expandable_spinner_margin="14dp"
+                    app:expandable_spinner_size="32dp" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_logo" />
+
+</RelativeLayout>
+

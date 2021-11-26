@@ -11,6 +11,9 @@ import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import com.pusher.client.util.HttpAuthorizer
 import com.swirepay.android_sdk.callback.ICallback
+import com.swirepay.android_sdk.checkout.model.SPCustomer
+import com.swirepay.android_sdk.checkout.model.SPPaymentResult
+import com.swirepay.android_sdk.checkout.ui.activity.CheckoutActivity
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.model.pusher.AppConfig
 import com.swirepay.android_sdk.model.pusher.CipherConversion
@@ -60,6 +63,14 @@ object SwirepaySdk {
     const val RESULT = "result"
     const val STATUS = "status"
     const val PAYMENT_REQUEST = "payment_request"
+    const val PAYMENT_PARAMS = "payment_params"
+    var TOOLBAR_COLOR = "#2196F3"
+    var TOOLBAR_ITEM = "#FFFFFF"
+    var STATUSBAR_COLOR = "#1976D2"
+    const val CHECKOUT_REQUEST = "checkout_request"
+    const val CHECKOUT_CUSTOMER = "checkout_customer"
+    const val PAYMENT_SESSION = "payment_session"
+    const val PAYMENT_STATUS = "payment_status"
 
     //https://staging-secure.swirepay.com/connect/create?key=key
 
@@ -206,6 +217,10 @@ object SwirepaySdk {
         return getResult(resultCode, data)
     }
 
+    fun getPaymentCheckout(resultCode: Int, data: Intent?): Result<SPPaymentResult> {
+        return getResult(resultCode, data)
+    }
+
     @Throws(KeyNotInitializedException::class)
     fun createPaymentButton(
         context: Activity,
@@ -266,6 +281,32 @@ object SwirepaySdk {
         })
     }
 
+    @Throws(KeyNotInitializedException::class)
+    fun doPayment(
+        context: Activity,
+        toolbarColor: String,
+        toolbarItemColor: String,
+        statusBarColor: String,
+        paymentSession: PaymentSession,
+        customer: SPCustomer,
+        requestCode: Int
+    ) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        if (customer == null) throw CustomerRequiredException()
+
+        this.TOOLBAR_COLOR = toolbarColor
+        this.TOOLBAR_ITEM = toolbarItemColor
+        this.STATUSBAR_COLOR = statusBarColor
+
+        context.startActivityForResult(
+            Intent(context, CheckoutActivity::class.java).apply {
+                putExtra(PAYMENT_SESSION, paymentSession)
+                putExtra(PAYMENT_CUSTOMER, customer)
+            }, requestCode
+        )
+    }
 
     fun sendRequest(
         paymentReq: PaymentRequest,

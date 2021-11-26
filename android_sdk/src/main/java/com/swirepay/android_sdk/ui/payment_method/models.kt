@@ -6,8 +6,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Parcelize
-data class SetupSession(val paymentMethod : PaymentMethod , val customer : Customer , val currency : Currency , val gid : String
-, val setupDate : Date  , val status : String , val ssClientSecret : String , val returnUrl : String , val deleted : Boolean , val confirmMethod : String) : Parcelable
+data class SetupSession(
+    val paymentMethod: PaymentMethod,
+    val customer: Customer,
+    val currency: Currency,
+    val gid: String,
+    val setupDate: Date,
+    val status: String,
+    val ssClientSecret: String,
+    val returnUrl: String,
+    val deleted: Boolean,
+    val confirmMethod: String
+) : Parcelable
 
 @Parcelize
 data class PaymentMethod(
@@ -24,7 +34,7 @@ data class Customer(
     var name: String,
     var email: String,
     var phoneNumber: String,
-    val gid : String
+    val gid: String
 ) :
     Parcelable {
     fun getTime(): String {

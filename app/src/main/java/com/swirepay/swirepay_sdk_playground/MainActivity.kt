@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.ui.nativepayment.NativePaymentActivity
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.etInitSdk.setText("sk_live_ULODZkXBbBS9xKPGjI19fVWzenjNNq22")
+        binding.etInitSdk.setText("sk_test_PCRMJq9FHBiuuEqVq7LjZ19qXPUa7CW9")
 
         binding.btnInitSdk.setOnClickListener {
 
@@ -70,6 +71,11 @@ class MainActivity : AppCompatActivity() {
         btnPaymentButton.setOnClickListener {
 
             startActivity(Intent(this, PaymentButtonActivity::class.java))
+        }
+
+        val btnNativePayment: Button = findViewById(R.id.btnNativePayment)
+        btnNativePayment.setOnClickListener {
+            startActivity(Intent(this, NativePaymentActivity::class.java))
         }
     }
 

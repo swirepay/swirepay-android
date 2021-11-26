@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.swirepay.android_sdk.BuildConfig
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.model.PaymentLink
 import com.swirepay.android_sdk.model.PaymentRequest
