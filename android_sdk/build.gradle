@@ -67,8 +67,6 @@ dependencies {
     api 'com.pusher:pusher-java-client:2.2.6'
 
     implementation project(":expandablelayout")
-
-    //FCZ2U-N3A96-E446Q-KST96-2QBDJ
 }
 
 project.afterEvaluate {
