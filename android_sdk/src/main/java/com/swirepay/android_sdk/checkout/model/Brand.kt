@@ -5,6 +5,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.swirepay.android_sdk.checkout.*
 import com.swirepay.android_sdk.checkout.exception.ModelSerializationException
+import com.swirepay.android_sdk.checkout.utils.JsonUtils
+import com.swirepay.android_sdk.checkout.utils.getBooleanOrNull
+import com.swirepay.android_sdk.checkout.utils.getStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
 
