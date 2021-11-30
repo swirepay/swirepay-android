@@ -4,7 +4,7 @@ pipeline {
 		GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
 		SONAR_LOGIN = credentials('SONAR_LOGIN')
 		SONAR_HOST = "https://sonarqube.swirepay.com"
-		GITHUB_URL = "github.com/swirepay-ci/swirepay_android_sdk"
+		GITHUB_URL = "github.com/swirepay/swirepay-android"
 	}
 	options { timestamps() }
 	stages {
@@ -37,4 +37,3 @@ pipeline {
     }
   }
 }
-

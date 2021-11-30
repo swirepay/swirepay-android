@@ -1,1 +1,23 @@
-<resources></resources>
+<resources>
+
+    <string-array name="notification_types">
+        <item>Email</item>
+        <item>SMS</item>
+        <item>Email and SMS</item>
+    </string-array>
+
+    <string name="checkout_card_number_hint">Card number</string>
+    <string name="checkout_card_holder_hint">Name on card</string>
+    <string name="checkout_mobile_number_hint">Mobile number</string>
+    <string name="more_banks">More Banks</string>
+    <string name="checkout_card_expiry_date_hint">MM/YY</string>
+    <string name="checkout_card_expiry_date_optional_hint">Expiry date (optional)</string>
+    <string name="checkout_card_security_code_hint">CVV</string>
+    <string name="checkout_card_security_code_optional_hint">CVC / CVV (optional)</string>
+    <string name="checkout_social_security_number_hint" translatable="false">CPF/CNPJ</string>
+    <string name="checkout_security_code_not_valid" translatable="false">Invalid security code</string>
+    <string name="checkout_expiry_date_not_valid" translatable="false">Invalid expiry date</string>
+
+    <string name="Rs">\u20B9</string>
+
+</resources>

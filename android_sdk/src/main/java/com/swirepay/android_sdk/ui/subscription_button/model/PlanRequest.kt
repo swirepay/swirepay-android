@@ -8,4 +8,11 @@ package com.swirepay.android_sdk.ui.subscription_button.model
 //    "billingFrequency": "MONTH",
 //    "billingPeriod": 1
 //}
-class PlanRequest(val name : String , val amount : Int , val description : String , val currencyCode : String , val billingFrequency : String , val billingPeriod : Int)
+class PlanRequest(
+    val name: String,
+    val amount: Int,
+    val description: String,
+    val currencyCode: String,
+    val billingFrequency: String,
+    val billingPeriod: Int,
+)
