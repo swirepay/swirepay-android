@@ -38,7 +38,7 @@ public final class ModelUtils {
      * @return The parsed object.
      */
     @NonNull
-    static <T extends ModelObject> T deserializeModel(@NonNull JSONObject jsonObject, @NonNull Class<T> modelClass) {
+    public static <T extends ModelObject> T deserializeModel(@NonNull JSONObject jsonObject, @NonNull Class<T> modelClass) {
 
         //noinspection unchecked
         final ModelObject.Serializer<T> serializer = (ModelObject.Serializer<T>) ModelUtils.readModelSerializer(modelClass);

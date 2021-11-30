@@ -37,12 +37,11 @@ android {
 //        }
         release {
             signingConfig signingConfigs.release
-            buildConfigField 'Boolean', 'IS_DEV', 'false'
+            debuggable true
         }
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField 'Boolean', 'IS_DEV', 'false'
         }
 //        development {
 //            initWith debug

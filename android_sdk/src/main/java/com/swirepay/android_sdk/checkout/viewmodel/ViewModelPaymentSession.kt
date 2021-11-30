@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.checkout.model.*
-import com.swirepay.android_sdk.model.PaymentSession
+import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ class ViewModelPaymentSession() : ViewModel() {
 
     val livePaymentMethod: MutableLiveData<PaymentMethodResponse> = MutableLiveData()
     val livePaymentSession: MutableLiveData<PaymentSessionResponse> = MutableLiveData()
-    val paymentMethodResults: MutableLiveData<PaymentMethodContent> = MutableLiveData()
+    val getPaymentSessionResponse: MutableLiveData<PaymentSessionResponse> = MutableLiveData()
     val liveErrorMessages: MutableLiveData<String> = MutableLiveData()
 
     fun createPaymentMethod(paymentMethodCard: PaymentMethodCard?) =
@@ -29,39 +29,43 @@ class ViewModelPaymentSession() : ViewModel() {
                 val paymentResponse = response.body()!!.entity
                 livePaymentMethod.postValue(paymentResponse)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
                 Log.d("sdk_test", "card-payment-method: ${response.code()}")
             }
         }
 
-    fun createPaymentSession(paymentSession: PaymentSession?) =
+    fun createPaymentSession(orderInfo: OrderInfo?) =
         viewModelScope.launch(Dispatchers.IO) {
             val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
 
             val response =
-                apiClient.createPaymentSession(paymentSession, SwirepaySdk.apiKey!!).execute()
+                apiClient.createPaymentSession(orderInfo, SwirepaySdk.apiKey!!).execute()
             if (response.isSuccessful && response.body() != null) {
                 val sessionResponse = response.body()!!.entity
                 livePaymentSession.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
                 Log.d("sdk_test", "card-payment-session: ${response.code()}")
             }
         }
 
-    fun getPaymentMethod(customerGid: String) =
+    fun getPaymentSession(paymentSession: String, secret: String) =
         viewModelScope.launch(Dispatchers.IO) {
             val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
 
             val response =
-                apiClient.getPaymentMethod(customerGid, SwirepaySdk.apiKey!!).execute()
+                apiClient.getPaymentSession(
+                    paymentSession,
+                    paymentSession,
+                    secret,
+                    SwirepaySdk.apiKey!!
+                ).execute()
             if (response.isSuccessful && response.body() != null) {
-                val paymentResponse = response.body()!!.entity
-                paymentMethodResults.postValue(paymentResponse)
-
+                val sessionResponse = response.body()!!.entity
+                getPaymentSessionResponse.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
-                Log.d("sdk_test", "card-payment-method: ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
+                Log.d("sdk_test", "card-payment-session: ${response.code()}")
             }
         }
 }

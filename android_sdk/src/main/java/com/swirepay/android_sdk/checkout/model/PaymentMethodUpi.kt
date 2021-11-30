@@ -15,8 +15,8 @@ data class SPCustomer(
     var name: String,
     var email: String,
     var phoneNumber: String,
-    var billingAddress: SPBillingAddress,
-    var shippingAddress: SPShippingAddress
+    var billingAddress: SPBillingAddress? = null,
+    var shippingAddress: SPShippingAddress? = null
 ) : Parcelable
 
 @Parcelize

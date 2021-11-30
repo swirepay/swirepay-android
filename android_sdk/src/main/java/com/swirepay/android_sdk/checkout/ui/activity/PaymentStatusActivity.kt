@@ -6,21 +6,31 @@ import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.R
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.databinding.ActivityPaymentStatusBinding
 
 import com.swirepay.android_sdk.checkout.utils.StatusbarUtil
+import com.swirepay.android_sdk.checkout.viewmodel.ViewModelPaymentSession
 
 
 class PaymentStatusActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPaymentStatusBinding
     var amount: Int = 0
-    lateinit var paymentStatus: String
+    lateinit var paymentSessionGid: String
+    lateinit var paymentSecret: String
+
+    val viewModelPaymentSession: ViewModelPaymentSession by lazy {
+        ViewModelProvider(
+            this
+        ).get(ViewModelPaymentSession::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,29 +46,40 @@ class PaymentStatusActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         amount = intent.getIntExtra(SwirepaySdk.PAYMENT_AMOUNT, 0)
-        paymentStatus = intent.getStringExtra(SwirepaySdk.PAYMENT_STATUS)!!
+        paymentSessionGid = intent.getStringExtra(SwirepaySdk.SESSION_GID)!!
+        paymentSecret = intent.getStringExtra(SwirepaySdk.PAYMENT_SECRET)!!
 
-        if (paymentStatus == "true") {
-            supportActionBar?.title = "Payment Successful"
-            binding.successLayout.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                finish()
+        viewModelPaymentSession.getPaymentSession(paymentSessionGid, paymentSecret)
+
+        viewModelPaymentSession.getPaymentSessionResponse.observe(this, {
+
+            binding.progress.visibility = View.GONE
+
+            if (it.status == "SUCCEEDED" || it.status == "SUCCESS") {
+
+                supportActionBar?.title = "Payment Successful"
+                binding.successLayout.visibility = View.VISIBLE
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    finish()
 //                val complete = CheckoutActivity()
 //                complete.onComplete(true)
 
-                val msg = Message()
-                msg.obj = true
-                msg.what = 0
+                    val msg = Message()
+                    msg.obj = it
+                    msg.what = 0
 
-                CheckoutActivity.handler.sendMessage(msg);
+                    CheckoutActivity.handler.sendMessage(msg)
 
-            }, 1500)
+                }, 1500)
+            } else {
+                supportActionBar?.title = "Payment Failed"
+                binding.failureLayout.visibility = View.VISIBLE
+            }
+        })
 
-        } else {
-            supportActionBar?.title = "Payment Failed"
-            binding.failureLayout.visibility = View.VISIBLE
-        }
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(SwirepaySdk.TOOLBAR_COLOR)))
         toolbar.setTitleTextColor(Color.parseColor(SwirepaySdk.TOOLBAR_ITEM))
@@ -66,10 +87,15 @@ class PaymentStatusActivity : AppCompatActivity() {
         binding.tryAgain.setOnClickListener {
             finish()
         }
+
         binding.txtCancel.setOnClickListener {
             finish()
-            val complete = CheckoutActivity()
-            complete.onComplete(false)
+
+            val msg = Message()
+            msg.obj = null
+            msg.what = 0
+
+            CheckoutActivity.handler.sendMessage(msg)
         }
     }
 

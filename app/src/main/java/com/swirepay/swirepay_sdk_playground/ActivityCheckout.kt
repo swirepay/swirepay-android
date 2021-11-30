@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.google.gson.Gson
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.SwirepaySdk.REQUEST_CODE_CHECKOUT
 import com.swirepay.android_sdk.checkout.model.*
-import com.swirepay.android_sdk.model.PaymentMethodType
-import com.swirepay.android_sdk.model.PaymentSession
+import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.swirepay_sdk_playground.databinding.CheckoutActivityBinding
 
 class ActivityCheckout : AppCompatActivity() {
@@ -22,44 +23,35 @@ class ActivityCheckout : AppCompatActivity() {
         setContentView(binding.root)
 
 //        Test
-//        SwirepaySdk.initSdk("")
-
-//        Live
         SwirepaySdk.initSdk("")
 
-        val billingAddress = SPBillingAddress("Test street", "Chennai", "TN", "600030", "IN")
-        val shippingAddress = SPShippingAddress("Test street", "Chennai", "TN", "600030", "IN")
+//        Live
+//        SwirepaySdk.initSdk("")
+
         val customer = SPCustomer(
-            "Muthu", "testaccountowner-stag+592@swirepay.com", "+919845789562",
-            billingAddress,
-            shippingAddress
+            "Muthu", "testaccountowner-stag+789@swirepay.com", "+919845789562"
         )
 
-        val arrayList: ArrayList<PaymentMethodType> = ArrayList()
-        arrayList.add(PaymentMethodType.CARD)
-        arrayList.add(PaymentMethodType.UPI)
-        arrayList.add(PaymentMethodType.NET_BANKING)
+//        val arrayList: ArrayList<PaymentMethodType> = ArrayList()
+//        arrayList.add(PaymentMethodType.CARD)
 
-        val paymentSession = PaymentSession()
-        paymentSession.amount = 100
-        paymentSession.receiptEmail = "testaccountowner-stag+592@swirepay.com"
-        paymentSession.receiptSms = "+919845789562"
-        paymentSession.currencyCode = "INR"
-        paymentSession.description = "Test"
-        paymentSession.statementDescriptor = "IND Test"
-        paymentSession.paymentMethodType = arrayList
-        paymentSession.confirmMethod = "AUTOMATIC"
-        paymentSession.captureMethod = "AUTOMATIC"
+        val orderInfo = OrderInfo()
+        orderInfo.amount = 100
+        orderInfo.receiptEmail = "testaccountowner-stag+592@swirepay.com"
+        orderInfo.receiptSms = "+919845789562"
+        orderInfo.currencyCode = "INR"
+        orderInfo.description = "Test"
+        orderInfo.statementDescriptor = "IND Test"
+//        orderInfo.paymentMethodType = arrayList
+//        orderInfo.confirmMethod = "AUTOMATIC"
+//        orderInfo.captureMethod = "AUTOMATIC"
 
         val btnCheckout: Button = findViewById(R.id.btnCheckout)
         btnCheckout.setOnClickListener {
 
             SwirepaySdk.doPayment(
                 this,
-                "#FF0000",
-                "#FFFFFF",
-                "#FF0000",
-                paymentSession,
+                orderInfo,
                 customer,
                 REQUEST_CODE_CHECKOUT
             )
@@ -75,14 +67,10 @@ class ActivityCheckout : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_CHECKOUT -> {
                 val result = SwirepaySdk.getPaymentCheckout(resultCode, data)
-                Log.d("sdk_test", "onActivityResult: $result")
-                resultText.text = result.toString()
+                Log.d("sdk_test", "onActivityResult: " + Gson().toJson(result))
+                resultText.text = Gson().toJson(result)
                 responseText.text = result.entity.toString()
             }
         }
-    }
-
-    companion object {
-        const val REQUEST_CODE_CHECKOUT = 243
     }
 }

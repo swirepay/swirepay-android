@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.checkout.model.*
 import com.swirepay.android_sdk.model.Banks
-import com.swirepay.android_sdk.model.PaymentSession
+import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,6 @@ class ViewModelNetBanking() : ViewModel() {
     val livePaymentBanks: MutableLiveData<List<Banks>> = MutableLiveData()
     val liveNetBankingResponse: MutableLiveData<PaymentMethodResponse> = MutableLiveData()
     val liveNetBankingSessionResponse: MutableLiveData<PaymentSessionResponse> = MutableLiveData()
-    val liveCheckoutResults: MutableLiveData<PaymentMethodResponse> = MutableLiveData()
     val liveErrorMessages: MutableLiveData<String> = MutableLiveData()
 
     fun getAllBanks(isTest: Boolean) =
@@ -31,7 +30,7 @@ class ViewModelNetBanking() : ViewModel() {
                 val banks = response.body()!!.entity
                 livePaymentBanks.postValue(banks)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
                 Log.d("sdk_test", "netbanking-getAllBanks: ${response.code()}")
             }
         }
@@ -47,12 +46,12 @@ class ViewModelNetBanking() : ViewModel() {
                 val paymentResponse = response.body()!!.entity
                 liveNetBankingResponse.postValue(paymentResponse)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
                 Log.d("sdk_test", "netbanking-payment-method: ${response.code()}")
             }
         }
 
-    fun createPaymentSession(paymentSession: PaymentSession?) =
+    fun createPaymentSession(paymentSession: OrderInfo?) =
         viewModelScope.launch(Dispatchers.IO) {
             val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
 
@@ -62,8 +61,9 @@ class ViewModelNetBanking() : ViewModel() {
                 val sessionResponse = response.body()!!.entity
                 liveNetBankingSessionResponse.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("error code : ${response.code()}")
-                Log.d("sdk_test", "checkoutChargeCard: ${response.code()}")
+                liveErrorMessages.postValue("Error code : ${response.code()}")
+                Log.d("sdk_test", "netbanking-payment-session: ${response.code()}")
+                Log.d("sdk_test", response.errorBody().toString())
             }
         }
 }

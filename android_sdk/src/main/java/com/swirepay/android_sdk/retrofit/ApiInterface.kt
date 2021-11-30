@@ -2,7 +2,7 @@ package com.swirepay.android_sdk.retrofit
 
 import com.swirepay.android_sdk.checkout.model.*
 import com.swirepay.android_sdk.model.*
-import com.swirepay.android_sdk.model.PaymentSession
+import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.android_sdk.model.pusher.AppConfig
 import com.swirepay.android_sdk.model.pusher.Request
 import com.swirepay.android_sdk.ui.payment_method.SetupSession
@@ -93,7 +93,15 @@ interface ApiInterface {
 
     @POST("/v1/payment-session")
     fun createPaymentSession(
-        @Body paymentSession: PaymentSession?,
+        @Body orderInfo: OrderInfo?,
+        @Header("x-api-key") api_key: String
+    ): Call<SuccessResponse<PaymentSessionResponse>>
+
+    @GET("/v1/payment-session/{paymentSession}")
+    fun getPaymentSession(
+        @Path("paymentSession") paymentSession: String,
+        @Query("sp") sp: String,
+        @Query("secret") secret: String,
         @Header("x-api-key") api_key: String
     ): Call<SuccessResponse<PaymentSessionResponse>>
 

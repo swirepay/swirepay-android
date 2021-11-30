@@ -20,7 +20,7 @@ public class CardNumberInput extends SwirepayTextInputEditText {
     private static final char DIGIT_SEPARATOR = ' ';
     private static final String SUPPORTED_DIGITS = "0123456789";
     private static final int[] AMEX_CARD_NUMBER_MASK = {4, 6, 5, 4};
-    private static final int[] DEFAULT_CARD_NUMBER_MASK = {4, 4, 4, 4};
+    private static final int[] DEFAULT_CARD_NUMBER_MASK = {4, 4, 4, 4,3};
     private static final int START_OF_STRING = 0;
 
     private boolean mIsAmexCard;

@@ -13,6 +13,15 @@
         android:background="#495BBC"
         android:minHeight="?attr/actionBarSize" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/successLayout"
         android:layout_width="match_parent"

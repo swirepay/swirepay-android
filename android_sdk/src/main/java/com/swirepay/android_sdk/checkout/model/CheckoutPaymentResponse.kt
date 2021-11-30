@@ -1,6 +1,7 @@
 package com.swirepay.android_sdk.checkout.model
 
 import android.os.Parcelable
+import com.swirepay.android_sdk.model.OrderInfo
 import kotlinx.parcelize.Parcelize
 
 
@@ -16,6 +17,6 @@ data class CheckoutPaymentResponse(
     val status: String,
     val link: String,
     val currency: Currency,
-    val paymentSession: PaymentSession,
+    val o: OrderInfo,
 ) : Parcelable
 

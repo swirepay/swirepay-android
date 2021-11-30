@@ -69,8 +69,12 @@ object SwirepaySdk {
     var STATUSBAR_COLOR = "#1976D2"
     const val CHECKOUT_REQUEST = "checkout_request"
     const val CHECKOUT_CUSTOMER = "checkout_customer"
-    const val PAYMENT_SESSION = "payment_session"
+    const val SESSION_GID = "session_gid"
+    const val ORDER_INFO = "order_info"
+    const val PAYMENT_SECRET = "payment_secret"
     const val PAYMENT_STATUS = "payment_status"
+
+    const val REQUEST_CODE_CHECKOUT = 243
 
     //https://staging-secure.swirepay.com/connect/create?key=key
 
@@ -284,11 +288,37 @@ object SwirepaySdk {
     @Throws(KeyNotInitializedException::class)
     fun doPayment(
         context: Activity,
+        orderInfo: OrderInfo,
+        customer: SPCustomer?,
+        requestCode: Int,
         toolbarColor: String,
-        toolbarItemColor: String,
         statusBarColor: String,
-        paymentSession: PaymentSession,
-        customer: SPCustomer,
+        toolbarItemColor: String,
+    ) {
+
+        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+
+        if (customer == null) throw CustomerRequiredException()
+
+        if (toolbarColor.isNotEmpty() && toolbarItemColor.isNotEmpty() && statusBarColor.isNotEmpty()) {
+            this.TOOLBAR_COLOR = toolbarColor
+            this.TOOLBAR_ITEM = toolbarItemColor
+            this.STATUSBAR_COLOR = statusBarColor
+        }
+
+        context.startActivityForResult(
+            Intent(context, CheckoutActivity::class.java).apply {
+                putExtra(ORDER_INFO, orderInfo)
+                putExtra(PAYMENT_CUSTOMER, customer)
+            }, requestCode
+        )
+    }
+
+    @Throws(KeyNotInitializedException::class)
+    fun doPayment(
+        context: Activity,
+        orderInfo: OrderInfo,
+        customer: SPCustomer?,
         requestCode: Int
     ) {
 
@@ -296,13 +326,9 @@ object SwirepaySdk {
 
         if (customer == null) throw CustomerRequiredException()
 
-        this.TOOLBAR_COLOR = toolbarColor
-        this.TOOLBAR_ITEM = toolbarItemColor
-        this.STATUSBAR_COLOR = statusBarColor
-
         context.startActivityForResult(
             Intent(context, CheckoutActivity::class.java).apply {
-                putExtra(PAYMENT_SESSION, paymentSession)
+                putExtra(ORDER_INFO, orderInfo)
                 putExtra(PAYMENT_CUSTOMER, customer)
             }, requestCode
         )

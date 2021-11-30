@@ -29,6 +29,9 @@ data class _PaymentSession(
     val gid: String,
     val amount: Int,
     val currency: String,
+    val authCode: String,
+    val paymentDate: String,
+    val meta: String?,
     val status: String
 ) : Parcelable
 

@@ -22,7 +22,8 @@ class PaymentActionActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPaymentActionBinding
     var amount: Int = 0
-    lateinit var paymentStatus: String
+    lateinit var paymentSessionGid: String
+    lateinit var paymentSecret: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,10 +73,13 @@ class PaymentActionActivity : AppCompatActivity() {
                 Log.e("sdk_test", "shouldOverrideUrlLoading: $localUrl")
                 val uri = request?.url
 
-                val id = uri?.getQueryParameter("status")
-                if (id != null) {
-                    paymentStatus = id
+                val session = uri?.getQueryParameter("ps")
+                val secret = uri?.getQueryParameter("secret")
+                if (session != null && secret!=null) {
+                    paymentSessionGid = session
+                    paymentSecret = secret
                 }
+
                 if (isThisFinalUrl(localUrl)) {
                     loadUrl(localUrl)
 
@@ -87,7 +91,8 @@ class PaymentActionActivity : AppCompatActivity() {
                                 PaymentStatusActivity::class.java
                             ).apply {
                                 putExtra(SwirepaySdk.PAYMENT_AMOUNT, amount)
-                                putExtra(SwirepaySdk.PAYMENT_STATUS, paymentStatus)
+                                putExtra(SwirepaySdk.SESSION_GID, paymentSessionGid)
+                                putExtra(SwirepaySdk.PAYMENT_SECRET, paymentSecret)
                             })
                     }, 1500)
                     return true
