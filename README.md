@@ -4,7 +4,7 @@
 The SDK supports payment flows including simple checkout, saving payment methods, paying invoice, setting up subscriptions, account creation and more.
 
 ## Requirements
-- Android 5.0 (API level 21) and above
+- Android 4.4 (API level 19) and above
 - Android Gradle Plugin 3.5.1
 - Gradle 5.4.1+
 - AndroidX (as of v11.0.0)
@@ -103,12 +103,18 @@ val orderInfo = OrderInfo()
 
 val customer = SPCustomer("Muthu", "testaccountowner-stag+592@swirepay.com", "+919845789562")
 ```
+
+
 ###### Perform payment - Method #1
-**SwirepaySdk.doPayment(this, orderInfo,customer,REQUEST_CODE_CHECKOUT)**
+```
+SwirepaySdk.doPayment(this, orderInfo,customer,REQUEST_CODE_CHECKOUT)
+```
 
 
 ###### Perform payment- - Method #2 Customize screen with own brand colors
-**SwirepaySdk.doPayment(this,orderInfo,customer,REQUEST_CODE_CHECKOUT,"#FF0000","#FF0000","#FFFFFF")**
+```
+SwirepaySdk.doPayment(this,orderInfo,customer,REQUEST_CODE_CHECKOUT,"#FF0000","#FF0000","#FFFFFF")
+```
 
 ## Step 4. Receive and Handle Response
 After the payment is completed, you will receive the response on the onActivityResult() function of the invoking activity. In the intent extras, you will receive a set of response parameters which is used to determine if the transaction was successful or not. 

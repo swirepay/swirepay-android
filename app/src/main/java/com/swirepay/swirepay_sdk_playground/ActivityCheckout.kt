@@ -32,9 +32,6 @@ class ActivityCheckout : AppCompatActivity() {
             "Muthu", "testaccountowner-stag+789@swirepay.com", "+919845789562"
         )
 
-//        val arrayList: ArrayList<PaymentMethodType> = ArrayList()
-//        arrayList.add(PaymentMethodType.CARD)
-
         val orderInfo = OrderInfo()
         orderInfo.amount = 100
         orderInfo.receiptEmail = "testaccountowner-stag+592@swirepay.com"
