@@ -4,7 +4,7 @@
 The SDK supports payment flows including simple checkout, saving payment methods, paying invoice, setting up subscriptions, account creation and more.
 
 ## Requirements
-- Android 4.4 (API level 19) and above
+- Android 5.0 (API level 21) and above
 - Android Gradle Plugin 3.5.1
 - Gradle 5.4.1+
 - AndroidX (as of v11.0.0)

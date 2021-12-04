@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.swirepay_sdk_playground"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -21,37 +21,33 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file('swirepay_android_sdk.jks')
-            storePassword '$PvTef8qqf-7g=q*'
-            keyAlias 'swirepay_android_sdk'
-            keyPassword '$PvTef8qqf-7g=q*'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('swirepay_android_sdk.jks')
+//            storePassword '$PvTef8qqf-7g=q*'
+//            keyAlias 'swirepay_android_sdk'
+//            keyPassword '$PvTef8qqf-7g=q*'
+//        }
+//    }
 
     buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
         release {
-            signingConfig signingConfigs.release
-            debuggable true
+            minifyEnabled false
+//            signingConfig signingConfigs.release
+//            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            applicationIdSuffix ".debug"
-            debuggable true
-        }
-//        development {
-//            initWith debug
-//            buildConfigField 'Boolean', 'IS_DEV', 'true'
+//        debug {
+//            applicationIdSuffix ".debug"
+//            debuggable true
 //        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }

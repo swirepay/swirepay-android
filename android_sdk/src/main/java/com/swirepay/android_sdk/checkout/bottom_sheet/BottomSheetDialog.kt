@@ -10,7 +10,6 @@ import com.swirepay.android_sdk.R
 import android.os.CountDownTimer
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.swirepay.android_sdk.checkout.ui.activity.CheckoutActivity
 import java.util.concurrent.TimeUnit
 
 class BottomSheetDialog : BottomSheetDialogFragment() {

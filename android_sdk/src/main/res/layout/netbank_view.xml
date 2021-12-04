@@ -108,8 +108,6 @@
             android:id="@+id/editText_bank"
             android:paddingLeft="10dp"
             style="@style/SwirepayCheckout.Card.BankInput"
-            android:nextFocusDown="@+id/editText_postalCode"
-            android:nextFocusForward="@+id/editText_postalCode"
             tools:ignore="RequiredSize" />
 
     </com.google.android.material.textfield.TextInputLayout>

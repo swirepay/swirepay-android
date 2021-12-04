@@ -12,5 +12,5 @@ data class PaymentMethodNetBank(
 ) : Parcelable
 
 @Parcelize
-data class NetBanking(val bankId: String) : Parcelable
+data class NetBanking(val swirepayBankGid: String) : Parcelable
 

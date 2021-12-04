@@ -64,8 +64,6 @@ class PaymentStatusActivity : AppCompatActivity() {
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     finish()
-//                val complete = CheckoutActivity()
-//                complete.onComplete(true)
 
                     val msg = Message()
                     msg.obj = it

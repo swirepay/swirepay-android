@@ -2,6 +2,7 @@ package com.swirepay.android_sdk.checkout.model
 
 import android.os.Parcelable
 import com.swirepay.android_sdk.model.Country
+import com.swirepay.android_sdk.model.Currency
 import kotlinx.parcelize.Parcelize
 
 
@@ -76,3 +77,6 @@ data class PaymentCard(
 
 @Parcelize
 data class PaymentMethodContent(val content: List<PaymentMethodResponse>) : Parcelable
+
+@Parcelize
+data class _PaymentMethodCard(val paymentCard: PaymentCard, val gid: String) : Parcelable

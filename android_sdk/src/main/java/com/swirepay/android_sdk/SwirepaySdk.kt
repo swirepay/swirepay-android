@@ -67,12 +67,13 @@ object SwirepaySdk {
     var TOOLBAR_COLOR = "#2196F3"
     var TOOLBAR_ITEM = "#FFFFFF"
     var STATUSBAR_COLOR = "#1976D2"
-    const val CHECKOUT_REQUEST = "checkout_request"
-    const val CHECKOUT_CUSTOMER = "checkout_customer"
+    var HIDE_LOGO = false
     const val SESSION_GID = "session_gid"
     const val ORDER_INFO = "order_info"
     const val PAYMENT_SECRET = "payment_secret"
     const val PAYMENT_STATUS = "payment_status"
+    const val PAYMENT_RESPONSE = "payment_response"
+    const val PAYMENT_FAILED = "payment_failed"
 
     const val REQUEST_CODE_CHECKOUT = 243
 
@@ -291,12 +292,13 @@ object SwirepaySdk {
         orderInfo: OrderInfo,
         customer: SPCustomer?,
         requestCode: Int,
+        hideLogo: Boolean,
         toolbarColor: String,
         statusBarColor: String,
         toolbarItemColor: String,
     ) {
 
-        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+        if (apiKey!!.isEmpty() || apiKey == null) throw KeyNotInitializedException()
 
         if (customer == null) throw CustomerRequiredException()
 
@@ -305,6 +307,7 @@ object SwirepaySdk {
             this.TOOLBAR_ITEM = toolbarItemColor
             this.STATUSBAR_COLOR = statusBarColor
         }
+        this.HIDE_LOGO = hideLogo
 
         context.startActivityForResult(
             Intent(context, CheckoutActivity::class.java).apply {
@@ -319,12 +322,15 @@ object SwirepaySdk {
         context: Activity,
         orderInfo: OrderInfo,
         customer: SPCustomer?,
-        requestCode: Int
+        requestCode: Int,
+        hideLogo: Boolean
     ) {
 
-        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+        if (apiKey!!.isEmpty() || apiKey == null) throw KeyNotInitializedException()
 
         if (customer == null) throw CustomerRequiredException()
+
+        this.HIDE_LOGO = hideLogo
 
         context.startActivityForResult(
             Intent(context, CheckoutActivity::class.java).apply {

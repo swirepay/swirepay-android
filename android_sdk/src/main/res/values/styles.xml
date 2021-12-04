@@ -50,7 +50,7 @@
     </style>
 
     <style name="SwirepayCheckout.Card.MobileInput" parent="SwirepayCheckout.TextInputEditText">
-        <item name="android:hint">@string/checkout_mobile_number_hint</item>
+        <item name="android:hint">@string/checkout_upi_hint</item>
         <item name="android:inputType">text</item>
     </style>
 

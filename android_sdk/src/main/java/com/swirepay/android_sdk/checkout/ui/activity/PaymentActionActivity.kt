@@ -12,11 +12,18 @@ import android.util.Log
 import android.view.*
 import android.webkit.*
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.R
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.checkout.utils.StatusbarUtil
+import com.swirepay.android_sdk.checkout.viewmodel.ViewModelPaymentSession
 import com.swirepay.android_sdk.databinding.ActivityPaymentActionBinding
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import android.graphics.Bitmap
+
+import android.webkit.WebView
+
 
 class PaymentActionActivity : AppCompatActivity() {
 
@@ -24,11 +31,20 @@ class PaymentActionActivity : AppCompatActivity() {
     var amount: Int = 0
     lateinit var paymentSessionGid: String
     lateinit var paymentSecret: String
+    private lateinit var owner: LifecycleOwner
+
+    val viewModelPaymentSession: ViewModelPaymentSession by lazy {
+        ViewModelProvider(
+            this
+        ).get(ViewModelPaymentSession::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentActionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        owner = this
 
         StatusbarUtil.changeStatusbarColor(this.window)
 
@@ -70,18 +86,53 @@ class PaymentActionActivity : AppCompatActivity() {
                 request: WebResourceRequest?
             ): Boolean {
                 val localUrl = request?.url.toString()
-                Log.e("sdk_test", "shouldOverrideUrlLoading: $localUrl")
+                Log.d("sdk_test", "shouldOverrideUrlLoading: $localUrl")
                 val uri = request?.url
 
                 val session = uri?.getQueryParameter("ps")
                 val secret = uri?.getQueryParameter("secret")
-                if (session != null && secret!=null) {
+                if (session != null && secret != null) {
                     paymentSessionGid = session
                     paymentSecret = secret
                 }
 
                 if (isThisFinalUrl(localUrl)) {
                     loadUrl(localUrl)
+                    return true
+                }
+
+                return super.shouldOverrideUrlLoading(view, request)
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                Log.d("PaymentAction", "onReceivedError: $error")
+            }
+
+            override fun onPageStarted(view: WebView?, url: String, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                Log.d("PaymentAction", "your current url when webpage loading..$url")
+            }
+
+            override fun onReceivedSslError(
+                view: WebView?,
+                handler: SslErrorHandler?,
+                error: SslError?
+            ) {
+                Log.d("PaymentAction", "onReceivedErrorssl: ${error.toString()}")
+                super.onReceivedSslError(view, handler, error)
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                binding.progress.visibility = View.GONE
+                Log.d("PaymentAction", "onPageFinished:$url")
+
+                if (isThisFinalUrl(url)) {
 
                     Handler(Looper.getMainLooper()).postDelayed({
                         finish()
@@ -95,55 +146,18 @@ class PaymentActionActivity : AppCompatActivity() {
                                 putExtra(SwirepaySdk.PAYMENT_SECRET, paymentSecret)
                             })
                     }, 1500)
-                    return true
                 }
-
-                return super.shouldOverrideUrlLoading(view, request)
-            }
-
-            override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
-            ) {
-                super.onReceivedError(view, request, error)
-                Log.d(PaymentActivity.TAG, "onReceivedError: $error")
-            }
-
-//            override fun onReceivedError(
-//                view: WebView?,
-//                request: WebResourceRequest?,
-//                error: WebResourceError?
-//            ) {
-//                Log.d(PaymentActivity.TAG, "onReceivedError: ${error.toString()}")
-//                super.onReceivedError(view, request, error)
-//            }
-
-            override fun onReceivedSslError(
-                view: WebView?,
-                handler: SslErrorHandler?,
-                error: SslError?
-            ) {
-                Log.d(PaymentActivity.TAG, "onReceivedErrorssl: ${error.toString()}")
-                super.onReceivedSslError(view, handler, error)
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                binding.progress.visibility = View.GONE
-                Log.d(PaymentActivity.TAG, "onPageFinished: ")
             }
         }
     }
 
     companion object {
         fun isThisFinalUrl(url: String?): Boolean {
-            if (url != null && url.contains("/complete")) {
+            if (url != null && (url.contains("/complete"))) {
                 return true
             }
             return false
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -30,7 +30,7 @@ class ObjectAdapter(context: Context, originalList: List<Banks>) : BaseAdapter()
     }
 
     override fun getItem(position: Int): Any {
-        return suggestions[position].cashfreeBankName
+        return suggestions[position].bankName
     }
 
     override fun getItemId(position: Int): Long {
@@ -47,7 +47,7 @@ class ObjectAdapter(context: Context, originalList: List<Banks>) : BaseAdapter()
         )
         val holder = ViewHolder()
         holder.autoText = convertView?.findViewById(R.id.itemName)
-        holder.autoText!!.text = suggestions[position].cashfreeBankName
+        holder.autoText!!.text = suggestions[position].bankName
         return convertView
     }
 
@@ -60,7 +60,7 @@ class ObjectAdapter(context: Context, originalList: List<Banks>) : BaseAdapter()
             suggestions.clear()
             if (originalList != null && constraint != null) {
                 for (i in originalList.indices) {
-                    if (originalList[i].cashfreeBankName.toLowerCase()
+                    if (originalList[i].bankName.toLowerCase()
                             .contains(constraint)
                     ) {
                         suggestions.add(originalList[i])

@@ -1,8 +1,9 @@
 package com.swirepay.android_sdk.checkout.interfaces
 
-import com.swirepay.android_sdk.checkout.model.Currency
+
 import com.swirepay.android_sdk.checkout.model.PaymentCustomer
 import com.swirepay.android_sdk.checkout.model.PaymentMethodResponse
+import com.swirepay.android_sdk.model.Currency
 
 interface ISPPaymentResult {
 
