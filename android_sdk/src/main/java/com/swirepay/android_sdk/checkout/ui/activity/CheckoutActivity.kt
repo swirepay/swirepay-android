@@ -1,24 +1,23 @@
 package com.swirepay.android_sdk.checkout.ui.activity
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
-import com.skydoves.expandablelayout.ExpandableLayout
 import com.swirepay.android_sdk.R
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.checkout.model.*
@@ -31,15 +30,25 @@ import com.swirepay.android_sdk.model.Banks
 import com.swirepay.android_sdk.model.OrderInfo
 import android.os.Handler
 import android.os.Message
+import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
-import com.swirepay.android_sdk.BuildConfig
-import com.swirepay.android_sdk.checkout.viewmodel.ViewModelCustomer
-import com.swirepay.android_sdk.checkout.viewmodel.ViewModelNetBanking
-import com.swirepay.android_sdk.checkout.viewmodel.ViewModelPaymentSession
-import com.swirepay.android_sdk.checkout.viewmodel.ViewModelPaymentUPI
-import com.swirepay.android_sdk.model.ErrorResponse
+import com.google.gson.GsonBuilder
 import com.swirepay.android_sdk.model.PaymentMethodType
 import com.swirepay.android_sdk.ui.payment_activity.PaymentActivity
+import com.swirepay.android_sdk.viewmodel.ViewModelAccount
+import com.swirepay.android_sdk.viewmodel.ViewModelProfile
+import java.io.IOException
+import java.io.InputStream
+import java.net.URLEncoder
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.checkbox.MaterialCheckBox
+import com.skydoves.expandablelayout.ExpandableLayout
+import com.swirepay.android_sdk.Utility
+import com.swirepay.android_sdk.checkout.ui.adapter.CustomAdapter
+import com.swirepay.android_sdk.checkout.utils.CardValidator
+import com.swirepay.android_sdk.checkout.viewmodel.*
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -58,11 +67,22 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var cardNumberTextInput: TextInputLayout
     lateinit var mobileTextInput: TextInputLayout
     lateinit var cardLogo: RoundCornerImageView
+    lateinit var storePaymentMethod: MaterialCheckBox
     lateinit var orderInfo: OrderInfo
     lateinit var customer: SPCustomer
-    lateinit var editTextBanks: AutoCompleteTextView
-    lateinit var banks: List<Banks>
-    var bankId: Int = 0
+    lateinit var editTextBanks: AppCompatAutoCompleteTextView
+    val swirepayBanks = ArrayList<Banks>()
+    lateinit var paymentTypes: List<String>
+    lateinit var bankId: String
+    var isTest: Boolean = false
+
+    val viewModelProfile: ViewModelProfile by lazy {
+        ViewModelProvider(this).get(ViewModelProfile::class.java)
+    }
+
+    val viewModelAccount: ViewModelAccount by lazy {
+        ViewModelProvider(this).get(ViewModelAccount::class.java)
+    }
 
     val viewModelCustomer: ViewModelCustomer by lazy {
         ViewModelProvider(this).get(ViewModelCustomer::class.java)
@@ -80,12 +100,19 @@ class CheckoutActivity : AppCompatActivity() {
         ).get(ViewModelPaymentUPI::class.java)
     }
 
+    val viewModelCard: ViewModelCardPayment by lazy {
+        ViewModelProvider(
+            this
+        ).get(ViewModelCardPayment::class.java)
+    }
+
     val viewModelNetBanking: ViewModelNetBanking by lazy {
         ViewModelProvider(
             this
         ).get(ViewModelNetBanking::class.java)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCheckOutBinding.inflate(layoutInflater)
@@ -106,6 +133,16 @@ class CheckoutActivity : AppCompatActivity() {
         supportActionBar?.title = "Order"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(SwirepaySdk.TOOLBAR_COLOR)))
         toolbar.setTitleTextColor(Color.parseColor(SwirepaySdk.TOOLBAR_ITEM))
+
+        if (!Utility.isOnline(this)) {
+            onSnack("Internet connection not available!")
+            return
+        }
+
+        if (!SwirepaySdk.HIDE_LOGO)
+            binding.logo.visibility = View.GONE
+        else
+            binding.logo.visibility = View.VISIBLE
 
         binding.cardExpandable.parentLayout.setOnClickListener {
             binding.cardExpandable.toggleLayout()
@@ -131,59 +168,132 @@ class CheckoutActivity : AppCompatActivity() {
         customer.shippingAddress = shippingAddress
 
         binding.progress.visibility = View.VISIBLE
-        viewModelCustomer.createCustomer(customer)
 
-        viewModelCustomer.liveCustomerResponse.observe(this, {
-            binding.progress.visibility = View.GONE
-            customerGid = it.gid
+        viewModelProfile.getProfile()
+        viewModelProfile.liveProfileResponse.observe(this, {
+
+            isTest = it.test
+
+            viewModelAccount.getAccount(it.accountGid)
+            viewModelAccount.liveAccountResponse.observe(this, { it ->
+                paymentTypes = it.supportedPaymentTypes
+
+                if (paymentTypes.contains("CREDIT_CARD_NOT_PRESENT") || paymentTypes.contains("DEBIT_CARD_NOT_PRESENT"))
+                    binding.cardExpandable.visibility = View.VISIBLE
+                else
+                    binding.cardExpandable.visibility = View.GONE
+
+                if (paymentTypes.contains("UPI_NOT_PRESENT"))
+                    binding.upiExpandable.visibility = View.VISIBLE
+                else
+                    binding.upiExpandable.visibility = View.GONE
+
+//                val data: String = getAssetJsonData(applicationContext)
+//                val gson = GsonBuilder().create()
+//                val banks = gson.fromJson(data, Array<Banks>::class.java).toList()
+
+//                for (bank in banks) {
+//                    if (bank.isTest == isTest)
+//                        if (paymentTypes.contains(bank.paymentType)) {
+//                            swirepayBanks.add(bank)
+//                        }
+//                }
+
+//                if (swirepayBanks.size > 0)
+//                    binding.netBankExpandable.visibility = View.VISIBLE
+//                else
+//                    binding.netBankExpandable.visibility = View.GONE
+            })
         })
 
-//        viewModelCustomer.getCustomer(
-//            SwirepaySdk.upiCustomer.name,
-//            URLEncoder.encode(SwirepaySdk.upiCustomer.email, "UTF-8"),
-//            URLEncoder.encode(SwirepaySdk.upiCustomer.phoneNumber, "UTF-8")
-//        )
-//
-//        viewModelCustomer.liveGetCustomerResponse.observe(this, {
-//            binding.progress.visibility = View.GONE
-//
-//            viewModelPaymentSession.getPaymentMethod(URLEncoder.encode(it.content[0].gid, "UTF-8"))
-//        })
-//
-//        viewModelPaymentSession.paymentMethodResults.observe(this, {
-//
-//            binding.progress.visibility = View.GONE
-//
+        viewModelCustomer.getCustomer(
+            customer.name,
+            URLEncoder.encode(customer.email, "UTF-8"),
+            URLEncoder.encode(customer.phoneNumber, "UTF-8")
+        )
+
+        viewModelCustomer.liveGetCustomerResponse.observe(this, {
+            binding.progress.visibility = View.GONE
+
+            if (it.content.isEmpty()) {
+
+                viewModelCustomer.createCustomer(customer)
+
+                viewModelCustomer.liveCustomerResponse.observe(this, { it ->
+                    customerGid = it.gid
+                })
+            } else {
+
+                customerGid = it.content[0].gid
+
+                viewModelPaymentSession.getPaymentMethod(
+                    URLEncoder.encode(
+                        it.content[0].gid,
+                        "UTF-8"
+                    )
+                )
+            }
+        })
+
+        viewModelPaymentSession.paymentMethodResults.observe(this, {
+
+            binding.progress.visibility = View.GONE
+
 //            val savedCards = ArrayList<PaymentCard>()
 //            val savedUpi = ArrayList<PaymentUpi>()
-//
-//            for (paymentMethod in it.content) {
-//                if (paymentMethod.card != null)
+            val paymentMethodCard = ArrayList<_PaymentMethodCard>()
+            val distinctCards = ArrayList<_PaymentMethodCard>()
+            val cardNumbers = ArrayList<String?>()
+            val cardsMap = HashMap<PaymentCard, String>()
+
+
+            for (paymentMethod in it.content) {
+                if (paymentMethod.card != null) {
 //                    savedCards.add(paymentMethod.card)
-//
+                    cardsMap.put(paymentMethod.card, paymentMethod.gid)
+                    cardNumbers.add(paymentMethod.card.lastFour)
+                }
+
 //                if (paymentMethod.upi != null)
 //                    savedUpi.add(paymentMethod.upi)
-//            }
-//
+            }
+
 //            val distinctCards: List<PaymentCard> = savedCards.distinctBy { it.lastFour }
 //            val distinctUpi: List<PaymentUpi> = savedUpi.distinctBy { it.vpa }
-//
-//            if (distinctCards.isNotEmpty()) {
-//                binding.savedCardsLayout.visibility = View.VISIBLE
-//                binding.savedCardsView.layoutManager = LinearLayoutManager(this)
-//
-//                val adapter = CustomAdapter(this, distinctCards, paymentSession.amount)
-//                binding.savedCardsView.adapter = adapter
-//            }
-//
-//            if (distinctCards.isNotEmpty()) {
+
+            if (cardsMap.isNotEmpty()) {
+                binding.savedCardsLayout.visibility = View.VISIBLE
+                binding.savedCardsView.layoutManager = LinearLayoutManager(this)
+
+                for ((k, v) in cardsMap) {
+                    val section = _PaymentMethodCard(k, v)
+
+                    paymentMethodCard.add(section)
+                }
+
+                val distinctCards: List<_PaymentMethodCard> = paymentMethodCard.distinctBy { it.paymentCard.lastFour }
+
+                val adapter = CustomAdapter(
+                    this,
+                    distinctCards,
+                    orderInfo.amount,
+                    object : CustomAdapter.PayListener {
+                        override fun onPayClick(cvv: String, cardGid: String?, gid: String) {
+
+                            updateSecurityCode(cvv, cardGid, gid)
+                        }
+                    })
+                binding.savedCardsView.adapter = adapter
+            }
+
+//            if (distinctUpi.isNotEmpty()) {
 //                binding.savedUpiLayout.visibility = View.VISIBLE
 //                binding.savedUpiView.layoutManager = LinearLayoutManager(this)
 //
 //                val adapter = UpiCustomAdapter(this, distinctUpi)
 //                binding.savedUpiView.adapter = adapter
 //            }
-//        })
+        })
 
         funcCard()
 
@@ -222,6 +332,24 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateSecurityCode(cvv: String, cardGid: String?, pGid: String) {
+
+        val cardInfo = CardInfo(cvv)
+
+        viewModelCard.updateCVV(cardInfo, cardGid)
+
+        viewModelCard.liveCardResponse.observe(this, {
+
+            val arrayList: ArrayList<PaymentMethodType> = ArrayList()
+            arrayList.add(PaymentMethodType.CARD)
+
+            orderInfo.paymentMethodGid = pGid
+            orderInfo.paymentMethodType = arrayList
+
+            viewModelPaymentSession.createPaymentSession(orderInfo)
+        })
+    }
+
     private fun funcCard() {
 
         cardNumber =
@@ -239,9 +367,17 @@ class CheckoutActivity : AppCompatActivity() {
             binding.cardExpandable.secondLayout.findViewById(R.id.payNow)
         cardLogo =
             binding.cardExpandable.secondLayout.findViewById(R.id.cardBrandLogo_imageView_primary)
+        storePaymentMethod =
+            binding.cardExpandable.secondLayout.findViewById(R.id.storePaymentMethod)
         payNow.text =
             "Pay " + resources.getString(R.string.Rs) + (orderInfo.amount / 100).toDouble()
         payNow.isEnabled = false
+
+        var isSaved = false
+
+        storePaymentMethod.setOnCheckedChangeListener { buttonView, isChecked ->
+            isSaved = isChecked
+        }
 
         cardNumber.addTextChangedListener(cardTextWatcher)
 
@@ -266,7 +402,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.VISIBLE
             val card = Card(cvv, expiryMonth, expiryYear, name, number)
-            val paymentMethod = PaymentMethodCard(card, "CARD", customerGid)
+            val paymentMethod = PaymentMethodCard(card, "CARD", customerGid, isSaved)
 
             viewModelPaymentSession.createPaymentMethod(paymentMethod)
         }
@@ -290,7 +426,20 @@ class CheckoutActivity : AppCompatActivity() {
 //            val paymentResult: PaymentResult = it as PaymentResult
 //            Log.e("Result", Gson().toJson(paymentResult))
 
-            redirect(it.nextActionUrl)
+            if ((it.status == "SUCCEEDED" || it.status == "SUCCESS") && it.nextActionUrl == null) {
+
+                startActivity(
+                    Intent(
+                        applicationContext,
+                        PaymentStatusActivity::class.java
+                    ).apply {
+                        putExtra(SwirepaySdk.PAYMENT_AMOUNT, orderInfo.amount)
+                        putExtra(SwirepaySdk.SESSION_GID, it.gid)
+                        putExtra(SwirepaySdk.PAYMENT_SECRET, it.psClientSecret)
+                    })
+
+            } else
+                redirect(it.nextActionUrl)
         })
 
         viewModelPaymentSession.liveErrorMessages.observe(this, { message ->
@@ -315,7 +464,7 @@ class CheckoutActivity : AppCompatActivity() {
         payNowUpi.text = "Verify & Pay"
         payNowUpi.isEnabled = false
 
-        mobileNumber.setText(upiNumber)
+//        mobileNumber.setText(upiNumber)
 
         val gpay = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.gpay)
         val paytm = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.paytm)
@@ -384,20 +533,21 @@ class CheckoutActivity : AppCompatActivity() {
 
         editTextBanks = binding.netBankExpandable.secondLayout.findViewById(R.id.editText_bank)
 
-//        if (BuildConfig.DEBUG)
-        viewModelNetBanking.getAllBanks(true)
-//        else
-//            viewModelNetBanking.getAllBanks(false)
+        val data: String = getAssetJsonData(applicationContext)
+        val gson = GsonBuilder().create()
+        val banks = gson.fromJson(data, Array<Banks>::class.java).toList()
 
-        viewModelNetBanking.livePaymentBanks.observe(this, {
+        val swirepayBanks = ArrayList<Banks>()
 
-            banks = it
+        for (bank in banks) {
+            if (bank.isTest == isTest)
+                swirepayBanks.add(bank)
+        }
 
-            val adapter = ObjectAdapter(this, banks)
-            editTextBanks.setAdapter(adapter)
-            editTextBanks.threshold = 1
-            editTextBanks.dismissDropDown()
-        })
+        val adapter = ObjectAdapter(this, swirepayBanks)
+        editTextBanks.setAdapter(adapter)
+        editTextBanks.threshold = 1
+//        editTextBanks.dismissDropDown()
 
         payNowBank = binding.netBankExpandable.secondLayout.findViewById(R.id.payNowBank)
         payNowBank.text =
@@ -409,9 +559,15 @@ class CheckoutActivity : AppCompatActivity() {
         editTextBanks.setOnItemClickListener { _, _, position, _ ->
 
             val bankStr: String = editTextBanks.adapter.getItem(position).toString()
-            for (bank in banks) {
-                if (bank.cashfreeBankName == bankStr)
-                    bankId = bank.cashfreeBankId
+            for (bank in swirepayBanks) {
+                if (bank.bankName == bankStr) {
+                    if (paymentTypes.contains(bank.paymentType))
+                        bankId = bank.gid
+                    else {
+                        onSnack("Netbanking from bank " + bank.bankName + " is not enabled by this merchant.")
+                        payNowBank.isEnabled = false
+                    }
+                }
             }
         }
 
@@ -419,7 +575,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.VISIBLE
 
-            val netBanking = NetBanking(bankId.toString())
+            val netBanking = NetBanking(bankId)
             val netBank = PaymentMethodNetBank(netBanking, "NET_BANKING", customerGid)
 
             viewModelNetBanking.createPaymentMethodNetBanking(netBank)
@@ -438,9 +594,13 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.GONE
 
-//            createResult(it)
+            if (it.status == "REQUIRE_PAYMENT_METHOD") {
 
-            redirect(it.nextActionUrl)
+                onSnack("Netbanking from bank " + it.paymentMethod.netbanking.bankName + " is not enabled by this merchant")
+            } else {
+
+                redirect(it.nextActionUrl)
+            }
         })
 
         viewModelNetBanking.liveErrorMessages.observe(this, { message ->
@@ -451,7 +611,7 @@ class CheckoutActivity : AppCompatActivity() {
         })
     }
 
-    private fun redirect(nextActionUrl: String) {
+    private fun redirect(nextActionUrl: String?) {
 
         startActivity(Intent(this, PaymentActionActivity::class.java).apply {
             putExtra(SwirepaySdk.PAYMENT_METHOD_URL, nextActionUrl)
@@ -526,7 +686,8 @@ class CheckoutActivity : AppCompatActivity() {
         override fun onTextChanged(
             s: CharSequence, start: Int, before: Int, count: Int
         ) {
-            cardLogo.setImageResource(CardType.forCardNumber(cardNumber.text.toString()).cardDrawable)
+//            cardLogo.setImageResource(CardType.forCardNumberPattern(cardNumber.text.toString()).cardDrawable)
+            cardLogo.setImageResource(CardValidator.guessCard(cardNumber.text.toString()).drawable)
 
             payNow.isEnabled = cardNumber.text.toString().isNotEmpty() && expiryDate.text.toString()
                 .isNotEmpty() &&
@@ -628,7 +789,23 @@ class CheckoutActivity : AppCompatActivity() {
             .show()
     }
 
-    fun collapse(v: ExpandableLayout) {
+    private fun getAssetJsonData(context: Context): String {
+        var json: String
+        try {
+            val inputStream: InputStream = context.assets.open("swirepaybanks.json")
+            val size = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            inputStream.close()
+            json = String(buffer, Charsets.UTF_8)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return ""
+        }
+        return json
+    }
+
+    private fun collapse(v: ExpandableLayout) {
         v.collapse()
     }
 
@@ -640,7 +817,7 @@ class CheckoutActivity : AppCompatActivity() {
     private fun onSnack(message: String) {
         val snackbar = Snackbar.make(
             findViewById(R.id.parentView), message,
-            Snackbar.LENGTH_LONG
+            3000
         )
 //            .setAction("Action", null)
 //        snackbar.setActionTextColor(Color.BLUE)

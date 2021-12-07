@@ -1,0 +1,457 @@
+[
+  {
+    "gid": "swirepaynetbanking-a595428b51b311ec95d10242ac120002",
+    "bankName": "Axis Bank",
+    "paymentType": "NET_BANKING_AXIS_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59e525f51b311ec95d10242ac120002",
+    "bankName": "Bank of Baroda - Retail Banking",
+    "paymentType": "NET_BANKING_BANK_OF_BARODA_RETAIL_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59e5bc951b311ec95d10242ac120002",
+    "bankName": "Bank of India",
+    "paymentType": "NET_BANKING_BANK_OF_INDIA",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59e5e8751b311ec95d10242ac120002",
+    "bankName": "Bank of Maharashtra",
+    "paymentType": "NET_BANKING_BANK_OF_MAHARASHTRA",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59e611c51b311ec95d10242ac120002",
+    "bankName": "Canara Bank",
+    "paymentType": "NET_BANKING_CANARA_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59e64f651b311ec95d10242ac120002",
+    "bankName": "Catholic Syrian Bank",
+    "paymentType": "NET_BANKING_CATHOLIC_SYRIAN_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59ff78c51b311ec95d10242ac120002",
+    "bankName": "Central Bank of India",
+    "paymentType": "NET_BANKING_CENTRAL_BANK_OF_INDIA",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a59ffc8551b311ec95d10242ac120002",
+    "bankName": "City Union Bank",
+    "paymentType": "NET_BANKING_CITY_UNION_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5a5de2d51b311ec95d10242ac120002",
+    "bankName": "Deutsche Bank",
+    "paymentType": "NET_BANKING_DEUTSCHE_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5a5e29a51b311ec95d10242ac120002",
+    "bankName": "DBS Bank Ltd",
+    "paymentType": "NET_BANKING_DBS_BANK_LTD",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5a5e54151b311ec95d10242ac120002",
+    "bankName": "DCB Bank – Personal",
+    "paymentType": "NET_BANKING_DCB_BANK_PERSONAL",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5ab096c51b311ec95d10242ac120002",
+    "bankName": "Dhanlakshmi Bank",
+    "paymentType": "NET_BANKING_DHANLAKSHMI_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5ab0e3351b311ec95d10242ac120002",
+    "bankName": "Federal Bank",
+    "paymentType": "NET_BANKING_FEDERAL_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5acaf7f51b311ec95d10242ac120002",
+    "bankName": "HDFC Bank",
+    "paymentType": "NET_BANKING_HDFC_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5acb3e051b311ec95d10242ac120002",
+    "bankName": "ICICI Bank",
+    "paymentType": "NET_BANKING_ICICI_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5acb68651b311ec95d10242ac120002",
+    "bankName": "IDBI Bank",
+    "paymentType": "NET_BANKING_IDBI_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5acb91351b311ec95d10242ac120002",
+    "bankName": "IDFC FIRST Bank",
+    "paymentType": "NET_BANKING_IDFC_FIRST_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5acbbd651b311ec95d10242ac120002",
+    "bankName": "Indian Bank",
+    "paymentType": "NET_BANKING_INDIAN_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b5c88851b311ec95d10242ac120002",
+    "bankName": "Indian Overseas Bank",
+    "paymentType": "NET_BANKING_INDIAN_OVERSEAS_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8a98551b311ec95d10242ac120002",
+    "bankName": "IndusInd Bank",
+    "paymentType": "NET_BANKING_INDUSIND_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8ae7851b311ec95d10242ac120002",
+    "bankName": "Jammu and Kashmir Bank",
+    "paymentType": "NET_BANKING_JAMMU_AND_KASHMIR_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8b14951b311ec95d10242ac120002",
+    "bankName": "Karnataka Bank Ltd",
+    "paymentType": "NET_BANKING_KARNATAKA_BANK_LTD",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8b3ea51b311ec95d10242ac120002",
+    "bankName": "Karur Vysya Bank",
+    "paymentType": "NET_BANKING_KARUR_VYSYA_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8b6bd51b311ec95d10242ac120002",
+    "bankName": "Kotak Mahindra Bank",
+    "paymentType": "NET_BANKING_KOTAK_MAHINDRA_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8b99451b311ec95d10242ac120002",
+    "bankName": "Laxmi Vilas Bank - Retail Net Banking",
+    "paymentType": "NET_BANKING_LAXMI_VILAS_BANK_RETAIL_NET_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8bc1751b311ec95d10242ac120002",
+    "bankName": "Punjab & Sind Bank",
+    "paymentType": "NET_BANKING_PUNJAB_AND_SIND_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8be9351b311ec95d10242ac120002",
+    "bankName": "Punjab National Bank - Retail Net Banking",
+    "paymentType": "NET_BANKING_PUNJAB_NATIONAL_BANK_RETAIL_NET_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8c11b51b311ec95d10242ac120002",
+    "bankName": "RBL Bank",
+    "paymentType": "NET_BANKING_RBL_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5b8c46051b311ec95d10242ac120002",
+    "bankName": "Saraswat Bank",
+    "paymentType": "NET_BANKING_SARASWAT_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c30cfa51b311ec95d10242ac120002",
+    "bankName": "South Indian Bank",
+    "paymentType": "NET_BANKING_SOUTH_INDIAN_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3113b51b311ec95d10242ac120002",
+    "bankName": "Standard Chartered Bank",
+    "paymentType": "NET_BANKING_STANDARD_CHARTERED_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c313d351b311ec95d10242ac120002",
+    "bankName": "State Bank Of India",
+    "paymentType": "NET_BANKING_STATE_BANK_OF_INDIA",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3165d51b311ec95d10242ac120002",
+    "bankName": "Tamilnad Mercantile Bank Ltd",
+    "paymentType": "NET_BANKING_TAMILNAD_MERCANTILE_BANK_LTD",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3194351b311ec95d10242ac120002",
+    "bankName": "UCO Bank",
+    "paymentType": "NET_BANKING_UCO_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c31d0e51b311ec95d10242ac120002",
+    "bankName": "Union Bank of India",
+    "paymentType": "NET_BANKING_UNION_BANK_OF_INDIA",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c31faa51b311ec95d10242ac120002",
+    "bankName": "Yes Bank Ltd",
+    "paymentType": "NET_BANKING_YES_BANK_LTD",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3222b51b311ec95d10242ac120002",
+    "bankName": "Bank of Baroda – Corporate",
+    "paymentType": "NET_BANKING_BANK_OF_BARODA_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c325e551b311ec95d10242ac120002",
+    "bankName": "Bank of India – Corporate",
+    "paymentType": "NET_BANKING_BANK_OF_INDIA_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3288451b311ec95d10242ac120002",
+    "bankName": "DCB Bank – Corporate",
+    "paymentType": "NET_BANKING_DCB_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c32b0e51b311ec95d10242ac120002",
+    "bankName": "Lakshmi Vilas Bank – Corporate",
+    "paymentType": "NET_BANKING_LAKSHMI_VILAS_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c32d8651b311ec95d10242ac120002",
+    "bankName": "Punjab National Bank – Corporate",
+    "paymentType": "NET_BANKING_PUNJAB_NATIONAL_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c32ff251b311ec95d10242ac120002",
+    "bankName": "State Bank of India – Corporate",
+    "paymentType": "NET_BANKING_STATE_BANK_OF_INDIA_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3326051b311ec95d10242ac120002",
+    "bankName": "Union Bank of India – Corporate",
+    "paymentType": "NET_BANKING_UNION_BANK_OF_INDIA_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3350c51b311ec95d10242ac120002",
+    "bankName": "Axis Bank Corporate",
+    "paymentType": "NET_BANKING_AXIS_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3378851b311ec95d10242ac120002",
+    "bankName": "Dhanlaxmi Bank Corporate",
+    "paymentType": "NET_BANKING_DHANLAXMI_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c33a6251b311ec95d10242ac120002",
+    "bankName": "ICICI Corporate Netbanking",
+    "paymentType": "NET_BANKING_ICICI_CORPORATE_NETBANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c33ccd51b311ec95d10242ac120002",
+    "bankName": "Ratnakar Corporate Banking",
+    "paymentType": "NET_BANKING_RATNAKAR_CORPORATE_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c33f1b51b311ec95d10242ac120002",
+    "bankName": "Shamrao Vithal Bank Corporate",
+    "paymentType": "NET_BANKING_SHAMRAO_VITHAL_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3410951b311ec95d10242ac120002",
+    "bankName": "Equitas Small Finance Bank",
+    "paymentType": "NET_BANKING_EQUITAS_SMALL_FINANCE_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3437351b311ec95d10242ac120002",
+    "bankName": "Yes Bank Corporate",
+    "paymentType": "NET_BANKING_YES_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3456b51b311ec95d10242ac120002",
+    "bankName": "Bandhan Bank - Corporate banking",
+    "paymentType": "NET_BANKING_BANDHAN_BANK_CORPORATE_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3475a51b311ec95d10242ac120002",
+    "bankName": "Barclays Corporate - Corporate Banking – Corporate",
+    "paymentType": "NET_BANKING_BARCLAYS_CORPORATE_CORPORATE_BANKING_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3494651b311ec95d10242ac120002",
+    "bankName": "Indian Overseas Bank Corporate",
+    "paymentType": "NET_BANKING_INDIAN_OVERSEAS_BANK_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c34b3251b311ec95d10242ac120002",
+    "bankName": "City Union Bank of Corporate",
+    "paymentType": "NET_BANKING_CITY_UNION_BANK_OF_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c34d1a51b311ec95d10242ac120002",
+    "bankName": "HDFC Corporate",
+    "paymentType": "NET_BANKING_HDFC_CORPORATE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c34f0851b311ec95d10242ac120002",
+    "bankName": "Shivalik Bank",
+    "paymentType": "NET_BANKING_SHIVALIK_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c350f351b311ec95d10242ac120002",
+    "bankName": "AU Small Finance",
+    "paymentType": "NET_BANKING_AU_SMALL_FINANCE",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c352db51b311ec95d10242ac120002",
+    "bankName": "Bandhan Bank - Retail Net Banking",
+    "paymentType": "NET_BANKING_BANDHAN_BANK_RETAIL_NET_BANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c354ca51b311ec95d10242ac120002",
+    "bankName": "Shamrao Vitthal Co-operative Bank",
+    "paymentType": "NET_BANKING_SHAMRAO_VITTHAL_COOPERATIVE_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c356b551b311ec95d10242ac120002",
+    "bankName": "Tamil Nadu State Co-operative Bank -  Limited",
+    "paymentType": "NET_BANKING_TAMIL_NADU_STATE_COOPERATIVE_BANK__LIMITED",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c358a051b311ec95d10242ac120002",
+    "bankName": "Utkarsh Small Finance Bank",
+    "paymentType": "NET_BANKING_UTKARSH_SMALL_FINANCE_BANK",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c35a8851b311ec95d10242ac120002",
+    "bankName": "The Surat People’s Co-operative Bank Limited",
+    "paymentType": "NET_BANKING_THE_SURAT_PEOPLE’S_COOPERATIVE_BANK_LIMITED",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c35c7151b311ec95d10242ac120002",
+    "bankName": "Gujarat State Co-operative Bank Limited",
+    "paymentType": "NET_BANKING_GUJARAT_STATE_COOPERATIVE_BANK_LIMITED",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c35e5751b311ec95d10242ac120002",
+    "bankName": "HSBC Retail Netbanking",
+    "paymentType": "NET_BANKING_HSBC_RETAIL_NETBANKING",
+    "category": "NET_BANKING",
+    "isTest": false
+  },
+  {
+    "gid": "swirepaynetbanking-a5c3607951b311ec95d10242ac120002",
+    "bankName": "Test Bank",
+    "paymentType": "NET_BANKING_TEST_BANK",
+    "category": "NET_BANKING",
+    "isTest": true
+  }
+]

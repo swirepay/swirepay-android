@@ -9,16 +9,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.expandablelayout.ExpandableLayout
 import com.swirepay.android_sdk.R
-import com.swirepay.android_sdk.checkout.model.PaymentCard
-import com.swirepay.android_sdk.checkout.utils.CardType
+import com.swirepay.android_sdk.checkout.model._PaymentMethodCard
 import com.swirepay.android_sdk.checkout.views.FadedDisableButton
 import com.swirepay.android_sdk.checkout.views.SecurityCodeInput
 
-class CustomAdapter(val context: Context, val mList: List<PaymentCard>, val amount: Int) :
+class CustomAdapter(
+    val context: Context,
+    val mList: List<_PaymentMethodCard>,
+    val amount: Int,
+    val payListener: PayListener
+) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+
+    companion object {
+        var mPayListener: PayListener? = null
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -32,14 +41,28 @@ class CustomAdapter(val context: Context, val mList: List<PaymentCard>, val amou
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val card = mList[position]
+        mPayListener = payListener
+
+        val card = mList[position].paymentCard
         var drawable: Int = R.drawable.ic_card
         when (card.scheme) {
             "VISA" -> drawable = R.drawable.ic_visa
             "MASTER" -> drawable = R.drawable.ic_master
             "MAESTRO" -> drawable = R.drawable.ic_maestro
-            "AMERICAN EXPRESS" -> drawable = R.drawable.ic_amex
+            "AMEX" -> drawable = R.drawable.ic_amex
+            "RUPAY" -> drawable = R.drawable.ic_rupay
+            "DISCOVER" -> drawable = R.drawable.ic_discover
+            "DINERS" -> drawable = R.drawable.ic_diners_club
         }
+//        when (card.bankName) {
+//            "VISA" -> drawable = R.drawable.ic_visa
+//            "MASTER" -> drawable = R.drawable.ic_master
+//            "MAESTRO" -> drawable = R.drawable.ic_maestro
+//            "AMEX" -> drawable = R.drawable.ic_amex
+//            "RUPAY" -> drawable = R.drawable.ic_rupay
+//            "DISCOVER" -> drawable = R.drawable.ic_discover
+//            "DINERS" -> drawable = R.drawable.ic_diners_club
+//        }
         holder.cardLogo.setImageResource(drawable)
         holder.cardNumber.text = "XXXX-...-XXXX-" + card.lastFour
 
@@ -51,6 +74,19 @@ class CustomAdapter(val context: Context, val mList: List<PaymentCard>, val amou
             "Pay " + context.resources.getString(R.string.Rs) + (amount / 100).toDouble()
         holder.payNow.isEnabled = false
 
+        holder.payNow.setOnClickListener {
+            if (mPayListener != null) {
+                if (holder.securityCode.text.toString() != "")
+                    mPayListener?.onPayClick(
+                        holder.securityCode.text.toString(),
+                        card.gid,
+                        mList[position].gid
+                    )
+                else
+                    Toast.makeText(context, "Cvv cannot be empty", Toast.LENGTH_LONG).show()
+            }
+        }
+
         holder.securityCode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -61,7 +97,7 @@ class CustomAdapter(val context: Context, val mList: List<PaymentCard>, val amou
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (holder.securityCode.text.toString().isNotEmpty()) {
+                if (holder.securityCode.text.toString() != "") {
                     holder.payNow.isEnabled = true;
                 }
             }
@@ -86,5 +122,9 @@ class CustomAdapter(val context: Context, val mList: List<PaymentCard>, val amou
             expandableLayout.secondLayout.findViewById(R.id.payNow)
         val securityCode: SecurityCodeInput =
             expandableLayout.secondLayout.findViewById(R.id.editText_securityCode)
+    }
+
+    open interface PayListener {
+        fun onPayClick(cvv: String, cardGid: String?, gid: String)
     }
 }

@@ -99,11 +99,29 @@ interface ApiInterface {
 
     @GET("/v1/payment-session/{paymentSession}")
     fun getPaymentSession(
-        @Path("paymentSession") paymentSession: String,
-        @Query("sp") sp: String,
-        @Query("secret") secret: String,
+        @Path("paymentSession") paymentSession: String?,
+        @Query("sp") sp: String?,
+        @Query("secret") secret: String?,
         @Header("x-api-key") api_key: String
     ): Call<SuccessResponse<PaymentSessionResponse>>
+
+    @GET("/v1/profile")
+    fun getProfile(
+        @Header("x-api-key") api_key: String?
+    ): Call<SuccessResponse<ProfileResponse>>
+
+    @GET("/v1/account/{accountGid}")
+    fun getAccount(
+        @Path("accountGid") accountGid: String,
+        @Header("x-api-key") api_key: String?
+    ): Call<SuccessResponse<AccountResponse>>
+
+    @PATCH("/v1/card/{cardGid}")
+    fun updateCVV(
+        @Path("cardGid") cardGid: String?,
+        @Body cardInfo: CardInfo,
+        @Header("x-api-key") api_key: String?
+    ): Call<SuccessResponse<CardResponse>>
 
     @POST("/v1/customer")
     fun createCustomer(
@@ -127,6 +145,7 @@ interface ApiInterface {
     @GET("v1/payment-method")
     fun getPaymentMethod(
         @Query("customerGid.EQ", encoded = true) customerGid: String,
+        @Query("isSaved.EQ") isSaved: Boolean,
         @Header("x-api-key") api_key: String?
     ): Call<SuccessResponse<PaymentMethodContent>>
 }

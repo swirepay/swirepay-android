@@ -3,10 +3,14 @@ package com.swirepay.swirepay_sdk_playground
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.swirepay.android_sdk.KeyNotInitializedException
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.SwirepaySdk.REQUEST_CODE_CHECKOUT
 import com.swirepay.android_sdk.checkout.model.*
@@ -22,19 +26,27 @@ class ActivityCheckout : AppCompatActivity() {
         binding = CheckoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        Test
-        SwirepaySdk.initSdk("sk_test_6aZ5HtPt61GUOQgFl5aZz0qWk7ZcE391")
+        binding.btnInitSdk.setOnClickListener {
 
-//        Live
-//        SwirepaySdk.initSdk("sk_live_eL1XLQ3qi8hdMKFh50wlW0KofVq0KMLa")
+            val key = binding.etInitSdk.text.toString()
+
+            if (!TextUtils.isEmpty(key)) {
+                SwirepaySdk.initSdk(key)
+                Snackbar.make(findViewById(R.id.root), "Key Initialized!", Snackbar.LENGTH_LONG)
+                    .show()
+            } else
+                Snackbar.make(
+                    findViewById(R.id.root),
+                    "Input a valid key to initialize sdk",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+        }
+
 
 
         val customer = SPCustomer(
             "Muthu", "testaccountowner-stag+789@swirepay.com", "+919845789562"
         )
-
-//        val arrayList: ArrayList<PaymentMethodType> = ArrayList()
-//        arrayList.add(PaymentMethodType.CARD)
 
         val orderInfo = OrderInfo()
         orderInfo.amount = 100
@@ -43,19 +55,21 @@ class ActivityCheckout : AppCompatActivity() {
         orderInfo.currencyCode = "INR"
         orderInfo.description = "Test"
         orderInfo.statementDescriptor = "IND Test"
-//        orderInfo.paymentMethodType = arrayList
-//        orderInfo.confirmMethod = "AUTOMATIC"
-//        orderInfo.captureMethod = "AUTOMATIC"
 
         val btnCheckout: Button = findViewById(R.id.btnCheckout)
         btnCheckout.setOnClickListener {
 
-            SwirepaySdk.doPayment(
-                this,
-                orderInfo,
-                customer,
-                REQUEST_CODE_CHECKOUT
-            )
+            try {
+                SwirepaySdk.doPayment(
+                    this,
+                    orderInfo,
+                    customer,
+                    REQUEST_CODE_CHECKOUT,
+                    false
+                )
+            } catch (e: KeyNotInitializedException) {
+                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -21,5 +21,11 @@ data class PaymentLink(
 
 
 @Parcelize
-data class Currency(val id: Int, val name: String, val countryAlpha2: String, val toFixed: String ,val prefix : String ) :
+data class Currency(
+    val id: Int,
+    val name: String,
+    val countryAlpha2: String,
+    val toFixed: String,
+    val prefix: String
+) :
     Parcelable

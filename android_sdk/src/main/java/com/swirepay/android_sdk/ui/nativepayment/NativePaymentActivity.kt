@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.databinding.ActivityNativePaymentBinding

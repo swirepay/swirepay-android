@@ -8,7 +8,8 @@ import kotlinx.parcelize.Parcelize
 data class PaymentMethodCard(
     val card: Card,
     val type: String,
-    val customerGid: String
+    val customerGid: String,
+    val saved: Boolean
 ) : Parcelable
 
 @Parcelize

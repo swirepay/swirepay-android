@@ -3,9 +3,9 @@ package com.swirepay.android_sdk.checkout.model
 import android.os.Parcelable
 import com.swirepay.android_sdk.checkout.interfaces.ISPPaymentResult
 import com.swirepay.android_sdk.model.Country
+import com.swirepay.android_sdk.model.Currency
 import com.swirepay.android_sdk.model.PaymentMethod
 import kotlinx.parcelize.Parcelize
-
 
 @Parcelize
 data class PaymentSessionResponse(
@@ -45,7 +45,7 @@ data class PaymentSessionResponse(
     val feeTax: Int,
     val net: Int,
     val mdr: String,
-    val nextActionUrl: String,
+    val nextActionUrl: String?,
     val psClientSecret: String,
     val returnUrl: String,
     val secureStatus: String,
@@ -69,7 +69,7 @@ data class PaymentSessionResponse(
     val batchNumber: String,
     val internalRefund: String,
     val deleted: Boolean
-) : Parcelable,ISPPaymentResult
+) : Parcelable, ISPPaymentResult
 
 @Parcelize
 data class PaymentCustomer(
@@ -85,7 +85,7 @@ data class PaymentCustomer(
     val shippingAddress: _ShippingAddress,
     val referenceNumber: String,
     val doNotDuplicate: Boolean,
-    val customerProfileDto: String,
+    val customerProfileDto: CustomerProfile,
     val deleted: Boolean
 ) : Parcelable
 
@@ -115,5 +115,17 @@ data class _ShippingAddress(
     val state: String,
     val postalCode: String,
     val country: Country,
+    val deleted: Boolean
+) : Parcelable
+
+@Parcelize
+data class CustomerProfile(
+    val gid: String,
+    val createdAt: String,
+    val updatedAt: String,
+    val address: String,
+    val name: String,
+    val phoneNumber: String,
+    val claimed: Boolean,
     val deleted: Boolean
 ) : Parcelable

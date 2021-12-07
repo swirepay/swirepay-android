@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.etInitSdk.setText("sk_test_PCRMJq9FHBiuuEqVq7LjZ19qXPUa7CW9")
+        binding.etInitSdk.setText("")
 
         binding.btnInitSdk.setOnClickListener {
 

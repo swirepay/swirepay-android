@@ -2,6 +2,7 @@ package com.swirepay.android_sdk.checkout.model
 
 import android.os.Parcelable
 import com.swirepay.android_sdk.checkout.interfaces.ISPPaymentResult
+import com.swirepay.android_sdk.model.Currency
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -29,7 +30,7 @@ data class _PaymentSession(
     val gid: String,
     val amount: Int,
     val currency: String,
-    val authCode: String,
+    val authCode: String?,
     val paymentDate: String,
     val meta: String?,
     val status: String
@@ -43,11 +44,11 @@ data class _PaymentMethod(
 
 @Parcelize
 data class _PaymentCard(
-    val gid: String,
-    val scheme: String,
-    val expYear: Int,
-    val expMonth: Int,
-    val lastFour: String
+    val gid: String?,
+    val scheme: String?,
+    val expYear: Int?,
+    val expMonth: Int?,
+    val lastFour: String?
 ) : Parcelable
 
 @Parcelize
