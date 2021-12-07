@@ -44,11 +44,11 @@ data class _PaymentMethod(
 
 @Parcelize
 data class _PaymentCard(
-    val gid: String,
-    val scheme: String,
-    val expYear: Int,
-    val expMonth: Int,
-    val lastFour: String
+    val gid: String?,
+    val scheme: String?,
+    val expYear: Int?,
+    val expMonth: Int?,
+    val lastFour: String?
 ) : Parcelable
 
 @Parcelize

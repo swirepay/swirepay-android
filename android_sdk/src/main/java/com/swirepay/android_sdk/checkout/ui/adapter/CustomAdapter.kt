@@ -49,8 +49,20 @@ class CustomAdapter(
             "VISA" -> drawable = R.drawable.ic_visa
             "MASTER" -> drawable = R.drawable.ic_master
             "MAESTRO" -> drawable = R.drawable.ic_maestro
-            "AMERICAN EXPRESS" -> drawable = R.drawable.ic_amex
+            "AMEX" -> drawable = R.drawable.ic_amex
+            "RUPAY" -> drawable = R.drawable.ic_rupay
+            "DISCOVER" -> drawable = R.drawable.ic_discover
+            "DINERS" -> drawable = R.drawable.ic_diners_club
         }
+//        when (card.bankName) {
+//            "VISA" -> drawable = R.drawable.ic_visa
+//            "MASTER" -> drawable = R.drawable.ic_master
+//            "MAESTRO" -> drawable = R.drawable.ic_maestro
+//            "AMEX" -> drawable = R.drawable.ic_amex
+//            "RUPAY" -> drawable = R.drawable.ic_rupay
+//            "DISCOVER" -> drawable = R.drawable.ic_discover
+//            "DINERS" -> drawable = R.drawable.ic_diners_club
+//        }
         holder.cardLogo.setImageResource(drawable)
         holder.cardNumber.text = "XXXX-...-XXXX-" + card.lastFour
 
@@ -65,7 +77,11 @@ class CustomAdapter(
         holder.payNow.setOnClickListener {
             if (mPayListener != null) {
                 if (holder.securityCode.text.toString() != "")
-                    mPayListener?.onPayClick(holder.securityCode.text.toString(), card.gid,mList[position].gid)
+                    mPayListener?.onPayClick(
+                        holder.securityCode.text.toString(),
+                        card.gid,
+                        mList[position].gid
+                    )
                 else
                     Toast.makeText(context, "Cvv cannot be empty", Toast.LENGTH_LONG).show()
             }
@@ -109,6 +125,6 @@ class CustomAdapter(
     }
 
     open interface PayListener {
-        fun onPayClick(cvv: String, cardGid: String, gid: String)
+        fun onPayClick(cvv: String, cardGid: String?, gid: String)
     }
 }

@@ -99,9 +99,9 @@ interface ApiInterface {
 
     @GET("/v1/payment-session/{paymentSession}")
     fun getPaymentSession(
-        @Path("paymentSession") paymentSession: String,
-        @Query("sp") sp: String,
-        @Query("secret") secret: String,
+        @Path("paymentSession") paymentSession: String?,
+        @Query("sp") sp: String?,
+        @Query("secret") secret: String?,
         @Header("x-api-key") api_key: String
     ): Call<SuccessResponse<PaymentSessionResponse>>
 
@@ -118,7 +118,7 @@ interface ApiInterface {
 
     @PATCH("/v1/card/{cardGid}")
     fun updateCVV(
-        @Path("cardGid") cardGid: String,
+        @Path("cardGid") cardGid: String?,
         @Body cardInfo: CardInfo,
         @Header("x-api-key") api_key: String?
     ): Call<SuccessResponse<CardResponse>>

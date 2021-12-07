@@ -45,7 +45,7 @@ data class PaymentSessionResponse(
     val feeTax: Int,
     val net: Int,
     val mdr: String,
-    val nextActionUrl: String,
+    val nextActionUrl: String?,
     val psClientSecret: String,
     val returnUrl: String,
     val secureStatus: String,

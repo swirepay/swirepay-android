@@ -17,7 +17,7 @@ class ViewModelCardPayment(
     val liveCardResponse: MutableLiveData<CardResponse> = MutableLiveData()
     val liveErrorMessages: MutableLiveData<String> = MutableLiveData()
 
-    fun updateCVV(cardInfo: CardInfo, cardGid: String) =
+    fun updateCVV(cardInfo: CardInfo, cardGid: String?) =
         viewModelScope.launch(Dispatchers.IO) {
             val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
 

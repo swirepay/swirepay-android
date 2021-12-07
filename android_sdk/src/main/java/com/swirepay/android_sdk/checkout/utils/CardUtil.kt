@@ -39,8 +39,20 @@ enum class CardType(
         3,
         "^6\\d*"
     ),
-    UNKNOWN(
-        "\\d+",
+    DINERS_CLUB(
+        "^(36)[0-9]{0,12}\$",
+        R.drawable.ic_diners_club,
+        14, 14,
+        3, null
+    ),
+    DISCOVER(
+        "^(6011[0-9]{0,12}|(644|645|646|647|648|649)[0-9]{0,13}|65[0-9]{0,14})\$",
+        R.drawable.ic_discover,
+        16, 19,
+        3, null
+    ),
+    RUPAY(
+        "^6[0-9]{15}\$",
         R.drawable.ic_rupay,
         12, 19,
         3, null
@@ -118,7 +130,7 @@ enum class CardType(
         private val DEFAULT_SPACE_INDICES = intArrayOf(4, 8, 12)
 
         /**
-         * Returns the card type matching this account, or [com.braintreepayments.cardform.utils.CardType.UNKNOWN]
+         * Returns the card type matching this account, or [CardType.UNKNOWN]
          * for no match.
          *
          *
@@ -127,19 +139,19 @@ enum class CardType(
          */
         fun forCardNumber(cardNumber: String): CardType {
             val patternMatch = forCardNumberPattern(cardNumber)
-            if (patternMatch != EMPTY && patternMatch != UNKNOWN) {
+            if (patternMatch != EMPTY) {
                 return patternMatch
             }
             val relaxedPrefixPatternMatch = forCardNumberRelaxedPrefixPattern(cardNumber)
-            if (relaxedPrefixPatternMatch != EMPTY && relaxedPrefixPatternMatch != UNKNOWN) {
+            if (relaxedPrefixPatternMatch != EMPTY) {
                 return relaxedPrefixPatternMatch
             }
             return if (!cardNumber.isEmpty()) {
-                UNKNOWN
+                EMPTY
             } else EMPTY
         }
 
-        private fun forCardNumberPattern(cardNumber: String): CardType {
+        fun forCardNumberPattern(cardNumber: String): CardType {
             for (cardType in values()) {
                 if (cardType.pattern.matcher(cardNumber).matches()) {
                     return cardType

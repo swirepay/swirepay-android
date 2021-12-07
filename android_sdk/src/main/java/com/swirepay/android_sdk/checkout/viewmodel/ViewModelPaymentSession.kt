@@ -50,7 +50,7 @@ class ViewModelPaymentSession() : ViewModel() {
             }
         }
 
-    fun getPaymentSession(paymentSession: String, secret: String) =
+    fun getPaymentSession(paymentSession: String?, secret: String?) =
         viewModelScope.launch(Dispatchers.IO) {
             val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
 

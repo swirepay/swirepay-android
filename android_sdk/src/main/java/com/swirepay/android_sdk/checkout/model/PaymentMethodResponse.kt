@@ -55,24 +55,24 @@ data class PaymentMethodType(
 
 @Parcelize
 data class PaymentCard(
-    val gid: String,
-    val createdAt: String,
-    val updatedAt: String,
-    val name: String,
-    val scheme: String,
-    val expiryMonth: Int,
-    val expiryYear: Int,
-    val lastFour: String,
-    val fingerprint: String,
-    val type: String,
-    val bankName: String,
-    val country: Country,
-    val currency: Currency,
-    val isPresent: Boolean,
-    val brand: String,
-    val expiresAt: String,
-    val device: Boolean,
-    val deleted: Boolean
+    val gid: String?,
+    val createdAt: String?,
+    val updatedAt: String?,
+    val name: String?,
+    val scheme: String?,
+    val expiryMonth: Int?,
+    val expiryYear: Int?,
+    val lastFour: String?,
+    val fingerprint: String?,
+    val type: String?,
+    val bankName: String?,
+    val country: Country?,
+    val currency: Currency?,
+    val isPresent: Boolean?,
+    val brand: String?,
+    val expiresAt: String?,
+    val device: Boolean?,
+    val deleted: Boolean?
 ) : Parcelable
 
 @Parcelize
