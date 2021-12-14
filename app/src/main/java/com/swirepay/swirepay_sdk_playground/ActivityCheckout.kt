@@ -26,6 +26,8 @@ class ActivityCheckout : AppCompatActivity() {
         binding = CheckoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        SwirepaySdk.initSdk("")
+
         binding.btnInitSdk.setOnClickListener {
 
             val key = binding.etInitSdk.text.toString()
@@ -43,21 +45,23 @@ class ActivityCheckout : AppCompatActivity() {
         }
 
 
-
         val customer = SPCustomer(
             "Muthu", "testaccountowner-stag+789@swirepay.com", "+919845789562"
         )
 
-        val orderInfo = OrderInfo()
-        orderInfo.amount = 100
-        orderInfo.receiptEmail = "testaccountowner-stag+592@swirepay.com"
-        orderInfo.receiptSms = "+919845789562"
-        orderInfo.currencyCode = "INR"
-        orderInfo.description = "Test"
-        orderInfo.statementDescriptor = "IND Test"
-
         val btnCheckout: Button = findViewById(R.id.btnCheckout)
         btnCheckout.setOnClickListener {
+
+            val orderInfo = OrderInfo()
+            if (binding.etAmount.text.toString().isNotEmpty())
+                orderInfo.amount = binding.etAmount.text.toString().toInt()
+            else
+                Toast.makeText(this, "Amount shouldn't be empty", Toast.LENGTH_LONG).show()
+            orderInfo.receiptEmail = "testaccountowner-stag+592@swirepay.com"
+            orderInfo.receiptSms = "+919845789562"
+            orderInfo.currencyCode = "INR"
+            orderInfo.description = "Test"
+            orderInfo.statementDescriptor = "IND Test"
 
             try {
                 SwirepaySdk.doPayment(

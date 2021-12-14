@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.expandablelayout.ExpandableLayout
 import com.swirepay.android_sdk.R
 import com.swirepay.android_sdk.checkout.model._PaymentMethodCard
+import com.swirepay.android_sdk.checkout.ui.activity.CheckoutActivity
 import com.swirepay.android_sdk.checkout.views.FadedDisableButton
 import com.swirepay.android_sdk.checkout.views.SecurityCodeInput
 
@@ -64,14 +65,19 @@ class CustomAdapter(
 //            "DINERS" -> drawable = R.drawable.ic_diners_club
 //        }
         holder.cardLogo.setImageResource(drawable)
-        holder.cardNumber.text = "XXXX-...-XXXX-" + card.lastFour
+        holder.cardNumber.text = "XXXX-XXXX-" + card.lastFour
 
         holder.expandableLayout.parentLayout.setOnClickListener {
             holder.expandableLayout.toggleLayout()
         }
 
+        val amount = String.format(
+            "%.2f",
+            CheckoutActivity.dec.format(amount / 100.00).toString().toFloat()
+        )
+
         holder.payNow.text =
-            "Pay " + context.resources.getString(R.string.Rs) + (amount / 100).toDouble()
+            "Pay " + context.resources.getString(R.string.Rs) + amount
         holder.payNow.isEnabled = false
 
         holder.payNow.setOnClickListener {

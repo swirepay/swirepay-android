@@ -298,7 +298,7 @@ object SwirepaySdk {
         toolbarItemColor: String,
     ) {
 
-        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+        if (apiKey!!.isEmpty() || apiKey == null) throw KeyNotInitializedException()
 
         if (customer == null) throw CustomerRequiredException()
 
@@ -326,7 +326,7 @@ object SwirepaySdk {
         hideLogo: Boolean
     ) {
 
-        if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
+        if (apiKey!!.isEmpty() || apiKey == null) throw KeyNotInitializedException()
 
         if (customer == null) throw CustomerRequiredException()
 

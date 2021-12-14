@@ -38,7 +38,7 @@ public class CardNumberInput extends SwirepayTextInputEditText {
      */
     public CardNumberInput(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        enforceMaxInputLength(CardValidationUtils.MAXIMUM_CARD_NUMBER_LENGTH + MAX_DIGIT_SEPARATOR_COUNT);
+//        enforceMaxInputLength(CardValidationUtils.MAXIMUM_CARD_NUMBER_LENGTH + MAX_DIGIT_SEPARATOR_COUNT);
         setInputType(InputType.TYPE_CLASS_NUMBER);
         setKeyListener(DigitsKeyListener.getInstance(SUPPORTED_DIGITS + DIGIT_SEPARATOR));
     }

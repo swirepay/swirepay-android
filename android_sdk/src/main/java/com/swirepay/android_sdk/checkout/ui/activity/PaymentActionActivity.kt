@@ -170,18 +170,18 @@ class PaymentActionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == android.R.id.home) {
-            finish()
+//            finish()
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-//
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            return false
-//        }
-//
-//        return super.onKeyDown(keyCode, event)
-//    }
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return false
+        }
+
+        return super.onKeyDown(keyCode, event)
+    }
 }

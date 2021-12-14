@@ -31,6 +31,10 @@ public class ExpiryDate {
         return mExpiryYear;
     }
 
+    public String getExpiry() {
+        return mExpiryMonth + "/" + mExpiryYear;
+    }
+
     public boolean hasInput() {
         return mHasInput;
     }

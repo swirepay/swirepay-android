@@ -102,14 +102,18 @@ class PaymentStatusActivity : AppCompatActivity() {
             } else {
                 supportActionBar?.title = "Payment Failed"
                 binding.failureLayout.visibility = View.VISIBLE
+                binding.errorDescription.text = paymentSession.errorDescription
             }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.amount_menu, menu)
 
+        val amount: String =
+            String.format("%.2f", CheckoutActivity.dec.format(amount / 100.00).toString().toFloat())
+
         val item = menu!!.findItem(R.id.amount)
-        val s = SpannableString(getString(R.string.Rs) + " " + (amount / 100))
+        val s = SpannableString(getString(R.string.Rs) + " " + amount)
         s.setSpan(
             ForegroundColorSpan(Color.parseColor(SwirepaySdk.TOOLBAR_ITEM)),
             0,

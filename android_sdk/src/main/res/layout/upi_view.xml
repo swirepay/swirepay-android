@@ -8,40 +8,83 @@
     android:layout_marginRight="16dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <ImageView
+        <RadioButton
             android:id="@+id/gpay"
             android:layout_width="wrap_content"
+            android:background="@drawable/selectablebg"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_gpay" />
+            android:button="@null"
+            android:drawableStart="@drawable/ic_gpay" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/paytm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/selectablebg"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_paytm" />
+            android:button="@null"
+            android:drawableStart="@drawable/ic_paytm" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/phonepe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/selectablebg"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_phonepe" />
+            android:button="@null"
+            android:drawableStart="@drawable/ic_phonepe" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/amazonPay"
             android:layout_width="wrap_content"
+            android:button="@null"
+            android:background="@drawable/selectablebg"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_amazon_pay" />
+            android:drawableStart="@drawable/ic_amazon_pay" />
 
-    </LinearLayout>
+    </RadioGroup>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/gpay"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_gpay" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/paytm"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:src="@drawable/ic_paytm" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/phonepe"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:src="@drawable/ic_phonepe" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/amazonPay"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:src="@drawable/ic_amazon_pay" />-->
+
+<!--    </LinearLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_mobile"

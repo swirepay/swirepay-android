@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.checkout.model.*
 import com.swirepay.android_sdk.model.Banks
 import com.swirepay.android_sdk.model.OrderInfo
@@ -30,7 +31,7 @@ class ViewModelNetBanking() : ViewModel() {
                 val banks = response.body()!!.entity
                 livePaymentBanks.postValue(banks)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
                 Log.d("sdk_test", "netbanking-getAllBanks: ${response.code()}")
             }
         }
@@ -46,7 +47,7 @@ class ViewModelNetBanking() : ViewModel() {
                 val paymentResponse = response.body()!!.entity
                 liveNetBankingResponse.postValue(paymentResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
                 Log.d("sdk_test", "netbanking-payment-method: ${response.code()}")
             }
         }
@@ -61,7 +62,7 @@ class ViewModelNetBanking() : ViewModel() {
                 val sessionResponse = response.body()!!.entity
                 liveNetBankingSessionResponse.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
                 Log.d("sdk_test", "netbanking-payment-session: ${response.code()}")
                 Log.d("sdk_test", response.errorBody().toString())
             }
