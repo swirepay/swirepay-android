@@ -28,9 +28,3 @@ class ContentResponse<T> : PageResponse() {
 }
 
 class SuccessListResponse<T>(val entity: List<T>) : BaseResponse()
-
-
-class ErrorResponse{
-     var message: String = ""
-     var status: String = ""
-}

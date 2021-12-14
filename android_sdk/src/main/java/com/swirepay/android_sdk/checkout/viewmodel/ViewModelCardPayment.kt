@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swirepay.android_sdk.SwirepaySdk
+import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.checkout.model.*
 import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.android_sdk.retrofit.ApiClient
@@ -27,7 +28,7 @@ class ViewModelCardPayment(
                 val cardResponse = response.body()!!.entity
                 liveCardResponse.postValue(cardResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
                 Log.d("sdk_test", "upi-payment-session: ${response.message()}")
             }
         }

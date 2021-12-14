@@ -19,13 +19,15 @@ object ApiClient {
     private val logging: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.BODY
     }
-    private val httpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        this.addInterceptor(logging)
-    }.build()
+
+    var okHttpClient: OkHttpClient = OkHttpClient()
+        .newBuilder()
+        .addInterceptor(logging)
+        .build()
 
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("${BuildConfig.BASE_URL}")
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
-        .client(httpClient)
+        .client(okHttpClient)
         .build()
 }

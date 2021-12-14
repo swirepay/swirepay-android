@@ -11,6 +11,8 @@ import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.swirepay.android_sdk.Utility
+
 
 class ViewModelPaymentSession() : ViewModel() {
 
@@ -26,11 +28,12 @@ class ViewModelPaymentSession() : ViewModel() {
 
             val response =
                 apiClient.createPaymentMethod(paymentMethodCard, SwirepaySdk.apiKey!!).execute()
+
             if (response.isSuccessful && response.body() != null) {
                 val paymentResponse = response.body()!!.entity
                 livePaymentMethod.postValue(paymentResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
                 Log.d("sdk_test", "card-payment-method: ${response.code()}")
             }
         }
@@ -45,8 +48,8 @@ class ViewModelPaymentSession() : ViewModel() {
                 val sessionResponse = response.body()!!.entity
                 livePaymentSession.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
-                Log.d("sdk_test", "card-payment-session: ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
+                Log.d("sdk_test", "card-payment-session: ${response.message()}")
             }
         }
 
@@ -65,8 +68,8 @@ class ViewModelPaymentSession() : ViewModel() {
                 val sessionResponse = response.body()!!.entity
                 getPaymentSessionResponse.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
-                Log.d("sdk_test", "card-payment-session: ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
+                Log.d("sdk_test", "card-payment-session: ${response.message()}")
             }
         }
 
@@ -84,8 +87,8 @@ class ViewModelPaymentSession() : ViewModel() {
                 val sessionResponse = response.body()!!.entity
                 paymentMethodResults.postValue(sessionResponse)
             } else {
-                liveErrorMessages.postValue("Error code : ${response.code()}")
-                Log.d("sdk_test", "payment-method: ${response.code()}")
+                liveErrorMessages.postValue(Utility.getErrorMsg(response))
+                Log.d("sdk_test", "payment-method: ${response.message()}")
             }
         }
 }

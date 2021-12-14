@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 public class SecurityCodeInput extends CardNumberInput {
 
-    private static final int MAX_LENGTH = 3;
+    private static final int MAX_LENGTH = 4;
 
     public SecurityCodeInput(@NonNull Context context) {
         this(context, null);

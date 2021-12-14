@@ -9,7 +9,7 @@
     <string name="checkout_card_number_hint">Card number</string>
     <string name="checkout_card_holder_hint">Name on card</string>
     <string name="checkout_mobile_number_hint">Mobile number</string>
-    <string name="checkout_upi_hint">Upi Id</string>
+    <string name="checkout_upi_hint">UPI Id</string>
     <string name="more_banks">More Banks</string>
     <string name="checkout_card_expiry_date_hint">MM/YY</string>
     <string name="checkout_card_expiry_date_optional_hint">Expiry date (optional)</string>

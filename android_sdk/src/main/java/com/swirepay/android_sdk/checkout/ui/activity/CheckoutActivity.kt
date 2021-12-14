@@ -1,5 +1,6 @@
 package com.swirepay.android_sdk.checkout.ui.activity
 
+import android.R.attr
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -49,6 +50,18 @@ import com.swirepay.android_sdk.Utility
 import com.swirepay.android_sdk.checkout.ui.adapter.CustomAdapter
 import com.swirepay.android_sdk.checkout.utils.CardValidator
 import com.swirepay.android_sdk.checkout.viewmodel.*
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import android.R.attr.angle
+import java.math.BigDecimal
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -65,6 +78,8 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var payNowUpi: FadedDisableButton
     lateinit var payNowBank: FadedDisableButton
     lateinit var cardNumberTextInput: TextInputLayout
+    lateinit var expiryDateTextInput: TextInputLayout
+    lateinit var cvvTextInput: TextInputLayout
     lateinit var mobileTextInput: TextInputLayout
     lateinit var cardLogo: RoundCornerImageView
     lateinit var storePaymentMethod: MaterialCheckBox
@@ -75,6 +90,7 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var paymentTypes: List<String>
     lateinit var bankId: String
     var isTest: Boolean = false
+    var amount: String = ""
 
     val viewModelProfile: ViewModelProfile by lazy {
         ViewModelProvider(this).get(ViewModelProfile::class.java)
@@ -138,6 +154,8 @@ class CheckoutActivity : AppCompatActivity() {
             onSnack("Internet connection not available!")
             return
         }
+
+        amount = String.format("%.2f", dec.format(orderInfo.amount / 100.00).toString().toFloat())
 
         if (!SwirepaySdk.HIDE_LOGO)
             binding.logo.visibility = View.GONE
@@ -271,7 +289,8 @@ class CheckoutActivity : AppCompatActivity() {
                     paymentMethodCard.add(section)
                 }
 
-                val distinctCards: List<_PaymentMethodCard> = paymentMethodCard.distinctBy { it.paymentCard.lastFour }
+                val distinctCards: List<_PaymentMethodCard> =
+                    paymentMethodCard.distinctBy { it.paymentCard.lastFour }
 
                 val adapter = CustomAdapter(
                     this,
@@ -356,6 +375,10 @@ class CheckoutActivity : AppCompatActivity() {
             binding.cardExpandable.secondLayout.findViewById(R.id.editText_cardNumber)
         cardNumberTextInput =
             binding.cardExpandable.secondLayout.findViewById(R.id.textInputLayout_cardNumber)
+        cvvTextInput =
+            binding.cardExpandable.secondLayout.findViewById(R.id.textInputLayout_securityCode)
+        expiryDateTextInput =
+            binding.cardExpandable.secondLayout.findViewById(R.id.textInputLayout_expiryDate)
 //        cardNumber.setAmexCardFormat(true)
         expiryDate =
             binding.cardExpandable.secondLayout.findViewById(R.id.editText_expiryDate)
@@ -369,8 +392,9 @@ class CheckoutActivity : AppCompatActivity() {
             binding.cardExpandable.secondLayout.findViewById(R.id.cardBrandLogo_imageView_primary)
         storePaymentMethod =
             binding.cardExpandable.secondLayout.findViewById(R.id.storePaymentMethod)
+
         payNow.text =
-            "Pay " + resources.getString(R.string.Rs) + (orderInfo.amount / 100).toDouble()
+            "Pay " + resources.getString(R.string.Rs) + amount
         payNow.isEnabled = false
 
         var isSaved = false
@@ -389,10 +413,31 @@ class CheckoutActivity : AppCompatActivity() {
 
         payNow.setOnClickListener {
 
-//            if (cardNumber.rawValue.length < 16) {
-//                cardNumberTextInput.error = "Invalid card Number"
-//                return@setOnClickListener
-//            }
+            if (CardValidator.guessCard(cardNumber.rawValue).maxLength > cardNumber.rawValue.length) {
+                cardNumberTextInput.error = "Invalid card Number"
+                return@setOnClickListener
+            }
+
+            val simpleDateFormat = SimpleDateFormat("MM/yy")
+            simpleDateFormat.isLenient = false
+            val expiry: Date =
+                simpleDateFormat.parse("" + expiryDate.date.expiry)
+            val expired: Boolean = expiry.before(Date())
+
+            if (expired) {
+                expiryDateTextInput.error = "Invalid card expiration date"
+                return@setOnClickListener
+            }
+
+            if (expiryDate.date.expiryYear > 2040) {
+                expiryDateTextInput.error = "Invalid expiry year should be within 2040"
+                return@setOnClickListener
+            }
+
+            if (securityCode.text.toString().length < 3) {
+                cvvTextInput.error = "Invalid CVC number"
+                return@setOnClickListener
+            }
 
             val cvv = securityCode.text.toString()
             val expiryMonth = expiryDate.date.expiryMonth
@@ -438,15 +483,18 @@ class CheckoutActivity : AppCompatActivity() {
                         putExtra(SwirepaySdk.PAYMENT_SECRET, it.psClientSecret)
                     })
 
-            } else
+            } else if (it.status == "REQUIRE_PAYMENT_METHOD") {
+                onSnack(it.errorDescription)
+            } else {
                 redirect(it.nextActionUrl)
+            }
         })
 
         viewModelPaymentSession.liveErrorMessages.observe(this, { message ->
 
             binding.progress.visibility = View.GONE
 
-            onSnack("$message  Failed to load.")
+            onSnack("$message")
         })
     }
 
@@ -466,10 +514,10 @@ class CheckoutActivity : AppCompatActivity() {
 
 //        mobileNumber.setText(upiNumber)
 
-        val gpay = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.gpay)
-        val paytm = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.paytm)
-        val phonePay = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.phonepe)
-        val amazonPay = binding.upiExpandable.secondLayout.findViewById<ImageView>(R.id.amazonPay)
+        val gpay = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.gpay)
+        val paytm = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.paytm)
+        val phonePay = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.phonepe)
+        val amazonPay = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.amazonPay)
 
         gpay.setOnClickListener {
             mobileNumber.setText(upiNumber)
@@ -490,6 +538,11 @@ class CheckoutActivity : AppCompatActivity() {
         mobileNumber.addTextChangedListener(upiTextWatcher)
 
         payNowUpi.setOnClickListener {
+
+            if (!validateUPI(mobileNumber.rawValue)) {
+                mobileTextInput.error = "The upi id is invalid"
+                return@setOnClickListener
+            }
 
             binding.progress.visibility = View.VISIBLE
 
@@ -518,14 +571,18 @@ class CheckoutActivity : AppCompatActivity() {
 //            val bottomSheetDialog = BottomSheetDialog.newInstance(it.upi.vpa)
 //            bottomSheetDialog.show(supportFragmentManager, "UPI_BottomSheet")
 
-            redirect(it.nextActionUrl)
+            if (it.status == "REQUIRE_PAYMENT_METHOD") {
+                onSnack(it.errorDescription)
+            } else {
+                redirect(it.nextActionUrl)
+            }
         })
 
         viewModelUPI.liveErrorMessages.observe(this, { message ->
 
             binding.progress.visibility = View.GONE
 
-            onSnack("$message  Failed to load.")
+            onSnack("$message")
         })
     }
 
@@ -551,7 +608,7 @@ class CheckoutActivity : AppCompatActivity() {
 
         payNowBank = binding.netBankExpandable.secondLayout.findViewById(R.id.payNowBank)
         payNowBank.text =
-            "Pay " + resources.getString(R.string.Rs) + (orderInfo.amount / 100).toDouble()
+            "Pay " + resources.getString(R.string.Rs) + amount
         payNowBank.isEnabled = false
 
         editTextBanks.addTextChangedListener(bankTextWatcher)
@@ -596,7 +653,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             if (it.status == "REQUIRE_PAYMENT_METHOD") {
 
-                onSnack("Netbanking from bank " + it.paymentMethod.netbanking.bankName + " is not enabled by this merchant")
+                onSnack(it.errorDescription)
             } else {
 
                 redirect(it.nextActionUrl)
@@ -607,7 +664,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.GONE
 
-            onSnack("$message  Failed to load.")
+            onSnack("$message")
         })
     }
 
@@ -689,6 +746,16 @@ class CheckoutActivity : AppCompatActivity() {
 //            cardLogo.setImageResource(CardType.forCardNumberPattern(cardNumber.text.toString()).cardDrawable)
             cardLogo.setImageResource(CardValidator.guessCard(cardNumber.text.toString()).drawable)
 
+            when (CardValidator.guessCard(cardNumber.text.toString()).cardName) {
+                "Visa" -> cardNumber.filters = arrayOf(LengthFilter(20))
+                "Master" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(20))
+                "Maestro" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(20))
+                "Amex" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(18))
+                "Rupay" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(20))
+                "Discover" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(20))
+                "Diners" -> cardNumber.filters = arrayOf<InputFilter>(LengthFilter(17))
+            }
+
             payNow.isEnabled = cardNumber.text.toString().isNotEmpty() && expiryDate.text.toString()
                 .isNotEmpty() &&
                     securityCode.text.toString().isNotEmpty() && cardHolder.text.toString()
@@ -746,7 +813,7 @@ class CheckoutActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.amount_menu, menu)
 
         val item = menu!!.findItem(R.id.amount)
-        val s = SpannableString(getString(R.string.Rs) + " " + (orderInfo.amount / 100))
+        val s = SpannableString(getString(R.string.Rs) + " " + amount)
         s.setSpan(
             ForegroundColorSpan(Color.parseColor(SwirepaySdk.TOOLBAR_ITEM)),
             0,
@@ -812,6 +879,8 @@ class CheckoutActivity : AppCompatActivity() {
     companion object {
         lateinit var handler: Handler
         var paymentResult: SPPaymentResult? = null
+        val dec = DecimalFormat("#.##")
+        val dec1 = DecimalFormat("#.00")
     }
 
     private fun onSnack(message: String) {
@@ -828,5 +897,12 @@ class CheckoutActivity : AppCompatActivity() {
         textView.setTextColor(Color.WHITE)
         textView.textSize = 15f
         snackbar.show()
+    }
+
+    private fun validateUPI(upi: String?): Boolean {
+        val VALID_UPI_REGEX: Pattern =
+            Pattern.compile("^(.+)@(.+)$", Pattern.CASE_INSENSITIVE)
+        val matcher: Matcher = VALID_UPI_REGEX.matcher(upi)
+        return matcher.find()
     }
 }

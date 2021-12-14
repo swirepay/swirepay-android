@@ -41,7 +41,7 @@
     <style name="SwirepayCheckout.Card.SecurityCodeInput" parent="SwirepayCheckout.TextInputEditText">
         <item name="android:hint">@string/checkout_card_security_code_hint</item>
         <item name="android:inputType">number</item>
-        <item name="android:maxLength">3</item>
+        <item name="android:maxLength">4</item>
     </style>
 
     <style name="SwirepayCheckout.Card.HolderNameInput" parent="SwirepayCheckout.TextInputEditText">
