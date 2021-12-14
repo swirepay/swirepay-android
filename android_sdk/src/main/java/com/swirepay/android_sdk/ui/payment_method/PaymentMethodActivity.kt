@@ -17,6 +17,9 @@ class PaymentMethodActivity : BaseActivity() {
     val viewModel : ViewModelPaymentMethod by lazy {
         ViewModelProvider(this).get(ViewModelPaymentMethod::class.java)
     }
+    override val param_id: String
+        get() = "sp-session-id"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadUrl("${BuildConfig.PAYMENT_URL}/setup-session?key=${Utility.getBase24String(SwirepaySdk.apiKey!!)}")
@@ -45,10 +48,8 @@ class PaymentMethodActivity : BaseActivity() {
     //sp-session-id
     override fun onRedirect(url: String?) {
         Log.d("sdk_test", "onRedirect: $url")
-        val uri = Uri.parse(url)
-        val id = uri.getQueryParameter("sp-session-id")
-        if(id != null)
-            viewModel.fetchSetupSession(id)
+        if(result_id.isNotEmpty())
+            viewModel.fetchSetupSession(result_id)
         else {
             setResult(RESULT_CANCELED)
             finish()

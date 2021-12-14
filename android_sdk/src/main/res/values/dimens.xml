@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="standard_quarter_margin">4dp</dimen>
+    <dimen name="standard_half_margin">8dp</dimen>
+    <dimen name="standard_three_quarters_margin">12dp</dimen>
+    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="standard_double_margin">32dp</dimen>
+
+    <dimen name="logo_width">40dp</dimen>
+    <dimen name="logo_height">26dp</dimen>
+
+    <dimen name="logo_large_width">80dp</dimen>
+    <dimen name="logo_large_height">52dp</dimen>
+
+    <dimen name="input_layout_height">82dp</dimen>
+    <dimen name="input_height">55dp</dimen>
+
+    <dimen name="cardList_top_margin">16dp</dimen>
+    <dimen name="brand_logo_width">24dp</dimen>
+    <dimen name="brand_logo_height">16dp</dimen>
+
+    <dimen name="payment_method_margin">26dp</dimen>
+
+    <dimen name="primary_button_height">60dp</dimen>
+
+</resources>

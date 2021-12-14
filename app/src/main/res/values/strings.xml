@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Swirepay_SDK_playground</string>
+    <string name="invoicelink_error">Input a vaild Invoice Gid</string>
+    <string-array name="currencies">
+        <item>INR</item>
+        <item>USD</item>
+    </string-array>
+
+    <string-array name="notification_types">
+        <item>Email</item>
+        <item>SMS</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="billing_frequency">
+        <item>Month</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Year</item>
+    </string-array>
+
 </resources>

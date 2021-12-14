@@ -28,5 +28,3 @@ class ContentResponse<T> : PageResponse() {
 }
 
 class SuccessListResponse<T>(val entity: List<T>) : BaseResponse()
-
-

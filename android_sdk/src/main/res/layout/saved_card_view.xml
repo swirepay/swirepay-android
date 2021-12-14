@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:weightSum="3.5"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_securityCode"
+            style="@style/SwirepayCheckout.TextInputLayout"
+            android:layout_width="0dp"
+            android:weightSum="1.5"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_half_margin"
+            android:layout_weight="1">
+
+            <com.swirepay.android_sdk.checkout.views.SecurityCodeInput
+                android:id="@+id/editText_securityCode"
+                style="@style/SwirepayCheckout.Card.SecurityCodeInput"
+                android:nextFocusRight="@+id/editText_cardHolder"
+                android:nextFocusForward="@+id/editText_cardHolder"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.swirepay.android_sdk.checkout.views.FadedDisableButton
+            android:id="@+id/payNow"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primaryColor"
+            android:text="Pay Now"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

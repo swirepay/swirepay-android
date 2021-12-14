@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PaymentButtonActivity">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount"
+        android:inputType="number"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:hint="Description"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etAmount" />
+
+    <Spinner
+        android:id="@+id/spinnerNotificationType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/notification_types"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/etDescription" />
+
+    <Spinner
+        android:id="@+id/spinnerCurrencyType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/currencies"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerNotificationType" />
+
+    <RadioButton
+        android:id="@+id/rbPaymentType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:enabled="false"
+        android:text="CARD"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerCurrencyType" />
+
+    <Button
+        android:id="@+id/btnCreatePaymentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rbPaymentType" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnCreatePaymentButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/btnAccount" />
+
+            <TextView
+                android:id="@+id/tvResponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/btnAccount" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
