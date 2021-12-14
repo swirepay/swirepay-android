@@ -26,8 +26,6 @@ class ActivityCheckout : AppCompatActivity() {
         binding = CheckoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        SwirepaySdk.initSdk("")
-
         binding.btnInitSdk.setOnClickListener {
 
             val key = binding.etInitSdk.text.toString()
