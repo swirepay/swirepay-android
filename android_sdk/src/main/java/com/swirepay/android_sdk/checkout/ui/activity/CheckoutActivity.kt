@@ -206,52 +206,50 @@ class CheckoutActivity : AppCompatActivity() {
                 else
                     binding.upiExpandable.visibility = View.GONE
 
-//                val data: String = getAssetJsonData(applicationContext)
-//                val gson = GsonBuilder().create()
-//                val banks = gson.fromJson(data, Array<Banks>::class.java).toList()
+                if (it.currency.name == "INR") {
 
-//                for (bank in banks) {
-//                    if (bank.isTest == isTest)
-//                        if (paymentTypes.contains(bank.paymentType)) {
-//                            swirepayBanks.add(bank)
-//                        }
-//                }
+                } else {
 
-//                if (swirepayBanks.size > 0)
-//                    binding.netBankExpandable.visibility = View.VISIBLE
-//                else
-//                    binding.netBankExpandable.visibility = View.GONE
+                }
+
+                viewModelCustomer.getCustomer(
+                    customer.name,
+                    URLEncoder.encode(customer.email, "UTF-8"),
+                    URLEncoder.encode(customer.phoneNumber, "UTF-8")
+                )
+
+                viewModelCustomer.liveGetCustomerResponse.observe(this, {
+                    binding.progress.visibility = View.GONE
+
+                    if (it.content.isEmpty()) {
+
+                        viewModelCustomer.createCustomer(customer)
+
+                        viewModelCustomer.liveCustomerResponse.observe(this, { it ->
+                            customerGid = it.gid
+                        })
+                    } else {
+
+                        customerGid = it.content[0].gid
+
+                        viewModelPaymentSession.getPaymentMethod(
+                            URLEncoder.encode(
+                                it.content[0].gid,
+                                "UTF-8"
+                            )
+                        )
+                    }
+
+                    funcCard()
+
+                    funcUPI()
+
+                    funcBank()
+                })
             })
         })
 
-        viewModelCustomer.getCustomer(
-            customer.name,
-            URLEncoder.encode(customer.email, "UTF-8"),
-            URLEncoder.encode(customer.phoneNumber, "UTF-8")
-        )
 
-        viewModelCustomer.liveGetCustomerResponse.observe(this, {
-            binding.progress.visibility = View.GONE
-
-            if (it.content.isEmpty()) {
-
-                viewModelCustomer.createCustomer(customer)
-
-                viewModelCustomer.liveCustomerResponse.observe(this, { it ->
-                    customerGid = it.gid
-                })
-            } else {
-
-                customerGid = it.content[0].gid
-
-                viewModelPaymentSession.getPaymentMethod(
-                    URLEncoder.encode(
-                        it.content[0].gid,
-                        "UTF-8"
-                    )
-                )
-            }
-        })
 
         viewModelPaymentSession.paymentMethodResults.observe(this, {
 
@@ -313,12 +311,6 @@ class CheckoutActivity : AppCompatActivity() {
 //                binding.savedUpiView.adapter = adapter
 //            }
         })
-
-        funcCard()
-
-        funcUPI()
-
-        funcBank()
 
         handler = object : Handler() {
             override fun handleMessage(msg: Message) {
@@ -597,9 +589,14 @@ class CheckoutActivity : AppCompatActivity() {
         val swirepayBanks = ArrayList<Banks>()
 
         for (bank in banks) {
-            if (bank.isTest == isTest)
+            if (bank.isTest == isTest && paymentTypes.contains(bank.paymentType))
                 swirepayBanks.add(bank)
         }
+
+        if (swirepayBanks.size == 0)
+            binding.netBankExpandable.visibility = View.GONE
+        else
+            binding.netBankExpandable.visibility = View.VISIBLE
 
         val adapter = ObjectAdapter(this, swirepayBanks)
         editTextBanks.setAdapter(adapter)
