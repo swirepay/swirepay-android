@@ -90,6 +90,7 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var paymentTypes: List<String>
     lateinit var bankId: String
     var isTest: Boolean = false
+    var currencyType: String = "INR"
     var amount: String = ""
 
     val viewModelProfile: ViewModelProfile by lazy {
@@ -206,11 +207,11 @@ class CheckoutActivity : AppCompatActivity() {
                 else
                     binding.upiExpandable.visibility = View.GONE
 
-                if (it.currency.name == "INR") {
+                //change currency type based on account(IND/US)
+                orderInfo.currencyCode = it.currency.name
+                currencyType = it.currency.name
+                invalidateOptionsMenu() // Menu updation
 
-                } else {
-
-                }
 
                 viewModelCustomer.getCustomer(
                     customer.name,
@@ -810,7 +811,12 @@ class CheckoutActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.amount_menu, menu)
 
         val item = menu!!.findItem(R.id.amount)
-        val s = SpannableString(getString(R.string.Rs) + " " + amount)
+
+        val s: SpannableString = if (currencyType == "INR")
+            SpannableString(getString(R.string.Rs) + " " + amount)
+        else
+            SpannableString(getString(R.string.dollar) + " " + amount)
+
         s.setSpan(
             ForegroundColorSpan(Color.parseColor(SwirepaySdk.TOOLBAR_ITEM)),
             0,
