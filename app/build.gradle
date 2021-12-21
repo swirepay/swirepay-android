@@ -21,20 +21,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    signingConfigs {
-//        release {
-//            storeFile file('swirepay_android_sdk.jks')
-//            storePassword '$PvTef8qqf-7g=q*'
-//            keyAlias 'swirepay_android_sdk'
-//            keyPassword '$PvTef8qqf-7g=q*'
-//        }
-//    }
+    signingConfigs {
+        release {
+            storeFile file('swirepay_android_sdk.jks')
+            storePassword '$PvTef8qqf-7g=q*'
+            keyAlias 'swirepay_android_sdk'
+            keyPassword '$PvTef8qqf-7g=q*'
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
-//            signingConfig signingConfigs.release
-//            debuggable true
+            signingConfig signingConfigs.release
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 //        debug {
