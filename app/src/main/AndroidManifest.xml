@@ -2,31 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.swirepay.swirepay_sdk_playground">
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Swirepay_SDK_playground">
-        <activity
-            android:name=".ActivityCheckout"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+  <application
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/Theme.Swirepay_SDK_playground">
+    <activity
+        android:name=".ActivityCheckout"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SubscriptionButtonActivity" />
-        <activity android:name=".PaymentButtonActivity" />
-        <activity android:name=".PaymentLinkActivity" />
-        <activity android:name=".InvoicePaymentActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name=".SubscriptionButtonActivity" />
+    <activity android:name=".PaymentButtonActivity" />
+    <activity android:name=".PaymentLinkActivity" />
+    <activity android:name=".InvoicePaymentActivity" />
+    <activity
+        android:name=".MainActivity"
+        android:exported="true">
 
-        </activity>
-    </application>
+    </activity>
+  </application>
 
 </manifest>
