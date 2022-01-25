@@ -68,7 +68,7 @@ dependencies {
 
     api 'com.pusher:pusher-java-client:2.2.6'
 
-    implementation project(path:':expandablelayout' , configuration: "default")
+    implementation "com.github.skydoves:expandablelayout:1.0.7"
 }
 
 project.afterEvaluate {
