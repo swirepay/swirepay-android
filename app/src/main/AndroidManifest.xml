@@ -10,7 +10,7 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.Swirepay_SDK_playground">
     <activity
-        android:name=".ActivityCheckout"
+        android:name=".MainActivity"
         android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
     <activity android:name=".PaymentLinkActivity" />
     <activity android:name=".InvoicePaymentActivity" />
     <activity
-        android:name=".MainActivity"
+        android:name=".ActivityCheckout"
         android:exported="true">
 
     </activity>

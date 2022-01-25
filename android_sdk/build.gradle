@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 31
@@ -68,7 +68,7 @@ dependencies {
 
     api 'com.pusher:pusher-java-client:2.2.6'
 
-    implementation project(":expandablelayout")
+    implementation project(path:':expandablelayout' , configuration: "default")
 }
 
 project.afterEvaluate {
