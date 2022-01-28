@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 31
@@ -26,20 +26,20 @@ android {
         release {
             buildConfigField 'String', 'BASE_URL', '"https://api.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://secure.swirepay.com"'
-            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.0.125:443"'
+            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.3.139:443"'
             buildConfigField 'String', 'PUSHER_URL', '"streams.swirepay.com"'
             buildConfigField 'Boolean', 'DEBUG', 'false'
-            buildConfigField 'String', 'AUTH_ENDPOINT', '"http://192.168.0.125:443/pusher/auth/private"'
+            buildConfigField 'String', 'AUTH_ENDPOINT', '"http://192.168.3.139:443/pusher/auth/private"'
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             buildConfigField 'String', 'BASE_URL', '"https://staging-backend.swirepay.com"'
             buildConfigField 'String', 'PAYMENT_URL', '"https://staging-secure.swirepay.com"'
-            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.0.125:443"'
+            buildConfigField 'String', 'LOCAL_URL', '"http://192.168.3.139:443"'
             buildConfigField 'String', 'PUSHER_URL', '"streams.swirepay.com"'
             buildConfigField 'Boolean', 'DEBUG', 'true'
-            buildConfigField 'String', 'AUTH_ENDPOINT', '"http://192.168.0.125:443/pusher/auth/private"'
+            buildConfigField 'String', 'AUTH_ENDPOINT', '"http://192.168.3.139:443/pusher/auth/private"'
         }
     }
     compileOptions {
@@ -68,7 +68,7 @@ dependencies {
 
     api 'com.pusher:pusher-java-client:2.2.6'
 
-    implementation project(":expandablelayout")
+    implementation "com.github.skydoves:expandablelayout:1.0.7"
 }
 
 project.afterEvaluate {

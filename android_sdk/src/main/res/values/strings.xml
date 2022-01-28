@@ -20,5 +20,6 @@
     <string name="checkout_expiry_date_not_valid" translatable="false">Invalid expiry date</string>
 
     <string name="Rs">\u20B9</string>
+    <string name="dollar">\u0024</string>
 
 </resources>

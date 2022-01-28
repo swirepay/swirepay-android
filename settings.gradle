@@ -1,5 +1,4 @@
 include ':android_sdk'
 include ':app'
-include ':expandablelayout'
 rootProject.name = "Swirepay_SDK_playground"
 

@@ -28,7 +28,8 @@ data class AccountResponse(
     val active: Boolean,
     val sandbox: String,
     val issuerActive: Boolean,
-    val deleted: Boolean
+    val deleted: Boolean,
+    val currency: Currency
 ) : Parcelable
 
 @Parcelize

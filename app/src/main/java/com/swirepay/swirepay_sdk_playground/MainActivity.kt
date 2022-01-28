@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.ui.nativepayment.NativePaymentActivity
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityMainBinding
@@ -77,6 +78,11 @@ class MainActivity : AppCompatActivity() {
         btnNativePayment.setOnClickListener {
             startActivity(Intent(this, NativePaymentActivity::class.java))
         }
+
+        val btnCheckout: Button = findViewById(R.id.btnCheckout)
+        btnCheckout.setOnClickListener {
+            startActivity(Intent(this, ActivityCheckout::class.java))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,6 +102,13 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = result.toString()
                 responseText.text = result.entity.toString()
             }
+
+//            SwirepaySdk.REQUEST_CODE_CHECKOUT -> {
+//                val result = SwirepaySdk.getPaymentCheckout(resultCode, data)
+//                Log.d("sdk_test", "onActivityResult: " + Gson().toJson(result))
+//                resultText.text = Gson().toJson(result)
+//                responseText.text = result.entity.toString()
+//            }
         }
     }
 

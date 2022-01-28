@@ -1,5 +1,7 @@
 package com.swirepay.android_sdk.checkout.ui.activity
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -170,7 +172,8 @@ class PaymentActionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == android.R.id.home) {
-//            finish()
+
+            cancelPaymentDialog()
         }
 
         return super.onOptionsItemSelected(item)
@@ -179,9 +182,31 @@ class PaymentActionActivity : AppCompatActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return false
+
+            cancelPaymentDialog()
         }
 
         return super.onKeyDown(keyCode, event)
+    }
+
+    //------------------------ Functions
+
+    private  fun cancelPaymentDialog(){
+
+        AlertDialog.Builder(this)
+            .setTitle("Payment")
+            .setMessage("Are you sure you want to cancel the payment?")
+            .setPositiveButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
+                    finish()
+                })
+            .setNegativeButton(
+                "No",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
+                })
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 }
