@@ -233,12 +233,14 @@ class CheckoutActivity : AppCompatActivity() {
 
                         customerGid = it.content[0].gid
 
-                        viewModelPaymentSession.getPaymentMethod(
-                            URLEncoder.encode(
-                                it.content[0].gid,
-                                "UTF-8"
+                        if (it.content[0].gid.equals("")) {
+                            viewModelPaymentSession.getPaymentMethod(
+                                URLEncoder.encode(
+                                    it.content[0].gid,
+                                    "UTF-8"
+                                )
                             )
-                        )
+                        }
                     }
 
                     funcCard()

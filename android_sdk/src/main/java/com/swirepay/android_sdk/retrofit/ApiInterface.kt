@@ -144,7 +144,7 @@ interface ApiInterface {
 
     @GET("v1/payment-method")
     fun getPaymentMethod(
-        @Query("customerGid.EQ", encoded = true) customerGid: String,
+        @Query("customer.gid.EQ", encoded = true) customerGid: String,
         @Query("isSaved.EQ") isSaved: Boolean,
         @Header("x-api-key") api_key: String?
     ): Call<SuccessResponse<PaymentMethodContent>>
