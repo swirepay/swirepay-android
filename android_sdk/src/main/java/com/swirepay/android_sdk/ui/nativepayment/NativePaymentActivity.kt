@@ -75,6 +75,12 @@ class NativePaymentActivity : AppCompatActivity() {
             else
                 listOfPaymentMethods.remove(PaymentMethodType.ACH.toString())
         }
+//        binding.bankCheckbox.setOnCheckedChangeListener { _, b ->
+//            if (b)
+//                listOfPaymentMethods.add(PaymentMethodType.ACH_LEGACY.toString())
+//            else
+//                listOfPaymentMethods.remove(PaymentMethodType.ACH_LEGACY.toString())
+//        }
 
         binding.dueDate.setOnClickListener {
 

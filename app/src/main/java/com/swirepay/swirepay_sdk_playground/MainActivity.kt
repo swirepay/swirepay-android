@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.etInitSdk.setText("")
+        binding.etInitSdk.setText("sk_test_Ff7P2HjmCjNk8tm4cGCv8yCOHFpUfL1n")
 
         binding.btnInitSdk.setOnClickListener {
 
@@ -102,13 +102,6 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = result.toString()
                 responseText.text = result.entity.toString()
             }
-
-//            SwirepaySdk.REQUEST_CODE_CHECKOUT -> {
-//                val result = SwirepaySdk.getPaymentCheckout(resultCode, data)
-//                Log.d("sdk_test", "onActivityResult: " + Gson().toJson(result))
-//                resultText.text = Gson().toJson(result)
-//                responseText.text = result.entity.toString()
-//            }
         }
     }
 

@@ -12,6 +12,7 @@ import com.swirepay.android_sdk.retrofit.ApiInterface
 import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ViewModelPayment(
     private val amount: Int,
@@ -32,6 +33,8 @@ class ViewModelPayment(
 
     private fun fetchPaymentLink() = viewModelScope.launch(Dispatchers.IO) {
         val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+        val apiClients = ApiClient.okHttpClient.interceptors()
+
         val paymentRequest = PaymentRequest(
             "$amount",
             currencyCode,
@@ -47,8 +50,10 @@ class ViewModelPayment(
             Log.d("sdk_test", "fetchPaymentLink: ${response.body()!!.entity.gid}")
             livePaymentLink.postValue(paymentLink)
         } else {
-            liveErrorMessages.postValue("error code : ${response.code()}")
-            Log.d("sdk_test", "fetchPaymentLink: ${response.code()}")
+
+            liveErrorMessages.postValue("error code : ${response.errorBody()!!.string()}")
+            Log.d("sdk_test", "fetchPaymentLink: ${response.errorBody()!!.string()}")
+
         }
     }
 
