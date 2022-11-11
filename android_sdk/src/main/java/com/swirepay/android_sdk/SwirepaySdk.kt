@@ -121,7 +121,6 @@ object SwirepaySdk {
         if (data != null) {
             val reason = data.getStringExtra(PaymentActivity.FAILURE_REASON)
             val paymentLink = data.getParcelableExtra<T?>(RESULT)
-//            val paymentLink = data.extras?.getParcelable<T>(RESULT)
             val message = data.getStringExtra(PaymentActivity.PAYMENT_MESSAGE)
             if (paymentLink != null) {
                 paymentResult.entity = paymentLink
@@ -132,7 +131,6 @@ object SwirepaySdk {
                 paymentResult.message = message
         }
         return paymentResult
-//        return Result(Status.FAILED, paymentResult as T)
     }
 
     fun initSdk(swirepayApiKey: String) {
@@ -200,9 +198,6 @@ object SwirepaySdk {
         }, requestCode)
     }
 
-//    fun getPaymentLink(resultCode: Int, data: Intent?): Result<PaymentLink> {
-//        return getResult(resultCode, data)
-//    }
     fun getPaymentLink(resultCode: Int, data: Intent?): Result<PaymentLink> {
         return getResult(resultCode, data)
     }

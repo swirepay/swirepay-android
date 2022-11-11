@@ -85,13 +85,6 @@ class PaymentLinkActivity : AppCompatActivity() {
                 listOfPaymentMethods.remove(PaymentMethodType.CARD)
         }
 
-//        binding.cbBank.setOnCheckedChangeListener { _, b ->
-//            if (b)
-//                listOfPaymentMethods.add(PaymentMethodType.ACH)
-//            else
-//                listOfPaymentMethods.remove(PaymentMethodType.ACH)
-//        }
-
         binding.usBank.setOnCheckedChangeListener { _, b ->
             if (b)
                 listOfPaymentMethods.add(PaymentMethodType.ACH_LEGACY)
