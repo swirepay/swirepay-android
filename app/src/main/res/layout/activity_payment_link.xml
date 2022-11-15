@@ -77,13 +77,22 @@
         app:layout_constraintTop_toTopOf="@id/cbUpi" />
 
     <CheckBox
-        android:id="@+id/cbBank"
+        android:id="@+id/usBank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="BANK"
+        android:text="ACH"
         app:layout_constraintLeft_toRightOf="@id/cbCard"
         app:layout_constraintTop_toTopOf="@id/cbCard" />
+
+    <CheckBox
+        android:id="@+id/indBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Net Banking"
+        app:layout_constraintLeft_toRightOf="@id/usBank"
+        app:layout_constraintTop_toTopOf="@id/usBank" />
 
     <Spinner
         android:id="@+id/spinnerCurrencyType"

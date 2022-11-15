@@ -202,6 +202,7 @@ object SwirepaySdk {
         return getResult(resultCode, data)
     }
 
+
     fun getSubscriptionButton(resultCode: Int, data: Intent?): Result<SubscriptionButton> {
         return getResult(resultCode, data)
     }

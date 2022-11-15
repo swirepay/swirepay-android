@@ -85,12 +85,21 @@ class PaymentLinkActivity : AppCompatActivity() {
                 listOfPaymentMethods.remove(PaymentMethodType.CARD)
         }
 
-        binding.cbBank.setOnCheckedChangeListener { _, b ->
+        binding.usBank.setOnCheckedChangeListener { _, b ->
             if (b)
-                listOfPaymentMethods.add(PaymentMethodType.ACH)
+                listOfPaymentMethods.add(PaymentMethodType.ACH_LEGACY)
             else
-                listOfPaymentMethods.remove(PaymentMethodType.ACH)
+                listOfPaymentMethods.remove(PaymentMethodType.ACH_LEGACY)
         }
+
+        binding.indBank.setOnCheckedChangeListener { _, b ->
+            if (b)
+                listOfPaymentMethods.add(PaymentMethodType.NET_BANKING)
+            else
+                listOfPaymentMethods.remove(PaymentMethodType.NET_BANKING)
+        }
+
+
 
         binding.etDueDate.setOnClickListener {
 
@@ -144,6 +153,7 @@ class PaymentLinkActivity : AppCompatActivity() {
                     listOfPaymentMethods,
                     customer,
                     customerGid,
+
                     notificationType,
                     dueDate,
                 )

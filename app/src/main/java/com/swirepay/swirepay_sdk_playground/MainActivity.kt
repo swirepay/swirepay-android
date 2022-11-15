@@ -102,13 +102,6 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = result.toString()
                 responseText.text = result.entity.toString()
             }
-
-//            SwirepaySdk.REQUEST_CODE_CHECKOUT -> {
-//                val result = SwirepaySdk.getPaymentCheckout(resultCode, data)
-//                Log.d("sdk_test", "onActivityResult: " + Gson().toJson(result))
-//                resultText.text = Gson().toJson(result)
-//                responseText.text = result.entity.toString()
-//            }
         }
     }
 

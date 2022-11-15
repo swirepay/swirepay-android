@@ -5,5 +5,5 @@ enum class NotificationType {
 }
 
 enum class PaymentMethodType {
-    CARD, ACH, UPI,NET_BANKING
+    CARD, ACH,ACH_LEGACY, UPI,NET_BANKING
 }
