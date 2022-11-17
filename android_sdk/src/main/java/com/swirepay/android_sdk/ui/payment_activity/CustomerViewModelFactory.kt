@@ -11,7 +11,7 @@ class CustomCustomerDetailsViewModelProvider(
     val customer: CustomerModel?,
     val customerGid: String?,
     val notificationType: String,
-    val dueDate: String?
+    val dueDate: String?,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -22,7 +22,7 @@ class CustomCustomerDetailsViewModelProvider(
             customer,
             customerGid,
             notificationType = notificationType,
-            dueDate
+            dueDate,
         ) as T
     }
 

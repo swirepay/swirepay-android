@@ -388,9 +388,14 @@ class CheckoutActivity : AppCompatActivity() {
         storePaymentMethod =
             binding.cardExpandable.secondLayout.findViewById(R.id.storePaymentMethod)
 
-        payNow.text =
-            "Pay " + resources.getString(R.string.Rs) + amount
-        payNow.isEnabled = false
+        if (orderInfo.currencyCode.equals("USD")){
+            payNow.text = "Pay " + resources.getString(R.string.dollar) + " " + amount
+            payNow.isEnabled = false
+        }else {
+            payNow.text = "Pay " + resources.getString(R.string.Rs) + " " +amount
+            payNow.isEnabled = false
+        }
+
 
         var isSaved = false
 
@@ -653,6 +658,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             if (it.status == "REQUIRE_PAYMENT_METHOD") {
 
+                Log.e("===========A",it.errorDescription)
                 onSnack(it.errorDescription)
             } else {
 
@@ -663,7 +669,7 @@ class CheckoutActivity : AppCompatActivity() {
         viewModelNetBanking.liveErrorMessages.observe(this, { message ->
 
             binding.progress.visibility = View.GONE
-
+            Log.e("===========B","$message")
             onSnack("$message")
         })
     }

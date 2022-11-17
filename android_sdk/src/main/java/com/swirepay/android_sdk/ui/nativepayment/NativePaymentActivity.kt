@@ -152,6 +152,7 @@ class NativePaymentActivity : AppCompatActivity() {
                 customerGid,
                 notificationType.toString(),
                 dueDate,
+                "https://redirect.swirepay.com"
             )
 
             binding.progress.visibility = View.VISIBLE

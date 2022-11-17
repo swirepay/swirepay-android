@@ -32,7 +32,7 @@ class ViewModelNetBanking() : ViewModel() {
                 livePaymentBanks.postValue(banks)
             } else {
                 liveErrorMessages.postValue(Utility.getErrorMsg(response))
-                Log.d("sdk_test", "netbanking-getAllBanks: ${response.code()}")
+                Log.d("sdk_test", "netbanking-getAllBanks: ${response.errorBody()!!.string()}")
             }
         }
 

@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Private Key"
-        android:lines="1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -95,7 +94,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnNativePayment" />
-
 
     <ScrollView
         android:layout_width="match_parent"

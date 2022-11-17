@@ -80,9 +80,9 @@ class PaymentLinkActivity : AppCompatActivity() {
 
         binding.cbUpi.setOnCheckedChangeListener { _, b ->
             if (b)
-                listOfPaymentMethods.add(PaymentMethodType.CARD)
+                listOfPaymentMethods.add(PaymentMethodType.UPI)
             else
-                listOfPaymentMethods.remove(PaymentMethodType.CARD)
+                listOfPaymentMethods.remove(PaymentMethodType.UPI)
         }
 
         binding.usBank.setOnCheckedChangeListener { _, b ->
@@ -118,13 +118,16 @@ class PaymentLinkActivity : AppCompatActivity() {
                 NotificationType.ALL
             )
 
-            val amount = binding.etAmount.text.toString()
+            var amount = binding.etAmount.text.toString()
+
+
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
             val phoneNum = binding.etPhoneNo.text.toString()
             val notificationType = listTypes[binding.spinnerNotificationType.selectedItemPosition]
             var customerGid: String? = null
-            var dueDate: String? = null
+            var expiresAt: String? = null
+            var redirectUri: String? = null
 
             var strCustomerGid: String = binding.etCustomerGid.text.toString()
             var strDueDate: String = binding.etDueDate.text.toString()
@@ -132,8 +135,8 @@ class PaymentLinkActivity : AppCompatActivity() {
             if (!TextUtils.isEmpty(strCustomerGid))
                 customerGid = strCustomerGid;
 
-            if (!TextUtils.isEmpty(strDueDate))
-                dueDate = simpleDateFormat.format(timeFormat.parse(strDueDate));
+//            if (!TextUtils.isEmpty(strDueDate))
+//                redirectUri = "https://redirect.swirepay.com";
 
             val customer = CustomerModel(
                 email,
@@ -144,35 +147,70 @@ class PaymentLinkActivity : AppCompatActivity() {
                 null
             )
 
-            try {
-                SwirepaySdk.createPaymentLink(
-                    this,
-                    REQUEST_CODE_PAYMENT_LINK,
-                    amount.toInt(),
-                    currencyType,
-                    listOfPaymentMethods,
-                    customer,
-                    customerGid,
+            /*if (amount.equals("")){
+//                binding.etAmount.setText(0)
+                val isAmountEmpty = 0.toString()
+                Log.e("==============A",isAmountEmpty)
 
-                    notificationType,
-                    dueDate,
-                )
-            } catch (e: KeyNotInitializedException) {
-                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+
+            }else {
+                amount.toInt()
+            }*/
+
+            if (amount.isEmpty()) {
+                val isAmountEmpty = 0.toString()
+                try {
+                    SwirepaySdk.createPaymentLink(
+                        this,
+                        REQUEST_CODE_PAYMENT_LINK,
+
+                        isAmountEmpty.toInt(),
+
+                        currencyType,
+                        listOfPaymentMethods,
+                        customer,
+                        customerGid,
+
+                        notificationType,
+                        expiresAt,
+                    )
+
+                } catch (e: KeyNotInitializedException) {
+                    Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                try {
+                    SwirepaySdk.createPaymentLink(
+                        this,
+                        REQUEST_CODE_PAYMENT_LINK,
+                        amount.toInt(),
+                        currencyType,
+                        listOfPaymentMethods,
+                        customer,
+                        customerGid,
+
+                        notificationType,
+                        expiresAt,
+                    )
+                } catch (e: KeyNotInitializedException) {
+                    Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+//
             }
         }
-    }
 
-    private fun updateLabel() {
-        binding.etDueDate.setText(timeFormat.format(myCalendar.time))
-    }
+        private fun updateLabel() {
+            binding.etDueDate.setText(timeFormat.format(myCalendar.time))
+        }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
 
-        val paymentResult = SwirepaySdk.getPaymentLink(resultCode, data)
-        Log.d("sdk_test", "onActivityResult: $paymentResult")
-        binding.tvResult.text = paymentResult.entity.toString()
-        binding.tvResponse.text = paymentResult.toString()
+            val paymentResult = SwirepaySdk.getPaymentLink(resultCode, data)
+            Log.d("sdk_test", "onActivityResult: $paymentResult")
+            binding.tvResult.text = paymentResult.entity.toString()
+            binding.tvResponse.text = paymentResult.toString()
+        }
     }
-}

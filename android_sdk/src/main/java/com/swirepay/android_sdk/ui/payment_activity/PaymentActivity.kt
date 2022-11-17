@@ -28,7 +28,7 @@ class PaymentActivity : BaseActivity() {
                 customer,
                 customerGid,
                 notificationType = notificationType!!,
-                dueDate
+                dueDate,
             )
         ).get(ViewModelPayment::class.java)
     }

@@ -12,5 +12,6 @@ class PaymentRequest(
     val customer: CustomerModel?,
     val customerGid: String?,
     val notificationType: String,
-    val dueDate: String?,
+    val expiresAt: String?,
+    val redirectUri: String?,
 ) : Parcelable

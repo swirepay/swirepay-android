@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.etInitSdk.setText("")
 
+        //USD
+//        binding.etInitSdk.setText("sk_test_52Y1EaICF09by7oT8HCOpkyBdFFQGp6g")
+
+        //INR
+        binding.etInitSdk.setText("sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF")
+
         binding.btnInitSdk.setOnClickListener {
 
             val key = binding.etInitSdk.text.toString()

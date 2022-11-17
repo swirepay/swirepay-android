@@ -55,10 +55,17 @@ class ActivityCheckout : AppCompatActivity() {
         btnCheckout.setOnClickListener {
 
             val orderInfo = OrderInfo()
-            if (binding.etAmount.text.toString().isNotEmpty())
+    
+            if (binding.etAmount.text.toString().isNotEmpty() && binding.etAmount.text.toString() >= 100.toString()) {
                 orderInfo.amount = binding.etAmount.text.toString().toInt()
-            else
+
+            }else if (binding.etAmount.text.toString().isEmpty() ){
                 Toast.makeText(this, "Amount shouldn't be empty", Toast.LENGTH_LONG).show()
+
+            }else if (binding.etAmount.text.toString() < 100.toString()){
+                Toast.makeText(this, "Enter Valid Amount", Toast.LENGTH_LONG).show()
+
+            }
             orderInfo.receiptEmail = "testaccountowner-stag+592@swirepay.com"
             orderInfo.receiptSms = "+919845789562"
             orderInfo.currencyCode = "INR"

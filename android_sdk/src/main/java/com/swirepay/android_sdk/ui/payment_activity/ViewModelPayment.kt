@@ -43,6 +43,7 @@ class ViewModelPayment(
             customerGid,
             notificationType = notificationType,
             dueDate,
+            "https://redirect.swirepay.com",
         )
         val response = apiClient.fetchPaymentLink(paymentRequest, SwirepaySdk.apiKey!!).execute()
         if (response.isSuccessful && response.body() != null) {
