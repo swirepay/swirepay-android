@@ -21,6 +21,7 @@ import com.swirepay.android_sdk.checkout.views.SecurityCodeInput
 class CustomAdapter(
     val context: Context,
     val mList: List<_PaymentMethodCard>,
+    val currency:String,
     val amount: Int,
     val payListener: PayListener
 ) :
@@ -45,10 +46,12 @@ class CustomAdapter(
         mPayListener = payListener
 
         val card = mList[position].paymentCard
+        println("card====prefix ${card.currency?.prefix}")
+        println("card====name ${card.currency?.name}")
         var drawable: Int = R.drawable.ic_card
         when (card.scheme) {
             "VISA" -> drawable = R.drawable.ic_visa
-            "MASTER" -> drawable = R.drawable.ic_master
+            "MASTERCARD" -> drawable = R.drawable.ic_master
             "MAESTRO" -> drawable = R.drawable.ic_maestro
             "AMEX" -> drawable = R.drawable.ic_amex
             "RUPAY" -> drawable = R.drawable.ic_rupay
@@ -75,9 +78,19 @@ class CustomAdapter(
             "%.2f",
             CheckoutActivity.dec.format(amount / 100.00).toString().toFloat()
         )
+        println("currency ==== $currency")
 
-        holder.payNow.text =
-            "Pay " + context.resources.getString(R.string.Rs) + amount
+        if(currency == "USD")
+        {
+            holder.payNow.text =
+                "Pay " + context.resources.getString(R.string.dollar) + amount
+        }
+        else {
+            holder.payNow.text =
+                "Pay " + context.resources.getString(R.string.Rs) + amount
+        }
+
+
         holder.payNow.isEnabled = false
 
         holder.payNow.setOnClickListener {
@@ -88,6 +101,9 @@ class CustomAdapter(
                         card.gid,
                         mList[position].gid
                     )
+//                else if (holder.securityCode.text.toString().length < 3) {
+//                    Toast.makeText(context, "Invalid CVC number", Toast.LENGTH_LONG).show()
+//                }
                 else
                     Toast.makeText(context, "Cvv cannot be empty", Toast.LENGTH_LONG).show()
             }

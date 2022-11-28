@@ -61,7 +61,7 @@
                 style="@style/SwirepayCheckout.Card.BrandRecognitionLogoContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 tools:visibility="visible">
 
                 <com.swirepay.android_sdk.checkout.views.RoundCornerImageView
@@ -177,6 +177,7 @@
             android:src="@drawable/ic_amex" />
 
         <ImageView
+            android:id="@+id/rupay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_rupay" />

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.google.gson.Gson
 import com.swirepay.android_sdk.KeyNotInitializedException
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.SwirepaySdk.REQUEST_CODE_CHECKOUT
+import com.swirepay.android_sdk.SwirepaySdk.resultStr
 import com.swirepay.android_sdk.checkout.model.*
 import com.swirepay.android_sdk.model.OrderInfo
 import com.swirepay.swirepay_sdk_playground.databinding.CheckoutActivityBinding
@@ -20,16 +22,11 @@ import com.swirepay.swirepay_sdk_playground.databinding.CheckoutActivityBinding
 class ActivityCheckout : AppCompatActivity() {
 
     lateinit var binding: CheckoutActivityBinding
-
+    var result: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CheckoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        SwirepaySdk.initSdk("")
-
-//        binding.etInitSdk.setText("")
-
         binding.btnInitSdk.setOnClickListener {
 
             val key = binding.etInitSdk.text.toString()
@@ -73,24 +70,31 @@ class ActivityCheckout : AppCompatActivity() {
             orderInfo.statementDescriptor = "IND Test"
 
             try {
+                //val callback =
                 SwirepaySdk.doPayment(
                     this,
                     orderInfo,
                     customer,
-                    REQUEST_CODE_CHECKOUT,
+                    false,
                     false
+
                 )
+
+
             } catch (e: KeyNotInitializedException) {
                 Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         val resultText = findViewById<TextView>(R.id.tvResult)
         val responseText = findViewById<TextView>(R.id.tvResponse)
+        responseText.setVisibility(View.INVISIBLE);
 
         when (requestCode) {
             REQUEST_CODE_CHECKOUT -> {

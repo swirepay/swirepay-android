@@ -18,6 +18,7 @@ import com.swirepay.android_sdk.model.PaymentMethodType
 import com.swirepay.android_sdk.ui.payment_activity.model.CustomerModel
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityPaymentLinkBinding
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,6 +31,7 @@ class PaymentLinkActivity : AppCompatActivity() {
     var currencyType = CurrencyType.INR
 
     var myCalendar = Calendar.getInstance()
+    var expiresAt: String? = null
 
 
     var date =
@@ -41,7 +43,7 @@ class PaymentLinkActivity : AppCompatActivity() {
         }
 
     val timeFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.getDefault())
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'00:00:00", Locale.getDefault())
 
     companion object {
         const val REQUEST_CODE_PAYMENT_LINK = 1001
@@ -126,7 +128,6 @@ class PaymentLinkActivity : AppCompatActivity() {
             val phoneNum = binding.etPhoneNo.text.toString()
             val notificationType = listTypes[binding.spinnerNotificationType.selectedItemPosition]
             var customerGid: String? = null
-            var expiresAt: String? = null
             var redirectUri: String? = null
 
             var strCustomerGid: String = binding.etCustomerGid.text.toString()
@@ -202,6 +203,7 @@ class PaymentLinkActivity : AppCompatActivity() {
         }
 
         private fun updateLabel() {
+            expiresAt =  simpleDateFormat.format(myCalendar.time)
             binding.etDueDate.setText(timeFormat.format(myCalendar.time))
         }
 

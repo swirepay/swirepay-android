@@ -22,9 +22,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.swirepay.android_sdk.R
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.checkout.model.*
+import com.swirepay.android_sdk.checkout.model.Card
 import com.swirepay.android_sdk.checkout.ui.adapter.ObjectAdapter
 import com.swirepay.android_sdk.checkout.utils.CardType
 import com.swirepay.android_sdk.checkout.utils.StatusbarUtil
+import com.swirepay.android_sdk.checkout.viewmodel.*
 import com.swirepay.android_sdk.checkout.views.*
 import com.swirepay.android_sdk.databinding.ActivityCheckOutBinding
 import com.swirepay.android_sdk.model.Banks
@@ -55,6 +57,7 @@ import android.text.InputFilter.LengthFilter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import android.R.attr.angle
+import com.swirepay.android_sdk.model.AccountResponse
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,7 +70,6 @@ import kotlin.collections.HashMap
 class CheckoutActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCheckOutBinding
-
     lateinit var customerGid: String
     lateinit var cardNumber: CardNumberInput
     lateinit var mobileNumber: SwirepayTextInputEditText
@@ -82,9 +84,11 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var cvvTextInput: TextInputLayout
     lateinit var mobileTextInput: TextInputLayout
     lateinit var cardLogo: RoundCornerImageView
+    lateinit var rupay: ImageView
     lateinit var storePaymentMethod: MaterialCheckBox
     lateinit var orderInfo: OrderInfo
     lateinit var customer: SPCustomer
+    lateinit var accountresponse: AccountResponse
     lateinit var editTextBanks: AppCompatAutoCompleteTextView
     val swirepayBanks = ArrayList<Banks>()
     lateinit var paymentTypes: List<String>
@@ -92,14 +96,6 @@ class CheckoutActivity : AppCompatActivity() {
     var isTest: Boolean = false
     var currencyType: String = "INR"
     var amount: String = ""
-
-    val viewModelProfile: ViewModelProfile by lazy {
-        ViewModelProvider(this).get(ViewModelProfile::class.java)
-    }
-
-    val viewModelAccount: ViewModelAccount by lazy {
-        ViewModelProvider(this).get(ViewModelAccount::class.java)
-    }
 
     val viewModelCustomer: ViewModelCustomer by lazy {
         ViewModelProvider(this).get(ViewModelCustomer::class.java)
@@ -141,7 +137,9 @@ class CheckoutActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         orderInfo = intent.getParcelableExtra(SwirepaySdk.ORDER_INFO)!!
-        customer = intent.getParcelableExtra(SwirepaySdk.PAYMENT_CUSTOMER)!!
+        customer = intent.getParcelableExtra("payment_customer")!!
+
+        accountresponse = intent.getParcelableExtra(SwirepaySdk.ACCOUNT_RESPONSE)!!
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -188,28 +186,21 @@ class CheckoutActivity : AppCompatActivity() {
 
         binding.progress.visibility = View.VISIBLE
 
-        viewModelProfile.getProfile()
-        viewModelProfile.liveProfileResponse.observe(this, {
-
-            isTest = it.test
-
-            viewModelAccount.getAccount(it.accountGid)
-            viewModelAccount.liveAccountResponse.observe(this, { it ->
-                paymentTypes = it.supportedPaymentTypes
+              paymentTypes = accountresponse.supportedPaymentTypes
 
                 if (paymentTypes.contains("CREDIT_CARD_NOT_PRESENT") || paymentTypes.contains("DEBIT_CARD_NOT_PRESENT"))
-                    binding.cardExpandable.visibility = View.VISIBLE
+                    binding.cardViewBackground.visibility = View.VISIBLE
                 else
-                    binding.cardExpandable.visibility = View.GONE
+                    binding.cardViewBackground.visibility = View.GONE
 
                 if (paymentTypes.contains("UPI_NOT_PRESENT"))
-                    binding.upiExpandable.visibility = View.VISIBLE
+                    binding.upiViewBackground.visibility = View.VISIBLE
                 else
-                    binding.upiExpandable.visibility = View.GONE
+                    binding.upiViewBackground.visibility = View.GONE
 
-                //change currency type based on account(IND/US)
-                orderInfo.currencyCode = it.currency.name
-                currencyType = it.currency.name
+               orderInfo.currencyCode = accountresponse.currency.name
+               currencyType = accountresponse.currency.name
+
                 invalidateOptionsMenu() // Menu updation
 
 
@@ -233,7 +224,7 @@ class CheckoutActivity : AppCompatActivity() {
 
                         customerGid = it.content[0].gid
 
-                        if (it.content[0].gid.equals("")) {
+                        if (!(it.content[0].gid.equals(""))) {
                             viewModelPaymentSession.getPaymentMethod(
                                 URLEncoder.encode(
                                     it.content[0].gid,
@@ -249,17 +240,10 @@ class CheckoutActivity : AppCompatActivity() {
 
                     funcBank()
                 })
-            })
-        })
-
-
 
         viewModelPaymentSession.paymentMethodResults.observe(this, {
 
             binding.progress.visibility = View.GONE
-
-//            val savedCards = ArrayList<PaymentCard>()
-//            val savedUpi = ArrayList<PaymentUpi>()
             val paymentMethodCard = ArrayList<_PaymentMethodCard>()
             val distinctCards = ArrayList<_PaymentMethodCard>()
             val cardNumbers = ArrayList<String?>()
@@ -268,17 +252,13 @@ class CheckoutActivity : AppCompatActivity() {
 
             for (paymentMethod in it.content) {
                 if (paymentMethod.card != null) {
-//                    savedCards.add(paymentMethod.card)
                     cardsMap.put(paymentMethod.card, paymentMethod.gid)
                     cardNumbers.add(paymentMethod.card.lastFour)
                 }
 
-//                if (paymentMethod.upi != null)
-//                    savedUpi.add(paymentMethod.upi)
+
             }
 
-//            val distinctCards: List<PaymentCard> = savedCards.distinctBy { it.lastFour }
-//            val distinctUpi: List<PaymentUpi> = savedUpi.distinctBy { it.vpa }
 
             if (cardsMap.isNotEmpty()) {
                 binding.savedCardsLayout.visibility = View.VISIBLE
@@ -296,6 +276,7 @@ class CheckoutActivity : AppCompatActivity() {
                 val adapter = CustomAdapter(
                     this,
                     distinctCards,
+                    currencyType,
                     orderInfo.amount,
                     object : CustomAdapter.PayListener {
                         override fun onPayClick(cvv: String, cardGid: String?, gid: String) {
@@ -306,13 +287,7 @@ class CheckoutActivity : AppCompatActivity() {
                 binding.savedCardsView.adapter = adapter
             }
 
-//            if (distinctUpi.isNotEmpty()) {
-//                binding.savedUpiLayout.visibility = View.VISIBLE
-//                binding.savedUpiView.layoutManager = LinearLayoutManager(this)
-//
-//                val adapter = UpiCustomAdapter(this, distinctUpi)
-//                binding.savedUpiView.adapter = adapter
-//            }
+
         })
 
         handler = object : Handler() {
@@ -361,6 +336,14 @@ class CheckoutActivity : AppCompatActivity() {
             orderInfo.paymentMethodType = arrayList
 
             viewModelPaymentSession.createPaymentSession(orderInfo)
+
+
+        })
+        viewModelCard.liveErrorMessages.observe(this, { message ->
+
+            binding.progress.visibility = View.GONE
+
+            onSnack("$message")
         })
     }
 
@@ -374,7 +357,6 @@ class CheckoutActivity : AppCompatActivity() {
             binding.cardExpandable.secondLayout.findViewById(R.id.textInputLayout_securityCode)
         expiryDateTextInput =
             binding.cardExpandable.secondLayout.findViewById(R.id.textInputLayout_expiryDate)
-//        cardNumber.setAmexCardFormat(true)
         expiryDate =
             binding.cardExpandable.secondLayout.findViewById(R.id.editText_expiryDate)
         securityCode =
@@ -387,13 +369,17 @@ class CheckoutActivity : AppCompatActivity() {
             binding.cardExpandable.secondLayout.findViewById(R.id.cardBrandLogo_imageView_primary)
         storePaymentMethod =
             binding.cardExpandable.secondLayout.findViewById(R.id.storePaymentMethod)
+        rupay =  binding.cardExpandable.secondLayout.findViewById(R.id.rupay)
 
         if (orderInfo.currencyCode.equals("USD")){
             payNow.text = "Pay " + resources.getString(R.string.dollar) + " " + amount
             payNow.isEnabled = false
+            rupay.visibility = View.GONE
+
         }else {
             payNow.text = "Pay " + resources.getString(R.string.Rs) + " " +amount
             payNow.isEnabled = false
+            rupay.visibility = View.VISIBLE
         }
 
 
@@ -466,11 +452,6 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.GONE
 
-//            createResult(it)
-
-//            val paymentResult: PaymentResult = it as PaymentResult
-//            Log.e("Result", Gson().toJson(paymentResult))
-
             if ((it.status == "SUCCEEDED" || it.status == "SUCCESS") && it.nextActionUrl == null) {
 
                 startActivity(
@@ -511,8 +492,6 @@ class CheckoutActivity : AppCompatActivity() {
             binding.upiExpandable.secondLayout.findViewById(R.id.payNowUpi)
         payNowUpi.text = "Verify & Pay"
         payNowUpi.isEnabled = false
-
-//        mobileNumber.setText(upiNumber)
 
         val gpay = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.gpay)
         val paytm = binding.upiExpandable.secondLayout.findViewById<RadioButton>(R.id.paytm)
@@ -565,12 +544,6 @@ class CheckoutActivity : AppCompatActivity() {
 
             binding.progress.visibility = View.GONE
 
-//            createResult(it)
-
-//            Might require in future for native
-//            val bottomSheetDialog = BottomSheetDialog.newInstance(it.upi.vpa)
-//            bottomSheetDialog.show(supportFragmentManager, "UPI_BottomSheet")
-
             if (it.status == "REQUIRE_PAYMENT_METHOD") {
                 onSnack(it.errorDescription)
             } else {
@@ -602,14 +575,13 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         if (swirepayBanks.size == 0)
-            binding.netBankExpandable.visibility = View.GONE
+            binding.netBankViewBackground.visibility = View.GONE
         else
-            binding.netBankExpandable.visibility = View.VISIBLE
+            binding.netBankViewBackground.visibility = View.VISIBLE
 
         val adapter = ObjectAdapter(this, swirepayBanks)
         editTextBanks.setAdapter(adapter)
         editTextBanks.threshold = 1
-//        editTextBanks.dismissDropDown()
 
         payNowBank = binding.netBankExpandable.secondLayout.findViewById(R.id.payNowBank)
         payNowBank.text =
@@ -658,7 +630,6 @@ class CheckoutActivity : AppCompatActivity() {
 
             if (it.status == "REQUIRE_PAYMENT_METHOD") {
 
-                Log.e("===========A",it.errorDescription)
                 onSnack(it.errorDescription)
             } else {
 
@@ -669,7 +640,6 @@ class CheckoutActivity : AppCompatActivity() {
         viewModelNetBanking.liveErrorMessages.observe(this, { message ->
 
             binding.progress.visibility = View.GONE
-            Log.e("===========B","$message")
             onSnack("$message")
         })
     }
@@ -738,6 +708,44 @@ class CheckoutActivity : AppCompatActivity() {
     private val cardTextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
 
+            if (CardValidator.guessCard(cardNumber.rawValue).maxLength > cardNumber.rawValue.length) {
+                cardNumberTextInput.error = "Invalid card Number"
+            }
+            else {
+                cardNumberTextInput.error = ""
+            }
+
+            val simpleDateFormat = SimpleDateFormat("MM/yy")
+            simpleDateFormat.isLenient = false
+
+            if(expiryDate.length() > 3){
+                val expiry: Date =
+                    simpleDateFormat.parse("" + expiryDate.date.expiry)
+                val expired: Boolean = expiry.before(Date())
+
+                if (expired) {
+                    expiryDateTextInput.error = "Invalid card expiration date"
+
+                }
+
+                else if (expiryDate.date.expiryYear > 2040) {
+                    expiryDateTextInput.error = "Invalid expiry year should be within 2040"
+                }
+                else {
+                    expiryDateTextInput.error = ""
+                }
+            }
+            else {
+                expiryDateTextInput.error = ""
+            }
+
+
+            if (securityCode.text.toString().length < 3) {
+                cvvTextInput.error = "Invalid CVC number"
+            }
+            else {
+                cvvTextInput.error = ""
+            }
         }
 
         override fun beforeTextChanged(
@@ -749,7 +757,6 @@ class CheckoutActivity : AppCompatActivity() {
         override fun onTextChanged(
             s: CharSequence, start: Int, before: Int, count: Int
         ) {
-//            cardLogo.setImageResource(CardType.forCardNumberPattern(cardNumber.text.toString()).cardDrawable)
             cardLogo.setImageResource(CardValidator.guessCard(cardNumber.text.toString()).drawable)
 
             when (CardValidator.guessCard(cardNumber.text.toString()).cardName) {
@@ -899,8 +906,6 @@ class CheckoutActivity : AppCompatActivity() {
             findViewById(R.id.parentView), message,
             3000
         )
-//            .setAction("Action", null)
-//        snackbar.setActionTextColor(Color.BLUE)
         val snackbarView = snackbar.view
         snackbarView.setBackgroundColor(resources.getColor(R.color.primaryColor))
         val textView =

@@ -13,7 +13,8 @@ import retrofit2.Response
 
 
 object Utility {
-    const val baseUrl = "https://www.swirepay.com"
+    //const val baseUrl = "https://www.swirepay.com"
+    const val baseUrl = "https://redirect.swirepay.com"
     fun getBase24String(data: String): String {
         return encodeToString(data.toByteArray(), Base64.DEFAULT)
     }

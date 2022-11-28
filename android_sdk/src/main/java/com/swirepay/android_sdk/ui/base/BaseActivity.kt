@@ -98,6 +98,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         fun isThisFinalUrl(url: String?): Boolean {
+            println("url====")
+            println(url)
             if (url != null && url.contains(Utility.baseUrl)) {
                 return true
             }

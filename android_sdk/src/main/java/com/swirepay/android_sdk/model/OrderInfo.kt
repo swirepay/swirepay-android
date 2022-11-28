@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class OrderInfo(
+data class OrderInfo(
     var receiptEmail: String? = null,
     var receiptSms: String? = null,
     var currencyCode: String? = null,

@@ -37,6 +37,7 @@ class PaymentActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getSupportActionBar()?.hide()
         viewModel.livePaymentLink.observe(this, {
             loadUrl(it.link)
             Log.d(TAG, "onCreate: ${it.link}")

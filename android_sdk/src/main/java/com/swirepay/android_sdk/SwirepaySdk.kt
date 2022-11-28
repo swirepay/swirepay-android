@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
 import android.text.TextUtils
+import android.widget.Toast
 import com.google.gson.Gson
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
@@ -19,6 +20,7 @@ import com.swirepay.android_sdk.model.pusher.AppConfig
 import com.swirepay.android_sdk.model.pusher.CipherConversion
 import com.swirepay.android_sdk.model.pusher.PaymentRequest
 import com.swirepay.android_sdk.model.pusher.Request
+import com.swirepay.android_sdk.retrofit.ApiClient
 import com.swirepay.android_sdk.retrofit.ApiInterface
 import com.swirepay.android_sdk.retrofit.PusherClient
 import com.swirepay.android_sdk.ui.create_account.CreateAccountActivity
@@ -31,16 +33,19 @@ import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
 import com.swirepay.android_sdk.ui.subscription_button.model.Account
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
+//import jdk.nashorn.internal.objects.NativeRegExp.test
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 object SwirepaySdk {
 
     const val PLAN_START_DATE: String = "plan_start_date"
     var apiKey: String? = null
+    var resultStr: String? = null
     const val PAYMENT_AMOUNT = "payment_amount"
     const val PAYMENT_CUSTOMER = "payment_customer"
     const val PAYMENT_CUSTOMER_GID = "payment_customer_gid"
@@ -74,6 +79,7 @@ object SwirepaySdk {
     const val PAYMENT_STATUS = "payment_status"
     const val PAYMENT_RESPONSE = "payment_response"
     const val PAYMENT_FAILED = "payment_failed"
+    const val ACCOUNT_RESPONSE = "account_response"
 
     const val REQUEST_CODE_CHECKOUT = 243
 
@@ -323,22 +329,21 @@ object SwirepaySdk {
         context: Activity,
         orderInfo: OrderInfo,
         customer: SPCustomer?,
-        requestCode: Int,
+        requestCode: Boolean,
         hideLogo: Boolean
-    ) {
+
+        ) {
 
         if (apiKey == null || apiKey!!.isEmpty()) throw KeyNotInitializedException()
 
         if (customer == null) throw CustomerRequiredException()
 
         this.HIDE_LOGO = hideLogo
-
-        context.startActivityForResult(
-            Intent(context, CheckoutActivity::class.java).apply {
-                putExtra(ORDER_INFO, orderInfo)
-                putExtra(PAYMENT_CUSTOMER, customer)
-            }, requestCode
-        )
+        getProfile(context,
+            orderInfo,
+            customer,
+            REQUEST_CODE_CHECKOUT
+       )
     }
 
     fun sendRequest(
@@ -366,6 +371,85 @@ object SwirepaySdk {
                 }
             })
     }
+    fun getAccount(context: Activity,
+                   orderInfo: OrderInfo,
+                   customer: SPCustomer?,
+                   requestCode: Int,
+                   accountGid:String) {
+
+        val thread = Thread {
+            try {
+
+                val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+
+                val response =
+                    apiClient.getAccount(accountGid, SwirepaySdk.apiKey).execute()
+                if (response.isSuccessful && response.body() != null) {
+                    val accountResponse = response.body()!!.entity
+                    context.startActivityForResult(
+                        Intent(context, CheckoutActivity::class.java).apply {
+                            putExtra(ORDER_INFO, orderInfo)
+                            putExtra(PAYMENT_CUSTOMER, customer)
+                            putExtra(ACCOUNT_RESPONSE, accountResponse)
+                        }, requestCode
+                    )
+                }
+                else {
+
+                }
+                //Your code goes here
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        thread.start()
+
+
+
+    }
+    fun getProfile(
+        context: Activity,
+        orderInfo: OrderInfo,
+        customer: SPCustomer?,
+        requestCode: Int,
+    )  {
+        val apiClient = ApiClient.retrofit.create(ApiInterface::class.java)
+
+        val thread = Thread {
+            try {
+                val response = apiClient.getProfile(SwirepaySdk.apiKey).execute()
+                if (response.isSuccessful && response.body() != null) {
+                    val profileResponse = response.body()!!.entity
+                    getAccount(context,
+                        orderInfo,
+                        customer,
+                        REQUEST_CODE_CHECKOUT,profileResponse.accountGid)
+                }
+                else {
+                    println(response.errorBody())
+                    println("res====${response.message()}")
+                    println("res11====${response.errorBody()}")
+                    resultStr =  Utility.getErrorMsg(response)
+                    context.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            context,
+                            resultStr,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
+
+
+
+                }
+                //Your code goes here
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        thread.start()
+        }
 
     fun connectPusher(
         appKey: String,
@@ -400,4 +484,6 @@ object SwirepaySdk {
             }
         })
     }
+
+
 }

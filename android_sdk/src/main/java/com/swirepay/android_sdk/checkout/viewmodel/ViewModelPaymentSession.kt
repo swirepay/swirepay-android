@@ -1,6 +1,7 @@
 package com.swirepay.android_sdk.checkout.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,8 @@ class ViewModelPaymentSession() : ViewModel() {
                 livePaymentMethod.postValue(paymentResponse)
             } else {
                 liveErrorMessages.postValue(Utility.getErrorMsg(response))
+                println("card-payment-session22: ${ Utility.getErrorMsg(response)}")
+
                 Log.d("sdk_test", "card-payment-method: ${response.code()}")
             }
         }
@@ -49,7 +52,17 @@ class ViewModelPaymentSession() : ViewModel() {
                 livePaymentSession.postValue(sessionResponse)
             } else {
                 liveErrorMessages.postValue(Utility.getErrorMsg(response))
+                //SwirepaySdk.resultStr =  Utility.getErrorMsg(response)
+//                //context.runOnUiThread(Runnable {
+//                    Toast.makeText(
+//                        context,
+//                        Utility.getErrorMsg(response),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//               // })
+
                 Log.d("sdk_test", "card-payment-session: ${response.message()}")
+                println("card-payment-session: ${ Utility.getErrorMsg(response)}")
             }
         }
 
