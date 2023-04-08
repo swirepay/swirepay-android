@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
 //        binding.etInitSdk.setText("sk_test_52Y1EaICF09by7oT8HCOpkyBdFFQGp6g")
 
         //INR
-        binding.etInitSdk.setText("")//sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF
+//        binding.etInitSdk.setText("")//sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF
           //binding.etInitSdk.setText("sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF")//india account
          //binding.etInitSdk.setText("sk_test_GMP6MilKUyOMxMervlPKgn43arU9lxGg")//usaccount
-         //binding.etInitSdk.setText("sk_test_7GsTyKNtgZxj0UD6eT2ICqvHQZUvWKw5")//usaccount
+         binding.etInitSdk.setText("sk_test_7GsTyKNtgZxj0UD6eT2ICqvHQZUvWKw5")//usaccount
         //binding.etInitSdk.setText("GMP6MilKUyOMxMervlPKgn43arU9lxGg")
         //binding.etInitSdk.setText("pk_test_NZahOuYDntC2yRroIpwKNo4eCArlQFu2") //public Usaccount rajeshmec
 
@@ -79,6 +79,11 @@ class MainActivity : AppCompatActivity() {
             SwirepaySdk.createAccount(this, REQUEST_CODE_CONNECT_ACCOUNT)
         }
 
+        val btnCreateToken: Button = findViewById(R.id.btnToken)
+        btnCreateToken.setOnClickListener {
+            startActivity(Intent(this, TokenActivity::class.java))
+        }
+
         val btnPaymentButton: Button = findViewById(R.id.btnPaymentButton)
         btnPaymentButton.setOnClickListener {
 
@@ -113,12 +118,19 @@ class MainActivity : AppCompatActivity() {
                 resultText.text = result.toString()
                 responseText.text = result.entity.toString()
             }
+            REQUEST_CODE_TOKEN -> {
+                val result = SwirepaySdk.getToken(resultCode, data)
+                Log.d("sdk_test", "onActivityResult: $result")
+                resultText.text = result.toString()
+                responseText.text = result.entity.toString()
+            }
         }
     }
 
     companion object {
         const val REQUEST_CODE_PAYMENT_METHOD = 1003
         const val REQUEST_CODE_CONNECT_ACCOUNT = 1004
+        const val REQUEST_CODE_TOKEN = 1005
     }
 
 }

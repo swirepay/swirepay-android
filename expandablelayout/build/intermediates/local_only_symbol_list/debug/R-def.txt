@@ -1,0 +1,28 @@
+R_DEF: Internal format may change without notice
+local
+attr? expandable_animation
+attr? expandable_duration
+attr? expandable_isExpanded
+attr? expandable_parentLayout
+attr? expandable_secondLayout
+attr? expandable_showSpinner
+attr? expandable_spinner
+attr? expandable_spinner_animate
+attr? expandable_spinner_color
+attr? expandable_spinner_gravity
+attr? expandable_spinner_margin
+attr? expandable_spinner_rotation
+attr? expandable_spinner_size
+drawable ic_arrow_down
+id accelerate
+id arrow
+id bounce
+id cover
+id end
+id frame_parent
+id normal
+id overshoot
+id start
+layout expandable_layout_child
+layout expandable_layout_frame
+styleable ExpandableLayout expandable_isExpanded expandable_parentLayout expandable_secondLayout expandable_duration expandable_spinner expandable_showSpinner expandable_spinner_animate expandable_spinner_rotation expandable_spinner_size expandable_spinner_margin expandable_spinner_color expandable_spinner_gravity expandable_animation

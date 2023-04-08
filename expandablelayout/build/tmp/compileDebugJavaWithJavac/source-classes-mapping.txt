@@ -1,0 +1,6 @@
+com/skydoves/expandablelayout/databinding/ExpandableLayoutChildBinding.java
+ com.skydoves.expandablelayout.databinding.ExpandableLayoutChildBinding
+com/skydoves/expandablelayout/BuildConfig.java
+ com.skydoves.expandablelayout.BuildConfig
+com/skydoves/expandablelayout/databinding/ExpandableLayoutFrameBinding.java
+ com.skydoves.expandablelayout.databinding.ExpandableLayoutFrameBinding

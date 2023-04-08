@@ -78,6 +78,14 @@ interface ApiInterface {
     ): Call<SuccessResponse<PaymentMethodResponse>>
 
     @Headers("Content-Type:application/json")
+    @POST("/v1/token")
+    fun createToken(
+        @Body tokenRequest: TokenRequest?,
+        @Header("x-api-key") api_key: String,
+        @Header("x-destination-account") accountGid: String
+    ): Call<SuccessResponse<TokenResponse>>
+
+    @Headers("Content-Type:application/json")
     @POST("/v1/payment-method")
     fun createPaymentMethodUPI(
         @Body paymentMethod: PaymentMethodUpi?,

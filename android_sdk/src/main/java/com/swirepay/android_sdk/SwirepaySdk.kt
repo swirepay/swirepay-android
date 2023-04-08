@@ -14,6 +14,8 @@ import com.pusher.client.util.HttpAuthorizer
 import com.swirepay.android_sdk.callback.ICallback
 import com.swirepay.android_sdk.checkout.model.SPCustomer
 import com.swirepay.android_sdk.checkout.model.SPPaymentResult
+import com.swirepay.android_sdk.checkout.model.TokenRequest
+import com.swirepay.android_sdk.checkout.model.TokenResponse
 import com.swirepay.android_sdk.checkout.ui.activity.CheckoutActivity
 import com.swirepay.android_sdk.model.*
 import com.swirepay.android_sdk.model.pusher.AppConfig
@@ -33,6 +35,7 @@ import com.swirepay.android_sdk.ui.payment_method.SetupSession
 import com.swirepay.android_sdk.ui.subscription_button.SubscriptionButtonActivity
 import com.swirepay.android_sdk.ui.subscription_button.model.Account
 import com.swirepay.android_sdk.ui.subscription_button.model.SubscriptionButton
+import com.swirepay.android_sdk.ui.token.CreateTokenActivity
 //import jdk.nashorn.internal.objects.NativeRegExp.test
 import retrofit2.Call
 import retrofit2.Callback
@@ -80,6 +83,9 @@ object SwirepaySdk {
     const val PAYMENT_RESPONSE = "payment_response"
     const val PAYMENT_FAILED = "payment_failed"
     const val ACCOUNT_RESPONSE = "account_response"
+    const val TOKEN_REQUEST = "token_request"
+    const val PK_KEY = "pk_key"
+    const val DES_ACC_GID = "des_acc_gid"
 
     const val REQUEST_CODE_CHECKOUT = 243
 
@@ -204,6 +210,23 @@ object SwirepaySdk {
         }, requestCode)
     }
 
+    fun createToken(
+        context: Activity,
+        requestCode: Int,
+        tokenRequest: TokenRequest,
+        pkKey: String?,
+        desAccGid: String?
+    ) {
+
+        context.startActivityForResult(Intent(context, CreateTokenActivity::class.java).apply {
+            putExtra(TOKEN_REQUEST, tokenRequest)
+            if (pkKey != null)
+                putExtra(PK_KEY, pkKey)
+            if (desAccGid != null)
+            putExtra(DES_ACC_GID, desAccGid)
+        }, requestCode)
+    }
+
     fun getPaymentLink(resultCode: Int, data: Intent?): Result<PaymentLink> {
         return getResult(resultCode, data)
     }
@@ -218,6 +241,10 @@ object SwirepaySdk {
     }
 
     fun getAccount(resultCode: Int, data: Intent?): Result<Account> {
+        return getResult(resultCode, data)
+    }
+
+    fun getToken(resultCode: Int, data: Intent?): Result<TokenResponse> {
         return getResult(resultCode, data)
     }
 

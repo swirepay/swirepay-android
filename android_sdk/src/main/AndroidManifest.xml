@@ -8,9 +8,12 @@
 
     <application android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.token.CreateTokenActivity"
+            android:exported="true" />
+        <activity
             android:name=".checkout.ui.activity.PaymentStatusActivity"
             android:exported="true"
-            android:theme="@style/NoActionbar"/>
+            android:theme="@style/NoActionbar" />
         <activity
             android:name=".checkout.ui.activity.PaymentActionActivity"
             android:exported="true"
