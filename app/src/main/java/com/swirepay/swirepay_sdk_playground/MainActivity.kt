@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 //        binding.etInitSdk.setText("")//sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF
           //binding.etInitSdk.setText("sk_test_dGEOrl2wzQ9nVLpQxq1WmdZJNDPJB6zF")//india account
          //binding.etInitSdk.setText("sk_test_GMP6MilKUyOMxMervlPKgn43arU9lxGg")//usaccount
-         binding.etInitSdk.setText("sk_test_7GsTyKNtgZxj0UD6eT2ICqvHQZUvWKw5")//usaccount
+//         binding.etInitSdk.setText("sk_test_7GsTyKNtgZxj0UD6eT2ICqvHQZUvWKw5")//usaccount
+         binding.etInitSdk.setText("sk_test_5X5U7tb1ww47cukHGucCMXA9hBXi4yrr")//usaccount
         //binding.etInitSdk.setText("GMP6MilKUyOMxMervlPKgn43arU9lxGg")
         //binding.etInitSdk.setText("pk_test_NZahOuYDntC2yRroIpwKNo4eCArlQFu2") //public Usaccount rajeshmec
 

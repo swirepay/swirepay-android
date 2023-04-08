@@ -277,7 +277,7 @@ abstract class BaseActivity : AppCompatActivity() {
         fun isThisFinalUrl(url: String?): Boolean {
             println("url====")
             println(url)
-            if (url != null && url.contains(Utility.baseUrl)) {
+            if (url != null && (url.contains(Utility.baseUrl) || url.contains(Utility.defaultUrl))) {
                 return true
             }
             return false
