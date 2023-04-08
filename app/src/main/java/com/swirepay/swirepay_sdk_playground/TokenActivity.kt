@@ -33,15 +33,15 @@ class TokenActivity : AppCompatActivity() {
             val scheme = binding.etScheme.text.toString()
 
             val cardRequest = TokenCard(
-                "175",
-                "10".toInt(),
-                "2028".toInt(),
-                "John Wick",
-                "4242424242424242",
-                "VISA"
+                cvv,
+                expiryMonth.toInt(),
+                expiryYear.toInt(),
+                name,
+                number,
+                scheme
             )
             val tokenRequest = TokenRequest(
-                "CARD",
+                type,
                 cardRequest
             )
 
@@ -50,8 +50,8 @@ class TokenActivity : AppCompatActivity() {
                     this,
                     PaymentLinkActivity.REQUEST_CODE_PAYMENT_LINK,
                     tokenRequest,
-                    "pk_test_7MHkDW1zxGLuHZtp0PPpreOOYRngSViX",
-                    "account-366a1508867b4392be68d52d498ae6a4"
+                    pkKey,
+                    desAccGid
                 )
             } catch (e: KeyNotInitializedException) {
                 Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
