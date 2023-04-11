@@ -3,6 +3,7 @@ package com.swirepay.swirepay_sdk_playground
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.swirepay.android_sdk.KeyNotInitializedException
@@ -45,16 +46,24 @@ class PaymentButtonActivity : AppCompatActivity() {
             val currencyType = listCurrencies[binding.spinnerCurrencyType.selectedItemPosition]
 
             try {
-                SwirepaySdk.createPaymentButton(
-                    this,
-                    REQUEST_CODE_PAYMENT_BUTTON,
-                    amount.toInt(),
-                    description,
-                    currencyType,
-                    notificationType,
-                    list
-                )
-            } catch (e: KeyNotInitializedException) {
+                if (TextUtils.isEmpty(amount)) {
+                    Toast.makeText(
+                        this,
+                        "amount key cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    SwirepaySdk.createPaymentButton(
+                        this,
+                        REQUEST_CODE_PAYMENT_BUTTON,
+                        amount.toInt(),
+                        description,
+                        currencyType,
+                        notificationType,
+                        list
+                    )
+                }
+            }catch (e: KeyNotInitializedException) {
                 Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
             }
         }

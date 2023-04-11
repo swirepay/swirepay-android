@@ -3,6 +3,7 @@ package com.swirepay.swirepay_sdk_playground
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.swirepay.android_sdk.KeyNotInitializedException
@@ -32,29 +33,86 @@ class TokenActivity : AppCompatActivity() {
             val number = binding.etNumber.text.toString()
             val scheme = binding.etScheme.text.toString()
 
-            val cardRequest = TokenCard(
-                cvv,
-                expiryMonth.toInt(),
-                expiryYear.toInt(),
-                name,
-                number,
-                scheme
-            )
-            val tokenRequest = TokenRequest(
-                type,
-                cardRequest
-            )
-
-            try {
-                SwirepaySdk.createToken(
+            if (TextUtils.isEmpty(pkKey)) {
+                Toast.makeText(
                     this,
-                    PaymentLinkActivity.REQUEST_CODE_PAYMENT_LINK,
-                    tokenRequest,
-                    pkKey,
-                    desAccGid
+                    "PK key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(desAccGid)) {
+                Toast.makeText(
+                    this,
+                    "desAccGid key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(type)) {
+                Toast.makeText(
+                    this,
+                    "type key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(cvv)) {
+                Toast.makeText(
+                    this,
+                    "cvv key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(expiryMonth)) {
+                Toast.makeText(
+                    this,
+                    "expiryMonth key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(expiryYear)) {
+                Toast.makeText(
+                    this,
+                    "expiryYear key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(name)) {
+                Toast.makeText(
+                    this,
+                    "name key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(number)) {
+                Toast.makeText(
+                    this,
+                    "number key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (TextUtils.isEmpty(scheme)) {
+                Toast.makeText(
+                    this,
+                    "scheme key cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+
+                val cardRequest = TokenCard(
+                    cvv,
+                    expiryMonth.toInt(),
+                    expiryYear.toInt(),
+                    name,
+                    number,
+                    scheme
                 )
-            } catch (e: KeyNotInitializedException) {
-                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+                val tokenRequest = TokenRequest(
+                    type,
+                    cardRequest
+                )
+
+                try {
+                    SwirepaySdk.createToken(
+                        this,
+                        PaymentLinkActivity.REQUEST_CODE_PAYMENT_LINK,
+                        tokenRequest,
+                        pkKey,
+                        desAccGid
+                    )
+                } catch (e: KeyNotInitializedException) {
+                    Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

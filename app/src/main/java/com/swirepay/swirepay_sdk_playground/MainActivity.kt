@@ -7,12 +7,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.swirepay.android_sdk.SwirepaySdk
 import com.swirepay.android_sdk.ui.nativepayment.NativePaymentActivity
 import com.swirepay.swirepay_sdk_playground.databinding.ActivityMainBinding
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 //         binding.etInitSdk.setText("sk_test_7GsTyKNtgZxj0UD6eT2ICqvHQZUvWKw5")//usaccount
 //         binding.etInitSdk.setText("sk_test_5X5U7tb1ww47cukHGucCMXA9hBXi4yrr")//usaccount
         //binding.etInitSdk.setText("GMP6MilKUyOMxMervlPKgn43arU9lxGg")
+//        binding.etInitSdk.setText("sk_test_7lrEzsAai0aYDod9Op7w4dLYSIqLHpuT")
+//        binding.etInitSdk.setText("sk_test_vts2SlOTnOIEF0IA4TCKEfDlK3Zao8DF")
+//        binding.etInitSdk.setText("sk_test_xikzjS5KEH37YRGeXBLzuUaQ2nvMhB5w")
         //binding.etInitSdk.setText("pk_test_NZahOuYDntC2yRroIpwKNo4eCArlQFu2") //public Usaccount rajeshmec
 
         binding.btnInitSdk.setOnClickListener {
@@ -72,12 +77,20 @@ class MainActivity : AppCompatActivity() {
 
         val btnPaymentMethod: Button = findViewById(R.id.btnPaymentMethod)
         btnPaymentMethod.setOnClickListener {
-            SwirepaySdk.createPaymentMethod(this, REQUEST_CODE_PAYMENT_METHOD)
+            try {
+                SwirepaySdk.createPaymentMethod(this, REQUEST_CODE_PAYMENT_METHOD)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val btnCreateAccount: Button = findViewById(R.id.btnAccount)
         btnCreateAccount.setOnClickListener {
-            SwirepaySdk.createAccount(this, REQUEST_CODE_CONNECT_ACCOUNT)
+            try {
+                SwirepaySdk.createAccount(this, REQUEST_CODE_CONNECT_ACCOUNT)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val btnCreateToken: Button = findViewById(R.id.btnToken)
@@ -88,12 +101,20 @@ class MainActivity : AppCompatActivity() {
         val btnPaymentButton: Button = findViewById(R.id.btnPaymentButton)
         btnPaymentButton.setOnClickListener {
 
-            startActivity(Intent(this, PaymentButtonActivity::class.java))
+            try {
+                startActivity(Intent(this, PaymentButtonActivity::class.java))
+            } catch (e: Exception) {
+                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val btnNativePayment: Button = findViewById(R.id.btnNativePayment)
         btnNativePayment.setOnClickListener {
-            startActivity(Intent(this, NativePaymentActivity::class.java))
+            try {
+                startActivity(Intent(this, NativePaymentActivity::class.java))
+            } catch (e: Exception) {
+                Toast.makeText(this, "Key not initialized!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val btnCheckout: Button = findViewById(R.id.btnCheckout)

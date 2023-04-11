@@ -27,7 +27,7 @@ class PaymentLinkActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPaymentLinkBinding
 
-    private val listOfPaymentMethods = ArrayList<PaymentMethodType>()
+    private val listOfPaymentMethods = ArrayList<String>()
     var currencyType = CurrencyType.INR
 
     var myCalendar = Calendar.getInstance()
@@ -74,31 +74,31 @@ class PaymentLinkActivity : AppCompatActivity() {
         binding.cbCard.setOnCheckedChangeListener { _, b ->
             if (b)
                 listOfPaymentMethods.add(
-                    PaymentMethodType.CARD
+                    PaymentMethodType.CARD.toString()
                 )
             else
-                listOfPaymentMethods.remove(PaymentMethodType.CARD)
+                listOfPaymentMethods.remove(PaymentMethodType.CARD.toString())
         }
 
         binding.cbUpi.setOnCheckedChangeListener { _, b ->
             if (b)
-                listOfPaymentMethods.add(PaymentMethodType.UPI)
+                listOfPaymentMethods.add(PaymentMethodType.UPI.toString())
             else
-                listOfPaymentMethods.remove(PaymentMethodType.UPI)
+                listOfPaymentMethods.remove(PaymentMethodType.UPI.toString())
         }
 
         binding.usBank.setOnCheckedChangeListener { _, b ->
             if (b)
-                listOfPaymentMethods.add(PaymentMethodType.ACH_LEGACY)
+                listOfPaymentMethods.add(PaymentMethodType.ACH_LEGACY.toString())
             else
-                listOfPaymentMethods.remove(PaymentMethodType.ACH_LEGACY)
+                listOfPaymentMethods.remove(PaymentMethodType.ACH_LEGACY.toString())
         }
 
         binding.indBank.setOnCheckedChangeListener { _, b ->
             if (b)
-                listOfPaymentMethods.add(PaymentMethodType.NET_BANKING)
+                listOfPaymentMethods.add(PaymentMethodType.NET_BANKING.toString())
             else
-                listOfPaymentMethods.remove(PaymentMethodType.NET_BANKING)
+                listOfPaymentMethods.remove(PaymentMethodType.NET_BANKING.toString())
         }
 
 
