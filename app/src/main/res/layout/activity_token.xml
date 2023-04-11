@@ -10,7 +10,7 @@
         android:id="@+id/etPrivateKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Private Key"
+        android:hint="Public Key"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatEditText
