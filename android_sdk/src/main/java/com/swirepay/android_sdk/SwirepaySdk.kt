@@ -97,7 +97,7 @@ object SwirepaySdk {
         requestCode: Int,
         amount: Int,
         currencyCode: CurrencyType,
-        list: ArrayList<PaymentMethodType>,
+        list: ArrayList<String>,
         customer: CustomerModel,
         customerGid: String?,
         notificationType: NotificationType,
