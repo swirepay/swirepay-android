@@ -30,7 +30,7 @@ To integrate the SDK, follow the steps below:
  Open the build.gradle file of your app module and add the Swirepay SDK in the dependency section.
  
 ``
-    implementation 'com.swirepay:swirepay-android:1.0.13'
+    implementation 'com.swirepay:swirepay-android:1.0.14'
 ``
 
 The Swirepay SDK requires you to add the permissions shown below in your Android Manifest file.
